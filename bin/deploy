@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+# Run this script to deploy the app to a local directory ($1)
+
+# Exit if any subcommand fails.
+set -e
+
+echo "Deploying..."
+
+bundle exec jekyll build -d "$1"
+
+echo "Deployed successfully!"
+
+exit 0

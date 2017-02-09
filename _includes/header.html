@@ -1,26 +1,26 @@
 <header class="site-header" role="banner">
 
-  {% assign custom_url = site.url | append: site.baseurl %}
-  {% assign full_base_url = custom_url %}
+  <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
 
-  <nav class="navbar navbar-static-top bg-inverse">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar-sitenav" aria-controls="navbar-sitenav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-    <div class="container">
-      <a class="site-title navbar-brand" href="{{ full_base_url }}/">{{ site.title | escape }}</a>
-      <button data-target="#main-nav-items" data-toggle="collapse" type="button" class="navbar-toggler hidden-sm-up">
-        ☰
-      </button>
-      <div id="main-nav-items" class="collapse navbar-toggleable-xs">
-        <ul class="nav navbar-nav">
-          {% for my_page in site.pages %}
-            {% if my_page.title %}
-            <li class="nav-item">
-              <a class="nav-link" href="{{ my_page.url | prepend: full_base_url }}">{{ my_page.title | escape }}</a>
-            </li>
-            {% endif %}
-          {% endfor %}
-        </ul>
-      </div>
+    <a class="site-title navbar-brand" href="{{ site.url }}">{{ site.title | escape }}</a>
+
+    <div class="collapse navbar-collapse" id="navbar-sitenav">
+      <ul class="navbar-nav mr-auto">
+
+        {% for page in site.pages %}
+          {% if page.title %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{ page.url | prepend: site.url }}">{{ page.title | escape }}</a>
+          </li>
+          {% endif %}
+        {% endfor %}
+
+      </ul>
     </div>
   </nav>
+
 </header>
