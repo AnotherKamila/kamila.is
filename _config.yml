@@ -1,1 +1,10 @@
-theme: jekyll-theme-cayman
+title: kamila.is
+url: "" # the base hostname & protocol for your site
+
+# Build settings
+theme: minima  # we build on top of this, adding bootstrap
+gems: [bootstrap, autoprefixer-rails, jekyll-assets]
+sass:
+    sass_dir: _sass
+exclude: [bin, Gemfile, Gemfile.lock, vendor]
+
