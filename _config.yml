@@ -8,4 +8,4 @@ permalinks: pretty
 gems: [bootstrap, autoprefixer-rails, jekyll-assets]
 sass:
     sass_dir: _sass
-exclude: [bin, Gemfile, Gemfile.lock, vendor]
+exclude: [Gemfile, Gemfile.lock]

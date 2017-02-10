@@ -6,8 +6,9 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <a class="site-title" href="{{ site.url }}">{{ site.title | escape }}</a>
-    {% if page.canonical_url %}<a class="site-title" href="{{ page.canonical_url }}">{{ page.canonical_url | escape }}</a>{% endif %}
+    <span class="site-title">
+      <a href="{{ site.url }}">{{ site.title | escape }}</a>{% if page.canonical_url %}<a href="{{ page.canonical_url }}">{{ page.canonical_url | escape }}</a>{% endif %}
+    </span>
 
     <div class="collapse navbar-collapse" id="navbar-sitenav">
       <ul class="navbar-nav mr-auto">
