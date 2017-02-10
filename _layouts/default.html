@@ -4,6 +4,12 @@ layout: chrome
 
 <div class="container">
   <div class="row">
-    <div class="col-md-12">{{ content }}</div>
+    <div class="col-md-12">
+        <header class="page-header">
+            {% if page.title %}<h1 class="display-4">{{page.title}}</h1>{% endif %}
+            {% if page.subtitle %}<span class="text-muted">{{page.subtitle}}</span>{% endif %}
+        </header>
+        {{ content }}
+    </div>
   </div>
 </div>

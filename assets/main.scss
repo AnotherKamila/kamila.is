@@ -4,6 +4,7 @@
 @import 'custom';
 @import 'bootstrap';
 @import 'site_nav';
+@import 'content';
 
 $z-index-navbar: 10;
 
@@ -16,13 +17,13 @@ $z-index-navbar: 10;
 }
 
 body > .site-header + .container {
-    padding: 6em 15px 0;
+    padding: 6em 15px 3em;
 }
 
 .collapse.in { // some stupid thing doesn't add .show... but does add .in :D
     display: block;
 }
 
-.container {
-    max-width: 720px;
+.jumbotron p {
+    text-indent: 3em;
 }

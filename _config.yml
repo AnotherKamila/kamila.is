@@ -1,17 +1,18 @@
 # === the basics ===
 title: kamila.is
-url: "" # the base hostname & protocol for your site
-add_to_nav:
-  # - [/busy, 'Calendar']
+url: /
 permalinks: pretty
 
 # === defaults ===
 defaults:
   - scope: {path: ""}
     values:
-      layout: "default"
+      layout: default
 
 # === Build settings ===
+markdown: kramdown
+kramdown:
+  smartypants: true
 gems: [bootstrap, autoprefixer-rails, jekyll-assets]
 sass:
     sass_dir: _sass

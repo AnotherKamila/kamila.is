@@ -1,6 +1,7 @@
 $time: 0.4s
 
 .site-header
+    text-shadow: 0 -1px 0 black
     .navbar
         position: relative
 
@@ -24,9 +25,12 @@ $time: 0.4s
     .navbar-toggler
         z-index: 10
 
-    -webkit-transition: color $time ease
-    -moz-transition: color $time ease
-    -transition: color $time ease
+
+    .nav-link
+        color: rgba(white, 0.6)
+        -webkit-transition: color $time ease
+        -moz-transition: color $time ease
+        -transition: color $time ease
 
     &:hover
         .nav-link
@@ -52,6 +56,7 @@ $time: 0.4s
                 opacity: 0
 
             &:hover
+                color: rgba(white, 0.85)
                 z-index: 1
                 top: -0.5em
                 small
