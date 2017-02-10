@@ -19,22 +19,14 @@ $time: 0.4s
                 text-decoration: none
                 color: white
 
-    #navbar-sitenav
-        margin-left: 1em
-
     .navbar-toggler
         z-index: 10
 
-
-    .nav-link
-        color: rgba(white, 0.6)
-        -webkit-transition: color $time ease
-        -moz-transition: color $time ease
-        -transition: color $time ease
-
-    &:hover
-        .nav-link
-            color: rgba(white, 0.3)
+    #navbar-sitenav
+        margin-left: 1em
+        &:hover
+            .nav-link
+                color: rgba(white, 0.3)
 
     .nav-item
 
@@ -42,9 +34,10 @@ $time: 0.4s
             position: relative
             line-height: 1.2
             top: 0.02em
-            -webkit-transition: top $time ease
-            -moz-transition: top $time ease
-            -transition: top $time ease
+            color: rgba(white, 0.6)
+            -webkit-transition: color $time ease, top $time ease
+            -moz-transition: color $time ease, top $time ease
+            -transition: color $time ease, top $time ease
 
             small
                 position: absolute
@@ -56,9 +49,9 @@ $time: 0.4s
                 opacity: 0
 
             &:hover
-                color: rgba(white, 0.85)
+                color: rgba(white, 0.85) !important
                 z-index: 1
-                top: -0.5em
+                top: -0.5em !important
                 small
                     opacity: 1
 
