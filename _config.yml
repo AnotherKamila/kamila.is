@@ -1,5 +1,7 @@
 title: kamila.is
 url: "" # the base hostname & protocol for your site
+add_to_nav:
+  - [/busy, 'Calendar']
 
 # Build settings
 theme: minima  # we build on top of this, adding bootstrap

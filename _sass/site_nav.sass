@@ -1,0 +1,59 @@
+$time: 0.4s
+
+.site-header
+    .navbar
+        position: relative
+
+    .site-title
+        -webkit-transition: color $time ease
+        -moz-transition: color $time ease
+        -transition: color $time ease
+
+        padding-top: .25rem
+        padding-bottom: .32rem
+        font-size: 1.25rem
+        color: rgba(white, 0.7)
+
+        &:hover
+            text-decoration: none
+            color: white
+
+    #navbar-sitenav
+        margin-left: 1em
+
+    .navbar-toggler
+        z-index: 10
+
+    -webkit-transition: color $time ease
+    -moz-transition: color $time ease
+    -transition: color $time ease
+
+    &:hover
+        .nav-link
+            color: rgba(white, 0.3)
+
+    .nav-item
+
+        .nav-link
+            position: relative
+            line-height: 1.2
+            top: 0.02em
+            -webkit-transition: top $time ease
+            -moz-transition: top $time ease
+            -transition: top $time ease
+
+            small
+                position: absolute
+                font-variant: small-caps
+                width: 20em // whatever
+                -webkit-transition: opacity $time ease
+                -moz-transition: opacity $time ease
+                -transition: opacity $time ease
+                opacity: 0
+
+            &:hover
+                z-index: 1
+                top: -0.5em
+                small
+                    opacity: 1
+

@@ -6,17 +6,35 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <a class="site-title navbar-brand" href="{{ site.url }}">{{ site.title | escape }}</a>
+    <a class="site-title" href="{{ site.url }}">{{ site.title | escape }}</a>
+    {% if page.canonical_url %}<a class="site-title" href="{{ page.canonical_url }}">{{ page.canonical_url | escape }}</a>{% endif %}
 
     <div class="collapse navbar-collapse" id="navbar-sitenav">
       <ul class="navbar-nav mr-auto">
 
-        {% for page in site.pages %}
-          {% if page.title %}
-          <li class="nav-item">
-            <a class="nav-link" href="{{ page.url | prepend: site.url }}">{{ page.title | escape }}</a>
-          </li>
+        {% for item in site.pages %}
+          {% assign canonical = item.canonical_url | append: '/' %}
+          {% if item.title and item.url == canonical and item.url != page.url %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ item.url | prepend: site.url }}">
+                {{ item.canonical_url | escape }}
+                <br />
+                <small>{{ item.title | escape }}</small>
+              </a>
+            </li>
           {% endif %}
+        {% endfor %}
+
+        <!-- end of generated -->
+
+        {% for item in site.add_to_nav %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{ item[0] | prepend: site.url }}">
+              {{ item[0] | escape }}
+              <br />
+              <small>{{ item[1] | escape }}</small>
+            </a>
+          </li>
         {% endfor %}
 
       </ul>
