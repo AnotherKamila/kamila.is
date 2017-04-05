@@ -3,6 +3,8 @@ title: "Why I am a Christian"
 canonical_url: /christian
 ---
 
+## ... in 5 sentences
+
 {% capture jumbo %}
 
 ---------------------------------------------------------
@@ -16,7 +18,6 @@ It seems to me that given these constraints, Christianity is the only framework 
 {% endcapture %}
 
 <div class="jumbotron jumbotron-fluid rounded"><div class="container-fluid">
-<h2>Why I need the Christian God <small class="text-muted">&nbsp;in 5 sentences</small></h2>
 {{ jumbo | markdownify }}
 </div></div>
 
@@ -24,14 +25,4 @@ It seems to me that given these constraints, Christianity is the only framework 
 
 Yes, I do find Christianity hard to believe. I do struggle with that. But I find everything else even harder to believe. And Christianity is strange enough to look right in this strange world :-)
 
-I should leave the talking to people smarter than me. These two books are awesome:
-
-- **C. S. Lewis: Mere Christianity** -- An introduction to what Christianity is really about (as opposed to what some people think).
-- **G. K. Chesterton: Orthodoxy** -- A former atheist's thinking, or how it ends up when you go under the surface and look for truth. A real joy to read.
-
----------------------------------------------------------
-
-When recommending books, I should also mention these two (yes, I do like C. S. Lewis). They should be read in this order, one after another, for maximum experience.
-
-1. **C. S. Lewis: The Problem of Pain** -- A very reasonable look at pain and suffering.
-2. **C. S. Lewis: A Grief Observed** -- Notes written shortly after his wife's death. A different look at the same problem. Difficult reading, very much worth it.
+[Some people smarter than me have written good books about this.](/reading/christianity)
