@@ -7,8 +7,6 @@ canonical_url: /christian
 
 {% capture jumbo %}
 
----------------------------------------------------------
-
 On the good days I see how beautiful and well-thought-out the world appears to be, and I want to thank someone for it;  
 on the bad days, I refuse to lose the hope that suffering has a point;  
 and on the clear days I see how I keep failing at living according to my conscience, I want to ask somebody for forgiveness, I know I don't deserve to be forgiven, and as far as I know a certain guy 2000 years ago was the only one ever who really dealt with mercy instead of trying to deserve things.  
