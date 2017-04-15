@@ -17,15 +17,15 @@ data:
   experience:
     title: Work & Volunteer Experience
     items:
-      # - TODO DCL if I can
       - current: |
+          - architect and site reliability engineer for [Data Center Light](http://datacenterlight.ch) at [ungleich](http://www.ungleich.ch/)
           - administering servers for [Trojsten](http://trojsten.sk/) – Linux and FreeBSD servers with diverse uses (lots of fun!)
           - helping organize competitions and educational activities for students, giving various talks
       - summer 2015: Site Reliability Engineering intern at Google Switzerland
       - summer 2014: Site Reliability Engineering intern at Google Switzerland
       - 2014–2016: |
           - contributed to the [Student Development Team](https://github.com/fmfi-svt) at my university (development and server administration)
-          - lead the development of an in-house solution for an RFID-based access control system ([https://github.com/fmfi-svt-deadlock](https://github.com/fmfi-svt-deadlock))
+          - developed the backend of an in-house solution for an RFID-based access control system ([https://github.com/fmfi-svt-deadlock](https://github.com/fmfi-svt-deadlock))
           - learned more about how operating systems work by making one from scratch ([https://github.com/AnotherKamila/chaOS](https://github.com/AnotherKamila/chaOS))
       - 2012–2013: software engineer at MicroStep - MIS ([www.microstep-mis.sk](http://www.microstep-mis.sk/))
       - 2009–2012: web developer (front-end) at Lighting Beetle ([www.lbstudio.sk](https://www.lbstudio.sk/))
