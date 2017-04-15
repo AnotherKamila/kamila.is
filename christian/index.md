@@ -3,9 +3,10 @@ title: "Why I am a Christian"
 canonical_url: /christian
 ---
 
-## ... in 5 sentences
 
 {% capture jumbo %}
+
+## ... in 5 sentences
 
 On the good days I see how beautiful and well-thought-out the world appears to be, and I want to thank someone for it;  
 on the bad days, I refuse to lose the hope that suffering has a point;  
