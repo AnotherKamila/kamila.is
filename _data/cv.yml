@@ -35,10 +35,10 @@ data:
     title: Education
     items:
       - 2016–present: |
-          Department of Computer Science, ETH Zurich, Switzerland
+          Department of Computer Science, ETH Zurich, Switzerland:
           studying for Master's degree (est. 2019)
       - 2013–2016: |
-          Department of Computer Science, Faculty of Mathematics, Physics and Informatics, Comenius University in Bratislava, Slovakia
+          Department of Computer Science, Faculty of Mathematics, Physics and Informatics, Comenius University in Bratislava, Slovakia:
           Bachelor's degree
 
   skills:
@@ -67,9 +67,9 @@ data:
     title: Select Awards and Achievements
     items:
       - International: |
-          - [International Young Physicists’ Tournament](http://www.iypt.org): silver medal in 2013, 2011, 2010; bronze medal in 2012"
-          - [Internet Problem Solving Contest](http://ipsc.ksp.sk): 26<sup>th</sup> among high-school teams in 2012; 17<sup>th</sup> among 1-member high-school teams in 2011"
-          - [Google Code-In](https://code.google.com/opensource/gci/2010-11): completed 3 tasks in 2011 and 2010"
+          - [International Young Physicists’ Tournament](http://www.iypt.org): silver medal in 2013, 2011, 2010; bronze medal in 2012
+          - [Internet Problem Solving Contest](http://ipsc.ksp.sk): 26<sup>th</sup> among high-school teams in 2012; 17<sup>th</sup> among 1-member high-school teams in 2011
+          - [Google Code-In](https://code.google.com/opensource/gci/2010-11): completed 3 tasks in 2011 and 2010
       - National: |
           - [Correspondence Seminar in Programming](https://www.ksp.sk), category T (elite): 1<sup>st</sup> in 2012, 2013
           - [Young Physicists’ Tournament](http://www.tmfsr.sk), State round: 1<sup>st</sup> / gold medal in 2010, 2011, 2012
@@ -77,7 +77,7 @@ data:
   free_time:
     title: Free Time Activities
     text: |
-        - learning to fly small aircraft
+        - flying small aircraft
         - music, esp. playing flute
         - art and handicrafts, graphics and design
         - archery, hiking, puzzle hunts (e.g. [TMOU](https://en.wikipedia.org/wiki/TMOU))
