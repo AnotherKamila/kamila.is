@@ -3,7 +3,7 @@ title: Hello World!
 canonical_url: /me
 ---
 
-<figure class="figure float-right ml-1">
+<figure class="figure float-right ml-3">
   <img src="pilot.jpg" class="figure-img img-fluid rounded" alt="Flying a Vivat motor glider over Trnava, Slovakia, with a huge smile.">
   <figcaption class="figure-caption text-right">Flying a <a href="http://www.airplane-pictures.net/type.php?p=739">Vivat motor glider</a> over Trnava, Slovakia, with a huge smile.</figcaption>
 </figure>
