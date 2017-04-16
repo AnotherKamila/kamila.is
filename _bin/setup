@@ -8,3 +8,4 @@ set -e
 # Set up Ruby dependencies via Bundler.
 gem install bundler --conservative
 bundle check || bundle install --path _vendor/bundle
+git submodule update --init
