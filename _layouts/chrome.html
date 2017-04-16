@@ -3,7 +3,9 @@
   {% include head.html %}
   <body>
 
-    {% include header.html %}
+    {% unless page.no_header %}
+        {% include header.html %}
+    {% endunless %}
 
     {{ content }}
 
