@@ -8,6 +8,7 @@ set -e
 echo "Deploying..."
 
 bundle exec jekyll build -d "$1"
+echo "<!-- git: $(git rev-parse --short HEAD) -->" >> "$1/index.html"
 
 echo "Deployed successfully!"
 
