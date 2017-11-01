@@ -27,14 +27,14 @@ As of now I have about 80 GitHub repos, because I am messy. These are the large 
 
 Smaller projects that should not be deleted (unlike some of my other smaller projects):
 
-    - various small contributions to [cdist](https://www.nico.schottelius.org/software/cdist/) -- the least terrible configuration management
-    - [tarsnap-periodic](https://github.com/AnotherKamila/tarsnap-periodic)
-    - [monitoring-tools](https://github.com/AnotherKamila/monitoring-tools)
-    - [yamlCV](https://github.com/AnotherKamila/yamlCV)
-    - [currency-exchange-rates](https://github.com/AnotherKamila/currency-exchange-rates)
-    - [lego-wet-roomba](https://github.com/AnotherKamila/lego-wet-roomba)
-    - Oh, and. Can I brag about [chaOS](https://github.com/AnotherKamila/chaOS) here? It's not active. But it was fun! And the logo is the best thing I've ever drawn ;-)
+- various small contributions to [cdist](https://www.nico.schottelius.org/software/cdist/) -- the least terrible configuration management
+- [tarsnap-periodic](https://github.com/AnotherKamila/tarsnap-periodic)
+- [monitoring-tools](https://github.com/AnotherKamila/monitoring-tools)
+- [yamlCV](https://github.com/AnotherKamila/yamlCV)
+- [currency-exchange-rates](https://github.com/AnotherKamila/currency-exchange-rates)
+- [lego-wet-roomba](https://github.com/AnotherKamila/lego-wet-roomba)
+- Can I brag about [chaOS](https://github.com/AnotherKamila/chaOS) here? It's not active. But it was fun! And the logo is the best thing I've ever drawn ;-)
+- [composing_fractals](https://github.com/AnotherKamila/composing_fractals): useless, but pretty!
 
 Check out [my GitHub](https://github.com/anotherkamila/) for a nearly-infinite list of repos, some of which are dead and good for them, and some of which live on until they die by accident.
 
-And one more thing: [composing_fractals](https://github.com/AnotherKamila/composing_fractals) is pretty!
