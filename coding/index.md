@@ -31,6 +31,7 @@ Smaller projects that should not be deleted (unlike some of my other smaller pro
 - [tarsnap-periodic](https://github.com/AnotherKamila/tarsnap-periodic)
 - [monitoring-tools](https://github.com/AnotherKamila/monitoring-tools)
 - [yamlCV](https://github.com/AnotherKamila/yamlCV)
+- [git-hooks](https://github.com/AnotherKamila/git-hooks) for easy push-to-deploy
 - [currency-exchange-rates](https://github.com/AnotherKamila/currency-exchange-rates)
 - [lego-wet-roomba](https://github.com/AnotherKamila/lego-wet-roomba)
 - Can I brag about [chaOS](https://github.com/AnotherKamila/chaOS) here? It's not active. But it was fun! And the logo is the best thing I've ever drawn ;-)
