@@ -21,9 +21,9 @@ As of now I have about 80 GitHub repos, because I am messy. These are the large 
     - **Dev status**:
         - Written in Elm, so changes are cheap. Small improvements might come in quite frequently.
         - Contributions are welcome! Though far from "perfectly clean", this app is IMHO not terrible!
-- [OutSurfing](https://github.com/AnotherKamila/outsurfing): "Couchsurfing for outdoor activities" -- a platform for finding companions for hikes, skiing or anything, based on preferences and time constraints. In fact, it will be able to do anything, not just outdoor. Therefore it needs a better name.
-    - **Status**: Planning stage, nothing is implemented. But I intend to start soonish!
-    - **Dev status**: Nothing is implemented, but I intend to do a Django backend + Elm web app.
+- **OutSurfing**: "Couchsurfing for outdoor activities" -- a platform for finding companions for hikes, skiing or anything, based on preferences and time constraints. In fact, it will be able to do anything, not just outdoor. Therefore it needs a better name.
+    - **Status**: Planning stage, nothing is deployed. But soonish it will!
+    - **Dev status**: Currently not open-source because I need to persuade my collaborator :-/ But we intend to re-open-source once it's been running for a while. Talk to me if you want to help, though.
 
 Smaller projects that should not be deleted (unlike some of my other smaller projects):
 
