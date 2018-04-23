@@ -14,7 +14,7 @@ defaults:
 markdown: kramdown
 kramdown:
   smartypants: true
-gems: [bootstrap, autoprefixer-rails, jekyll-assets]
+plugins: [bootstrap, autoprefixer-rails, jekyll-assets]
 sass:
     sass_dir: _sass
 exclude: [Gemfile, Gemfile.lock]
