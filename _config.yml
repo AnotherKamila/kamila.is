@@ -1,8 +1,6 @@
 # === the basics ===
 title: kamila.is
-url: ""
 permalinks: pretty
-repository: anotherkamila/kamila.is
 
 # === defaults ===
 defaults:
@@ -11,10 +9,4 @@ defaults:
       layout: default
 
 # === Build settings ===
-markdown: kramdown
-kramdown:
-  smartypants: true
-plugins: [bootstrap, autoprefixer-rails, jekyll-assets]
-sass:
-    sass_dir: _sass
 exclude: [Gemfile, Gemfile.lock]
