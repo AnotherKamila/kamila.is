@@ -1,7 +1,7 @@
 # === the basics ===
 title: kamila.is
 url: ""
-permalink: pretty
+permalinks: pretty
 repository: anotherkamila/kamila.is
 
 # === defaults ===
