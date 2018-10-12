@@ -1,3 +1,6 @@
 [submodule "_includes/yamlCV"]
 	path = _includes/yamlCV
 	url = https://github.com/AnotherKamila/yamlCV.git
+[submodule "talking"]
+	path = talking
+	url = git@github.com:anotherkamila/talks
