@@ -3,4 +3,4 @@
 	url = https://github.com/AnotherKamila/yamlCV.git
 [submodule "talking"]
 	path = talking
-	url = git@github.com:anotherkamila/talks
+	url = https://github.com/AnotherKamila/talks.git
