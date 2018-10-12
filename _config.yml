@@ -1,7 +1,7 @@
 # === the basics ===
 title: kamila.is
 permalinks: pretty
-repository: https://github.com/anotherkamila/kamila.is
+repository: anotherkamila/kamila.is
 
 # === defaults ===
 defaults:
