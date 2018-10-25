@@ -14,9 +14,14 @@ title: FreeBSD workshop for TongaCERT (2018)
         * does not really add that much to plain FreeBSD -- especially because you are now all experts on ZFS!
     * [TrueOS](https://www.trueos.org/): FreeBSD with a graphical interface pre-configured with some nice features
         * you can get the same with just plain FreeBSD, but with TrueOS the nice extras are there right after installation
-        
+* I will create a fish shell tutorial eventually, the link will be here
+
 # Notes
 
 * Playing with virtual networks in VirtualBox:
   * use a bridged adapter if you want the VM to get an IP address from the router (like your laptop does)
   * use "internal network" to connect VMs to one another (but not to the outside)
+
+# Exercises
+
+* [PF "homework" exercise](https://trouble.is/~philip/2018-10_TongaCERT/pf.exercise.3.txt)
