@@ -2,7 +2,7 @@
 title: FreeBSD workshop for TongaCERT (2018)
 ---
 
-Questions? You can email me at kamila at ksp dot sk, I like questions!
+Questions? You can email me at <kamila@ksp.sk>, I like questions!
 
 # Resources
 
