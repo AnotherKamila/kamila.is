@@ -34,16 +34,16 @@ Things you already know how to do:
 
 * Firewall / router
 * DNS server (use NSD for authoritative or unbound for caching)
-* Web proxy: `nginx` is a nice proxy; you might want to combine with `letsencrypt` for free automated SSL certificates (yay HTTPS!)
+* Web proxy: `nginx` is a nice proxy; you might want to combine with `certbot` for **free automated SSL certificates** (yay HTTPS!)
 
 Things you almost know how to do:
 
-* File server on ZFS: use Samba to expose a ZFS filesystem to Windows machines
 * NextCloud server (like SharePoint, but it works! / like DropBox, but on your own infrastructure): `pkg install nextcloud` :-)
 * Web server: `nginx` is a good server, combine with e.g. python... or `php72` if you really have to
 
 More complicated, but still easy to integrate:
 
+* File server on ZFS: use Samba to expose a ZFS filesystem to Windows machines
 * spam filter: pass your email through postfix+rspamd and forward to your existing Exchange server
 
 ## More things to learn
