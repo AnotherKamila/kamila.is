@@ -2,6 +2,8 @@
 title: FreeBSD workshop for TongaCERT (2018)
 ---
 
+**New:** Try the `bsdconfig` command :-)
+
 Questions? You can email me at <kamila@ksp.sk>, I like questions!
 
 # Resources
@@ -24,6 +26,7 @@ Questions? You can email me at <kamila@ksp.sk>, I like questions!
 * Playing with virtual networks in VirtualBox: 
   * use a bridged adapter if you want the VM to get an IP address from the router (like your laptop does)
   * use "internal network" to connect VMs to one another (but not to the outside)
+* Very very very useful command I forgot to mention: `bsdconfig` (try it!)
 
 # Exercises
 
