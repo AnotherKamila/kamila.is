@@ -10,6 +10,7 @@ Questions? You can email me at <kamila@ksp.sk>, I like questions!
 * FreeBSD downloads page: https://www.freebsd.org/where.html
 * programs:
     * SSH client for Windows: [PuTTY](https://putty.org/)
+        * you may want to allow root login on your VMs (don't do it in production!) -- look for `PermitRootLogin` in `/etc/ssh/sshd_config`
 * specialised FreeBSD-based systems
     * [pfSense](https://www.pfsense.org/): FreeBSD + PF-based firewall with a web interface and extra features out of the box
     * [FreeNAS](http://www.freenas.org/): pre-configured ZFS-based NAS
