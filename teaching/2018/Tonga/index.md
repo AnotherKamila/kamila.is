@@ -35,8 +35,8 @@ Questions? You can email me at <kamila@ksp.sk>, I like questions!
 Things you already know how to do:
 
 * Firewall / router
+* Free HTTPS: use `nginx` as a proxy, combine with `certbot` for **getting SSL certificates automatically and for free**
 * DNS server (use NSD for authoritative or unbound for caching)
-* Web proxy: `nginx` is a nice proxy; you might want to combine with `certbot` for **free automated SSL certificates** (yay HTTPS!)
 
 Things you almost know how to do:
 
