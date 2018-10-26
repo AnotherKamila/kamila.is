@@ -18,10 +18,28 @@ title: FreeBSD workshop for TongaCERT (2018)
 
 # Notes
 
-* Playing with virtual networks in VirtualBox:
+* Playing with virtual networks in VirtualBox: 
   * use a bridged adapter if you want the VM to get an IP address from the router (like your laptop does)
   * use "internal network" to connect VMs to one another (but not to the outside)
 
 # Exercises
 
 * [PF "homework" exercise](https://trouble.is/~philip/2018-10_TongaCERT/pf.exercise.3.txt)
+
+# What next
+
+## Some suggestions for things which are easy to set up on FreeBSD within existing Windowsey infrastructure
+
+Things you already know how to do:
+
+* Firewall / router
+* DNS server (use NSD for authoritative or unbound for caching)
+
+Things you almost know how to do:
+
+* File server on ZFS: use Samba to expose a ZFS filesystem to Windows machines
+* Web server: `nginx` is a good server, combine with e.g. python... or `php72` if you really have to
+
+More complicated, but still easy to integrate:
+
+* spam filter: pass your email through postfix+rspamd and forward to your existing Exchange server
