@@ -38,6 +38,7 @@ Things you already know how to do:
 Things you almost know how to do:
 
 * File server on ZFS: use Samba to expose a ZFS filesystem to Windows machines
+* NextCloud server (like SharePoint, but it works! / like DropBox, but on your own infrastructure): `pkg install nextcloud` :-)
 * Web server: `nginx` is a good server, combine with e.g. python... or `php72` if you really have to
 
 More complicated, but still easy to integrate:
