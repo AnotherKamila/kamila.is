@@ -52,6 +52,6 @@ All of this is in the handbook.
 
 * Jails:
     * very useful lightweight isolation mechanism
-    * like virtual machines, but more lightweight (less memory + faster)
+    * like virtual machines, but more lightweight (less memory, less disk, faster)
     * if you have multiple independent things in the server, just make jails for them
     * see the handbook!
