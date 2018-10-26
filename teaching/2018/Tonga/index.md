@@ -34,6 +34,7 @@ Things you already know how to do:
 
 * Firewall / router
 * DNS server (use NSD for authoritative or unbound for caching)
+* Web proxy: `nginx` is a nice proxy; you might want to combine with `letsencrypt` for free automated SSL certificates (yay HTTPS!)
 
 Things you almost know how to do:
 
@@ -44,3 +45,13 @@ Things you almost know how to do:
 More complicated, but still easy to integrate:
 
 * spam filter: pass your email through postfix+rspamd and forward to your existing Exchange server
+
+## More things to learn
+
+All of this is in the handbook.
+
+* Jails:
+    * very useful lightweight isolation mechanism
+    * like virtual machines, but more lightweight (less memory + faster)
+    * if you have multiple independent things in the server, just make jails for them
+    * see the handbook!
