@@ -2,6 +2,8 @@
 title: FreeBSD workshop for TongaCERT (2018)
 ---
 
+Questions? You can email me at kamila at ksp dot sk, I like questions!
+
 # Resources
 
 * FreeBSD Handbook: [PDF](https://download.freebsd.org/ftp/doc/en/books/handbook/book.pdf), [online](https://www.freebsd.org/doc/en_US.ISO8859-1/books/handbook/), or [EPUB](https://download.freebsd.org/ftp/doc/en/books/handbook/book.epub)
