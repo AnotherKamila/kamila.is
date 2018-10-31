@@ -5,7 +5,7 @@ add_to_head: <link rel="stylesheet" type="text/css" href="asciinema-player.css" 
 
 The shell (or the command line) is where you enter commands. Though it may appear scary at first sight, it is a very powerful tool that allows you to do much more than any graphical interface would. This tutorial aims to make you comfortable in the shell, assuming no previous knowledge.
 
-# 0. Artillery Preparation
+# Artillery Preparation
 
 This tutorial makes generous use of [asciinema](https://asciinema.org/): it is full of "videos" (not really videos) of what it looks like to type the commands I will be talking about. You can pause and replay everything, and because it is actually text, you can copy things from the window. Click the :
 
@@ -23,7 +23,7 @@ This is what the process looks like on FreeBSD:
 
 Notice that Fish suggests things you might want to type, and the predictions get better over time. press the right arrow to accept the suggestion. This does not immediately execute the command, you can still edit it, so do not be afraid to press right arrow a lot :-)
 
-# 1. Moving around the filesystem
+# Moving around the filesystem
 
 ## Basics
 
@@ -58,11 +58,11 @@ Some useful commands are:
 * so `echo hello world > hello.txt` will write "hello world" into a file called `hello.txt`
 * `cat` prints file contents into the terminal
 
-<asciinema-player src="cast/rel-and-abs-paths.cast"></asciinema-player>
+<asciinema-player src="cast/creating.cast"></asciinema-player>
 
 ### Bonus: Some more useful file-related commands
 
-* `less` lets you scroll in big files (quit with `q`):
+* `less` lets you scroll in big files (quit with `q`; press `h` for help):
 <!--<asciinema-player src="cast/more-file-commands-less.cast"></asciinema-player>-->
 * `tree` prints the file tree (you may need to install it first)
 <!--<asciinema-player src="cast/more-file-commands-tree.cast"></asciinema-player>-->
@@ -73,6 +73,8 @@ Some useful commands are:
 <!--<asciinema-player src="cast/more-file-commands-cprm.cast"></asciinema-player>-->
 * `ls -l` shows more info about the files, like when it was changed or file size; add `-h` to show human-readable file sizes
 <!--<asciinema-player src="cast/more-file-commands-ll.cast"></asciinema-player>-->
+
+Try them!
 
 # Awesome fish sauce
 
@@ -132,11 +134,8 @@ for (var i = 0; i < ds.length; ++i) {
   var d = ds[i];
   d.setAttribute('theme', 'solarized-dark');
   d.setAttribute('font-size', '1em');
-  d.setAttribute('speed', 2);
-  d.setAttribute('idle-time-limit', 0.2);
+  d.setAttribute('speed', 1.7);
+  //d.setAttribute('idle-time-limit', 0.2);
 }
-
-
-//<asciinema-player src="./cast/asciinema-demo.cast" speed="2" theme="solarized-dark" size="medium" idle-time-limit="0.2"></asciinema-player>
 </script>
 <script src="asciinema-player.js"></script>
