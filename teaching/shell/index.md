@@ -9,7 +9,7 @@ The shell (or the command line) is where you enter commands. Though it may appea
 
 This tutorial makes generous use of [asciinema](https://asciinema.org/): it is full of "videos" (not really videos) of what it looks like to type the commands I will be talking about. You can pause and replay everything, and because it is actually text, you can copy things from the window. Look:
 
-<asciinema-player src="cast/asciinema-demo.cast" data-speed="2" ></asciinema-player>
+<asciinema-player src="./cast/asciinema-demo.cast" speed="2" theme="solarized-dark" size="medium" idle-time-limit="0.2"></asciinema-player>
 
 We will be using the Friendly Interactive shell -- `fish`. You can install it with your package manager, either a graphical one, or by typing the commands:
 
@@ -21,7 +21,7 @@ Afterwards, you can run it inside your usual shell by typing `fish`.
 
 This is what the process looks like on FreeBSD:
 
-<asciinema-player src="cast/install-fish.cast" data-speed="2"></asciinema-player>
+<asciinema-player src="cast/install-fish.cast"></asciinema-player>
 
 ## An appetizer: A bit of fishy awesomeness
 
@@ -35,7 +35,7 @@ Similarly to Windows, files on Unix-like systems are arranged in directories (fo
 
 You can use the `cd` (change directory) command to go to a directory, and the `ls` command to list the contents of a directory:
 
-<asciinema-player src="cast/cd-ls.cast" data-speed="2"></asciinema-player>
+<asciinema-player src="cast/cd-ls.cast"></asciinema-player>
 
 As you probably noticed, your shell knows which directory you are in currently, and `cd` tells it to change it. Many commands (such as `ls`) will work in the current directory unless told otherwise.
 
@@ -48,7 +48,7 @@ You can specify files and directories either relative to the current directory, 
 
 The command `pwd` **p**rints **w**orking (i.e. current) **d**irectory.
 
-<asciinema-player src="cast/rel-and-abs-paths.cast" data-speed="2"></asciinema-player>
+<asciinema-player src="cast/rel-and-abs-paths.cast"></asciinema-player>
 
 ## Creating and modifying files
 
@@ -62,21 +62,21 @@ Some useful commands are:
 * so `echo hello world > hello.txt` will write "hello world" into a file called `hello.txt`
 * `cat` prints file contents into the terminal
 
-<asciinema-player src="cast/rel-and-abs-paths.cast" data-speed="2"></asciinema-player>
+<asciinema-player src="cast/rel-and-abs-paths.cast"></asciinema-player>
 
 ### Bonus: Some more useful file-related commands
 
 * `less` lets you scroll in big files (quit with `q`):
-<!--<asciinema-player src="cast/more-file-commands-less.cast" data-speed="2"></asciinema-player>-->
+<!--<asciinema-player src="cast/more-file-commands-less.cast"></asciinema-player>-->
 * `tree` prints the file tree (you may need to install it first)
-<!--<asciinema-player src="cast/more-file-commands-tree.cast" data-speed="2"></asciinema-player>-->
+<!--<asciinema-player src="cast/more-file-commands-tree.cast"></asciinema-player>-->
 * `rmdir` removes an empty directory
-<!--<asciinema-player src="cast/more-file-commands-rmdir.cast" data-speed="2"></asciinema-player>-->
+<!--<asciinema-player src="cast/more-file-commands-rmdir.cast"></asciinema-player>-->
 * `cp -a` copies a directory and all its contents.  
 * `rm -r` removes a directory and all its contents.
-<!--<asciinema-player src="cast/more-file-commands-cprm.cast" data-speed="2"></asciinema-player>-->
+<!--<asciinema-player src="cast/more-file-commands-cprm.cast"></asciinema-player>-->
 * `ls -l` shows more info about the files, like when it was changed or file size; add `-h` to show human-readable file sizes
-<!--<asciinema-player src="cast/more-file-commands-ll.cast" data-speed="2"></asciinema-player>-->
+<!--<asciinema-player src="cast/more-file-commands-ll.cast"></asciinema-player>-->
 
 # Awesome fish sauce
 
@@ -88,21 +88,21 @@ Note: This is difficult to explain when you don't see which exact keys I am pres
 
 You can press the Tab key to autocomplete commands or files at any time. If there is a unique completion, fish will complete it; if not, it will list the options. If you press Tab multiple times, it will cycle through possible options; press Enter to accept a completion. 
 
-<asciinema-player src="cast/tab-completion-1.cast" data-speed="2"></asciinema-player>
+<asciinema-player src="cast/tab-completion-1.cast"></asciinema-player>
 
 You can search among the possible completions (after pressing Tab at least twice) by simply starting to type when the options are displayed; type Enter to accept a completion. A combination of typing to filter and tabbing to cycle through options can get you to what you want very quickly with a bit of practice. Just don't forget to accept the completion when you are happy by pressing Enter.
 
-<asciinema-player src="cast/tab-completion-search.cast" data-speed="2"></asciinema-player>
+<asciinema-player src="cast/tab-completion-search.cast"></asciinema-player>
 
 Fish is quite smart and will try to tab complete things even if they are not an exact match. This is useful e.g. when you make a typo or when you don't remember the exact file name. Play with it!
 
 ### Tab completion is quite magic
 
 As mentioned, Tab can complete all sorts of things. Importantly, it can complete commands; and it provides short descriptions of what each command does. This is great if you can't remember exactly which command you are looking for:
-<asciinema-player src="cast/tab-completion-commands.cast" data-speed="2"></asciinema-player>
+<asciinema-player src="cast/tab-completion-commands.cast"></asciinema-player>
 
 Some important commands are so important that Fish knows more about them; in that case, it can complete the arguments too:
-<asciinema-player src="cast/tab-completion-commands-args.cast" data-speed="2"></asciinema-player>
+<asciinema-player src="cast/tab-completion-commands-args.cast"></asciinema-player>
 
 ## Using previously typed commands
 
@@ -110,15 +110,15 @@ When doing things in the shell, you often need to run the same or similar comman
 
 If you just press Up without typing anything, it will go through the previous commands. If you type something and then press Up, it will go through only those commands which contain the characters you had typed. You can also press Down to go to more recent commands, of course.
 
-<asciinema-player src="cast/history.cast" data-speed="2"></asciinema-player>
+<asciinema-player src="cast/history.cast"></asciinema-player>
 
 If you want to go through the previous *words* you had typed, instead of whole commands, just use Alt+Up instead. This also works with the searching: typing a few letters and then pressing Alt+Up will go through only matching words.
 
-<asciinema-player src="cast/history-alt-1.cast" data-speed="2"></asciinema-player>
+<asciinema-player src="cast/history-alt-1.cast"></asciinema-player>
 
 You will often do several things with the same file: for this, just type your command and then press Alt+Up once to find the previous file name again:
 
-<asciinema-player src="cast/history-alt-2.cast" data-speed="2"></asciinema-player>
+<asciinema-player src="cast/history-alt-2.cast"></asciinema-player>
 
 <!--
 # TODO things
@@ -126,4 +126,17 @@ You will often do several things with the same file: for this, just type your co
  You can also set it as your default shell for your user (but NOT for root) with `chsh -s fish` (on less smart systems, you may need to tell it something like `/usr/bin/fish`).
  -->
 
+<script>
+var ds = document.getElementsByTagName('asciinema-player');
+for (var i = 0; i < ds.length; ++i) {
+  var d = ds[i];
+  d.setAttribute('theme', 'solarized-dark');
+  d.setAttribute('font-size', 'medium');
+  d.setAttribute('speed', 2);
+  d.setAttribute('idle-time-limit', 0.2);
+}
+
+
+//<asciinema-player src="./cast/asciinema-demo.cast" speed="2" theme="solarized-dark" size="medium" idle-time-limit="0.2"></asciinema-player>
+</script>
 <script src="asciinema-player.js"></script>
