@@ -3,19 +3,15 @@ title: Shell Tutorial for Absolute Beginners
 add_to_head: <link rel="stylesheet" type="text/css" href="asciinema-player.css" />
 ---
 
-# 0. Artillery Preparation
-
 The shell (or the command line) is where you enter commands. Though it may appear scary at first sight, it is a very powerful tool that allows you to do much more than any graphical interface would. This tutorial aims to make you comfortable in the shell, assuming no previous knowledge.
 
-This tutorial makes generous use of [asciinema](https://asciinema.org/): it is full of "videos" (not really videos) of what it looks like to type the commands I will be talking about. You can pause and replay everything, and because it is actually text, you can copy things from the window. Look:
+# 0. Artillery Preparation
+
+This tutorial makes generous use of [asciinema](https://asciinema.org/): it is full of "videos" (not really videos) of what it looks like to type the commands I will be talking about. You can pause and replay everything, and because it is actually text, you can copy things from the window. Click the :
 
 <asciinema-player src="./cast/asciinema-demo.cast" speed="2" theme="solarized-dark" size="medium" idle-time-limit="0.2"></asciinema-player>
 
-We will be using the Friendly Interactive shell -- `fish`. You can install it with your package manager, either a graphical one, or by typing the commands:
-
-* `pkg install fish` on FreeBSD
-* `brew install fish` on OS X
-* `apt-get install fish` on Debian-based Linux
+We will be using the Friendly Interactive shell -- [fish](https://fishshell.com/). See [their website](https://fishshell.com/#platform_tabs) for installation instructions. For example, on FreeBSD, you can install it with `pkg install fish`.
 
 Afterwards, you can run it inside your usual shell by typing `fish`.
 
@@ -23,7 +19,7 @@ This is what the process looks like on FreeBSD:
 
 <asciinema-player src="cast/install-fish.cast"></asciinema-player>
 
-## An appetizer: A bit of fishy awesomeness
+## An appetiser: A bit of fishy awesomeness
 
 Notice that Fish suggests things you might want to type, and the predictions get better over time. press the right arrow to accept the suggestion. This does not immediately execute the command, you can still edit it, so do not be afraid to press right arrow a lot :-)
 
@@ -119,6 +115,10 @@ If you want to go through the previous *words* you had typed, instead of whole c
 You will often do several things with the same file: for this, type your command and then press Alt+Up once to find the previous file name again:
 
 <asciinema-player src="cast/history-alt-2.cast"></asciinema-player>
+
+# Suggestions?
+
+This document lives [on GitHub](https://github.com/AnotherKamila/kamila.is/blob/master/teaching/shell/index.md). Comments, suggestions, improvements, or anything else is welcome! Feel free to open an issue or send a pull request.
 
 <!--
 # TODO things
