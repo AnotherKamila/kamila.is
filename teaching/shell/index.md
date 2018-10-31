@@ -25,7 +25,7 @@ This is what the process looks like on FreeBSD:
 
 ## An appetizer: A bit of fishy awesomeness
 
-Notice that Fish suggests things you might want to type, and the predictions get better over time. Just press the right arrow to accept the suggestion. This does not immediately execute the command, you can still edit it, so do not be afraid to press right arrow a lot :-)
+Notice that Fish suggests things you might want to type, and the predictions get better over time. press the right arrow to accept the suggestion. This does not immediately execute the command, you can still edit it, so do not be afraid to press right arrow a lot :-)
 
 # 1. Moving around the filesystem
 
@@ -90,13 +90,13 @@ You can press the Tab key to autocomplete commands or files at any time. If ther
 
 <asciinema-player src="cast/tab-completion-1.cast"></asciinema-player>
 
-You can search among the possible completions (after pressing Tab at least twice) by simply starting to type when the options are displayed; type Enter to accept a completion. A combination of typing to filter and tabbing to cycle through options can get you to what you want very quickly with a bit of practice. Just don't forget to accept the completion when you are happy by pressing Enter.
+You can search among the possible completions (after pressing Tab at least twice) by simply starting to type when the options are displayed; type Enter to accept a completion. A combination of typing to filter and tabbing to cycle through options can get you to what you want very quickly with a bit of practice. Don't forget to accept the completion when you are happy by pressing Enter.
 
 <asciinema-player src="cast/tab-completion-search.cast"></asciinema-player>
 
-Fish is quite smart and will try to tab complete things even if they are not an exact match. This is useful e.g. when you make a typo or when you don't remember the exact file name. Play with it!
+Fish is smart and will try to tab complete things even if they are not an exact match. This is useful e.g. when you make a typo or when you don't remember the exact file name. Play with it!
 
-### Tab completion is quite magic
+### Tab completion is magic
 
 As mentioned, Tab can complete all sorts of things. Importantly, it can complete commands; and it provides short descriptions of what each command does. This is great if you can't remember exactly which command you are looking for:
 <asciinema-player src="cast/tab-completion-commands.cast"></asciinema-player>
@@ -108,15 +108,15 @@ Some important commands are so important that Fish knows more about them; in tha
 
 When doing things in the shell, you often need to run the same or similar command several times; or you do several things with the same file; or similar. Fish lets you save time in such cases by letting you search the command history by pressing the up arrow.
 
-If you just press Up without typing anything, it will go through the previous commands. If you type something and then press Up, it will go through only those commands which contain the characters you had typed. You can also press Down to go to more recent commands, of course.
+If you press Up without typing anything, it will go through the previous commands. If you type something and then press Up, it will go through only those commands which contain the characters you had typed. You can also press Down to go to more recent commands, of course.
 
 <asciinema-player src="cast/history.cast"></asciinema-player>
 
-If you want to go through the previous *words* you had typed, instead of whole commands, just use Alt+Up instead. This also works with the searching: typing a few letters and then pressing Alt+Up will go through only matching words.
+If you want to go through the previous *words* you had typed, instead of whole commands, use Alt+Up instead. This also works with the searching: typing a few letters and then pressing Alt+Up will go through only matching words.
 
 <asciinema-player src="cast/history-alt-1.cast"></asciinema-player>
 
-You will often do several things with the same file: for this, just type your command and then press Alt+Up once to find the previous file name again:
+You will often do several things with the same file: for this, type your command and then press Alt+Up once to find the previous file name again:
 
 <asciinema-player src="cast/history-alt-2.cast"></asciinema-player>
 
