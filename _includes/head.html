@@ -14,4 +14,8 @@
   {% if jekyll.environment == 'production' and site.google_analytics %}
   {% include google-analytics.html %}
   {% endif %}
+
+  {% if page.add_to_head %}
+  {{ page.add_to_head }}
+  {% endif %}
 </head>
