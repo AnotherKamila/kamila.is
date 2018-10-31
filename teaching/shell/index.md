@@ -131,7 +131,7 @@ var ds = document.getElementsByTagName('asciinema-player');
 for (var i = 0; i < ds.length; ++i) {
   var d = ds[i];
   d.setAttribute('theme', 'solarized-dark');
-  d.setAttribute('font-size', 'medium');
+  d.setAttribute('font-size', '1em');
   d.setAttribute('speed', 2);
   d.setAttribute('idle-time-limit', 0.2);
 }
