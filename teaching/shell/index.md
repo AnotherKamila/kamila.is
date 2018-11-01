@@ -23,6 +23,8 @@ This is what the process looks like on FreeBSD:
 
 Notice that Fish suggests things you might want to type, and the predictions get better over time. press the right arrow to accept the suggestion. This does not immediately execute the command, you can still edit it, so do not be afraid to press right arrow a lot :-)
 
+Also: Notice that Fish colors what you type to help you easily see what you're doing. For example, text highlighted red is an error (non-existent command, unclosed quotes, or something like that); underlined text is an existing file; and similar. This helps immediately see things like typos, and over time your subconsciousness will magically correct such things for you (speaking from experience here).
+
 # Moving around the filesystem
 
 ## Basics
