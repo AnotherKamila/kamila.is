@@ -122,7 +122,7 @@ You will often do several things with the same file: for this, type your command
 
 # Suggestions?
 
-This document lives [on GitHub](https://github.com/AnotherKamila/kamila.is/blob/master/teaching/shell/index.md). Comments, suggestions, improvements, or anything else is welcome! Feel free to open an issue or send a pull request.
+This document lives [on GitHub](https://github.com/AnotherKamila/shell-for-beginners/). Comments, suggestions, improvements, or anything else is welcome! Feel free to open an issue or send a pull request.
 
 <!--
 # TODO things
