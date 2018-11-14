@@ -15,7 +15,7 @@ Software-defined networking makes these distinctions not always entirely obvious
 
 # 1. High-level Overview
 
-A switch (or an L2 switch :-) ) is an L2-only thing. It knows about L2 stuff such as MAC addresses and ports. It does **not** know about anything like IP addresses. It has a **forwarding table**: it maps MAC addresses to ports.
+A switch (or an L2 switch :-) ) is an L2-only thing. It knows about L2 stuff such as MAC addresses and ports. It does **not** know about anything like IP addresses. It has a **MAC table**: it maps MAC addresses to ports.
 
 A router (or an L3 switch by some people's vocabulary) operates on L3 only. It knows about L3 stuff such as IP addresses and interfaces and hosts. It does **not** know about L2 stuff such as MAC addresses or ports.<sup>[1](#fn1)</sup> It has a **routing table** (details later): a table of subnets/prefixes and how to reach them.
 
@@ -29,7 +29,7 @@ When a packet arrives and needs to be sent further, these things have to happen 
 
 1. It needs to be _routed_: the **router**, based on L3 information, decides where it needs to go ,in L3 speak -- it will decide which _host_ to send it to, but not how. This corresponds to the _routing table_ (or FIB).
 2. It needs to be passed down to L2: this is where the L2.5 ARP/NDP **glue** translates the L3-speak IP address to L2-speak MAC address. This is the _ARP table_.
-3. It needs to be _forwarded_ on the correct port: the **switch** puts the packet on the correct port. This is the _forwarding table_.
+3. It needs to be _forwarded_ on the correct port: the **switch** puts the packet on the correct port. This is the _MAC table_.
 
 # The details: What *exactly* is going on?
 
@@ -110,10 +110,10 @@ IPv6 uses NDP instead of ARP, which is different but the same ;-)
 
 ### 3. "It needs to be forwarded": L2/switch
 
-This is L2 / the switch. It works on each interface separately (it could be multiple chips in hardware (TODO is it?)). It gets a packet with some destination MAC address, and it decides on which port it should put it. It uses a _forwarding table_ to do it:
+This is L2 / the switch. It works on each interface separately (it could be multiple chips in hardware (TODO is it?)). It gets a packet with some destination MAC address, and it decides on which port it should put it. It uses a _MAC table_ to do it:
 
 ```
-forwarding_table : MACAddress -> Port
+mac_table : MACAddress -> Port
 ```
 
 P4 code:
@@ -130,7 +130,8 @@ action flood() {
     // In v1model, use a multicast group corresponding to all ports on metadata.out_interface.
 }
 
-table forwarding {
+// we call it dmac -- see below why
+table dmac {
     key = {
         hdr.ethernet.dst_addr: exact;
     }
@@ -157,11 +158,11 @@ In P4:
 apply {
     routing.apply();
     arp.apply();
-    forwarding.apply();
+    dmac.apply();
 }
 ```
 
-No `if`s are necessary, because misses and different actions (gateway vs direct on L3, or send to destination vs broadcast on L2.5) can be handled uniformly by the layer below.
+(Note: While this is conceptually correct, we actually also want to apply the auxiliary tables mentioned below. The full code contains that.)
 
 ## The Control Plane: How to Fill the Tables
 
@@ -175,16 +176,54 @@ Filled out by the control plane, depending on the context:
    In this case, the routing table is static and is filled out by the firmware according to the settings.
 * In a small company router, there might be a direct network such as 10.0.0.0/24, a remote office in 10.0.1.0/24 via a VPN server, and a default route from the ISP.
    The default route and the direct route would also be filled out from the settings (by its OS), and the route to the remote office would be added by the VPN software.
-* In an ISP's router, there might be a few routes for connections to other ISPs and no default route. The routing table would be filled using some control-plane protocol such as BGP. In this case, the control plane would keep an extended version of the table (the RIB) with extra info such as costs or multiple paths, and it would compute the routing table from that.
+* In an ISP's router, there might be a few routes for connections to other ISPs and no default route. In this case, the control plane would keep an extended version of the table (the routing information base, or RIB) with extra info such as costs or multiple paths, and it would compute the routing table from that. The RIB would be filled using some control-plane protocol such as BGP.
 * In a software-defined networking exercise, it would be filled by the controller script that reads the network topology from the simulator and does something reasonable with it :-)
 
 ### L2.5 / ARP table
 
-TODO
+We need to fill this using the ARP protocol. When we try to find an IP address and it isn't in our ARP table, we send an ARP request and add the entry when we receive a reply. The entries expire (the timeout is usually a couple of minutes to a couple of hours).
 
-### L2 / forwarding table
+The ARP requests are usually handled by the control plane, because it is a good idea to throttle them (otherwise sending to a non-existent host would be an easy DOS attack).
 
-TODO
+(In our code, we send the ARP requests from the data plane because the controller might be on a different physical network. We don't throttle anything either, because we're lazy. Don't do that in production!)
+
+### L2 / MAC table
+
+This is filled out by the switch observing the traffic: if a packet appears on a port, that packet's source MAC address is associated with that port.
+
+In detail, what we want to do is: If we see a packet with a source MAC address that we have not seen before, we add it to the MAC table. When implementing this with P4, the easiest option is to have an extra table with seen addresses and learn the MAC if we have a miss in that one. The code is:
+
+```
+action mac_learn() {
+    // send pkt.ethernet.src_addr and standard_metadata.ingress_port to the controller
+    // so that it adds it to the dmac table
+    // (tables must be modified in the control plane in P4)
+    // the control plane must also add it to smac with a NoAction
+}
+
+// cute trick: we set the default_action to mac_learn and we always add entries with a NoAction.
+// That way we do something only on a miss.
+table smac {
+    key = {
+        hdr.ethernet.src_addr: exact;
+    }
+    
+    actions = {
+		mac_learn;
+		NoAction;
+    }
+    default_action = mac_learn;
+    size = ARP_TABLE_SIZE;
+}
+
+// and in the apply block:
+apply {
+    ...
+    smac.apply()
+    ...
+}
+
+```
 
 ## Gimme the code!
 
