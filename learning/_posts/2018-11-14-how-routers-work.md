@@ -6,6 +6,8 @@ This is the inside view of how exactly a router operates. You only need to know 
 
 At the end of this exposition, I will give you the complete source code to a functional router (written in P4 (the new & shiny software-defined networking thing)). My aim is that you will understand every line of that.
 
+I accompany my explanations below with some P4 code. I think it is useful to read it even if you've never seen P4, because it shows a bit more detail than the text and I believe that it is sufficiently pseudocode-ish.
+
 # 0. Some Terminology
 
 * Some stuff is done by _the control plane/in the slow path/on the CPU/by the controller_ or similar phrases. I will refer to all of this as "the control plane".
