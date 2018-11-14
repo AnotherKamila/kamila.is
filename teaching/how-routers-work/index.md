@@ -17,9 +17,9 @@ Software-defined networking makes these distinctions not always entirely obvious
 
 # 1. High-level Overview
 
-A switch (or an L2 switch :-) ) is an L2-only thing. It knows about L2 stuff such as MAC addresses and ports. It does **not** know about anything like IP addresses. It has a **MAC table**: it maps MAC addresses to ports.
+A _switch_ (or an L2 switch :-) ) is an L2-only thing. It knows about L2 stuff such as MAC addresses and ports. It does **not** know about anything like IP addresses. It has a **MAC table**: it maps MAC addresses to ports.
 
-A router (or an L3 switch by some people's vocabulary) operates on L3 only. It knows about L3 stuff such as IP addresses and interfaces and hosts. It does **not** know about L2 stuff such as MAC addresses or ports.<sup>[1](#fn1)</sup> In fact, the routing parts of the router would not have to be changed at all if you decided to use something other than ethernet on L2. It has a **routing table** (details later): a table of subnets/prefixes and how to reach them.
+A _router_ (or an L3 switch by some people's vocabulary) operates on L3 only. It knows about L3 stuff such as IP addresses and interfaces and hosts. It does **not** know about L2 stuff such as MAC addresses or ports.<sup>[1](#fn1)</sup> In fact, the routing parts of the router would not have to be changed at all if you decided to use something other than ethernet on L2. It has a **routing table** (details later): a table of subnets/prefixes and how to reach them.
 
 What you normally call a router (that box sitting over there) is actually a router (for handling L3) and one or more switches (for handling L2), and some glue in between. They may in fact be separate chips in hardware.
 
@@ -45,12 +45,12 @@ The packet has a destination IP address. This is matched in the _routing table_,
 routing_table : Prefix -> NextHop (GatewayIP, Interface) | Direct Interface
 ```
 
-Note that the next hop's IP address is in the router's memory only: it does not appear in the packet.
+Note that the next hop's IP address is in the router's memory only: it does not appear in the packet at any time.
 
 The P4 code defining the IPv4 routing table is:
 
 ```
-action through_gateway(ipv4_addr_t gateway, interface_t iface) {
+action through_gateway_ipv4(ipv4_addr_t gateway, interface_t iface) {
     metadata.out_interface = iface;
     metadata.next_hop      = gateway;  // send through the gateway
 }
@@ -65,16 +65,18 @@ table routing_ipv4 {
         hdr.ipv4.dst_addr: lpm;  // match prefixes
     }
     actions = {
-        through_gateway;         // through_gateway(gateway, iface)
+        through_gateway_ipv4;    // through_gateway(gateway, iface)
         direct;                  // direct(iface)
         drop;
     }
-    default_action = drop();     // if there is no route, drop it -- in reality, we might want to send an ICMP "No route to host" packet
-                                 // note that this is the default route, so control plane might want to set a default gateway here instead of dropping
+    default_action = drop();     // If there is no route, drop it -- in reality, we might want to
+                                 // send an ICMP "No route to host" packet.
+                                 // Note that this is the default route, so control plane might
+                                 // want to set a default gateway here instead of dropping.
     size = ROUTING_TABLE_SIZE;
 }
 ```
-(and equivalent for IPv6)
+(and the exact same thing for IPv6)
 
 ### 2. "It needs to be passed down": L2.5/ARP glue
 
@@ -99,7 +101,7 @@ action set_dst_mac(mac_addr_t dst_addr) {
 table arp {
     key = {
         metadata.next_hop: exact;       // next_hop is the host we found in the routing step; we want to send to that
-        metadata.out_interface: exact;  // actually next_hop should be unique, so this can be removed if low on table memory
+        metadata.out_interface: exact;  // conceptually this belongs here, but actually next_hop should be unique
     }
     actions = {
         set_dst_mac;                    // set_dst_mac(mac)
@@ -129,7 +131,7 @@ action set_out_port(port_t ports) {
     standard_metadata.egress_spec = port;
 }
 
-action flood() {
+action broadcast() {
     // Implementation depends on the switch.
     // In v1model, use a multicast group corresponding to all ports on metadata.out_interface.
 }
@@ -141,8 +143,8 @@ table dmac {
     }
     actions = {
         set_out_port;  // set_out_port(port)
-        flood;         // no params, uses metadata.out_interface
-                       // remember to set flood for 0xffffffffffff in the control plane
+        broadcast;     // no params, uses metadata.out_interface
+                       // remember to set broadcast for 0xffffffffffff in the control plane
         drop;
     }
     default_action = drop();
@@ -160,13 +162,13 @@ table dmac {
 In P4:
 ```
 apply {
-    routing.apply();
-    arp.apply();
-    dmac.apply();
+    routing.apply();  // fills out metadata.next_hop
+    arp.apply();      // sets pkt.ethernet.dst_addr to the MAC of next_hop
+    dmac.apply();     // sends out on the port for pkt.ethernet.dst_addr
 }
 ```
 
-(Note: While this is conceptually correct, we actually also want to apply the auxiliary tables mentioned below. The full code contains that.)
+(Note: While this is conceptually correct, we actually also want to apply the auxiliary table mentioned below. The full code contains that.)
 
 ## The Control Plane: How to Fill the Tables
 
@@ -205,8 +207,9 @@ action mac_learn() {
     // the control plane must also add it to smac with a NoAction
 }
 
-// cute trick: we set the default_action to mac_learn and we always add entries with a NoAction.
-// That way we do something only on a miss.
+// Used to know if we have seen this source MAC before and learn it if not.
+// Trick: we set the default_action to mac_learn and we always add entries with a NoAction.
+// That way we do the hard work only on a miss.
 table smac {
     key = {
         hdr.ethernet.src_addr: exact;
@@ -223,7 +226,7 @@ table smac {
 // and in the apply block:
 apply {
     ...
-    smac.apply()
+    smac.apply();
     ...
 }
 
