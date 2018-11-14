@@ -17,11 +17,11 @@ Software-defined networking makes these distinctions not always entirely obvious
 
 A switch (or an L2 switch :-) ) is an L2-only thing. It knows about L2 stuff such as MAC addresses and ports. It does **not** know about anything like IP addresses. It has a **MAC table**: it maps MAC addresses to ports.
 
-A router (or an L3 switch by some people's vocabulary) operates on L3 only. It knows about L3 stuff such as IP addresses and interfaces and hosts. It does **not** know about L2 stuff such as MAC addresses or ports.<sup>[1](#fn1)</sup> It has a **routing table** (details later): a table of subnets/prefixes and how to reach them.
+A router (or an L3 switch by some people's vocabulary) operates on L3 only. It knows about L3 stuff such as IP addresses and interfaces and hosts. It does **not** know about L2 stuff such as MAC addresses or ports.<sup>[1](#fn1)</sup> In fact, the routing parts of the router would not have to be changed at all if you decided to use something other than ethernet on L2. It has a **routing table** (details later): a table of subnets/prefixes and how to reach them.
 
-What you normally call a router (that box sitting over there) is actually a router (for handling L3) and one or more switches (for handling L2). They may in fact be separate chips in hardware.
+What you normally call a router (that box sitting over there) is actually a router (for handling L3) and one or more switches (for handling L2), and some glue in between. They may in fact be separate chips in hardware.
 
-You need glue to put together L2 and L3 switches. This "L2.5" glue is ARP (or NDP for IPv6). It usually lives in the router layer, but it is glue, not routing, and it can be thought of separately.
+You need glue to put together the L2 and the L3. This "L2.5" glue is ARP (or NDP for IPv6). It usually lives in the router, but it is glue, not routing, and it can be thought of separately.
 
 ## The Data Plane: Life of a Packet
 
@@ -42,6 +42,8 @@ The packet has a destination IP address. This is matched in the _routing table_,
 ```
 routing_table : Prefix -> NextHop (GatewayIP, Interface) | Direct Interface
 ```
+
+Note that the next hop's IP address is in the router's memory only: it does not appear in the packet.
 
 The P4 code defining the IPv4 routing table is:
 
@@ -225,9 +227,13 @@ apply {
 
 ```
 
-## Gimme the code!
+# Gimme the code!
 
 TODO full code
+
+# Next steps
+
+Want to know more than this overview? Read _TCP/IP Illustrated, Vol. 1 & 2_! I put this together by talking to a person who reads that book a lot, so it must be good :D
 
 -------------------------------------------------------------------------------------------------
 
