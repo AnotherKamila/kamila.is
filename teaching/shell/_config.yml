@@ -1,0 +1,13 @@
+# === the basics ===
+title: Shell for Absolute Beginners
+permalink: pretty
+repository: anotherkamila/shell-for-beginners
+
+# === defaults ===
+defaults:
+  - scope: {path: ""}
+    values:
+      layout: default
+
+# === Build settings ===
+exclude: [Gemfile, Gemfile.lock]

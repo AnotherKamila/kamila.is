@@ -6,6 +6,6 @@
 [subrepo]
 	remote = git@github.com:AnotherKamila/shell-for-beginners.git
 	branch = master
-	commit = 766939fdfe3d59e61f3833d740e1674c47da2a7f
-	parent = 8b45616bde298692a5a4577d2e819a78d438d2a6
+	commit = d939780058b21e4788318bfe3c56e681221d725c
+	parent = 7d2bd72a3969f3eb0a0594d5ee4704eed57f943e
 	cmdver = 0.3.1
