@@ -105,7 +105,7 @@ table arp {
         set_dst_mac;                    // set_dst_mac(mac)
         drop;
     }
-    default_action = drop;
+    default_action = drop();
     size = ARP_TABLE_SIZE;
 }
 ```
