@@ -6,7 +6,11 @@ This is the inside view of how exactly a router operates. You only need to know 
 
 At the end of this exposition, I will give you the complete source code to a functional router (written in P4 (the new & shiny software-defined networking thing)). My aim is that you will understand every line of that.
 
-I accompany my explanations below with some P4 code. I think it is useful to read it even if you've never seen P4, because it shows a bit more detail than the text and I believe that it is sufficiently pseudocode-ish.
+I accompany my explanations below with some P4 code. I think it is useful to read it even if you've never seen P4, because it shows a bit more detail than the text and I believe that it is sufficiently pseudocode-ish. Here is all you need to know to read it:<sup>[1](#fn1)</sup>
+* everything happens per packet
+* `hdr` are the packet's parsed headers
+* `standard_metadata` is how you tell the switch to do things with the packet (like send it on a specific port)
+* `meta` are user-defined in-memory variables which can be used e.g. for matching in tables
 
 # 0. Some Terminology
 
@@ -19,7 +23,7 @@ Software-defined networking makes these distinctions not always entirely obvious
 
 A _switch_ (or an L2 switch :-) ) is an L2-only thing. It knows about L2 stuff such as MAC addresses and ports. It does **not** know about anything like IP addresses. It has a **MAC table**: it maps MAC addresses to ports.
 
-A _router_ (or an L3 switch by some people's vocabulary) operates on L3 only. It knows about L3 stuff such as IP addresses and interfaces and hosts. It does **not** know about L2 stuff such as MAC addresses or ports.<sup>[1](#fn1)</sup> In fact, the routing parts of the router would not have to be changed at all if you decided to use something other than ethernet on L2. It has a **routing table** (details later): a table of subnets/prefixes and how to reach them.
+A _router_ (or an L3 switch by some people's vocabulary) operates on L3 only. It knows about L3 stuff such as IP addresses and interfaces and hosts. It does **not** know about L2 stuff such as MAC addresses or ports.<sup>[2](#fn2)</sup> In fact, the routing parts of the router would not have to be changed at all if you decided to use something other than ethernet on L2. It has a **routing table** (details later): a table of subnets/prefixes and how to reach them.
 
 What you normally call a router (that box sitting over there) is actually a router (for handling L3) and one or more switches (for handling L2), and some glue in between. They may in fact be separate chips in hardware.
 
@@ -50,23 +54,23 @@ Note that the next hop's IP address is in the router's memory only: it does not 
 The P4 code defining the IPv4 routing table is:
 
 ```
-action through_gateway_ipv4(ipv4_addr_t gateway, interface_t iface) {
-    metadata.out_interface = iface;
-    metadata.next_hop      = gateway;  // send through the gateway
+action ipv4_through_gateway(ipv4_addr_t gateway, interface_t iface) {
+    meta.out_interface = iface;
+    meta.ipv4_next_hop = gateway;  // send through the gateway
 }
 
-action direct(interface_t iface) {
-    metadata.out_interface = iface;
-    metadata.next_hop      = hdr.ipv4.dst_addr;  // send directly to the destination
+action ipv4_direct(interface_t iface) {
+    meta.out_interface = iface;
+    meta.ipv4_next_hop = hdr.ipv4.dst_addr;  // send directly to the destination
 }
 
-table routing_ipv4 {
+table ipv4_routing {
     key = {
         hdr.ipv4.dst_addr: lpm;  // match prefixes
     }
     actions = {
-        through_gateway_ipv4;    // through_gateway(gateway, iface)
-        direct;                  // direct(iface)
+        ipv4_through_gateway;    // ipv4_through_gateway(gateway, iface)
+        ipv4_direct;             // ipv4_direct(iface)
         drop;
     }
     default_action = drop();     // If there is no route, drop it -- in reality, we might want to
@@ -95,16 +99,16 @@ Sending ARP requests is normally done in the control plane, because the ARP requ
 P4 code:
 ```
 action set_dst_mac(mac_addr_t dst_addr) {
-    pkt.ethernet.dst_addr = dst_addr;
+    hdr.ethernet.dst_addr = dst_addr;
 }
 
-table arp {
+table ipv4_arp {
     key = {
-        metadata.next_hop: exact;       // next_hop is the host we found in the routing step; we want to send to that
-        metadata.out_interface: exact;  // conceptually this belongs here, but actually next_hop should be unique
+        meta.ipv4_next_hop: exact;  // next_hop is the host we found in the routing step; we want to send to that
+        meta.out_interface: exact;  // conceptually this belongs here, but actually next_hop should be unique
     }
     actions = {
-        set_dst_mac;                    // set_dst_mac(mac)
+        set_dst_mac;                // set_dst_mac(mac)
         drop;
     }
     default_action = drop();
@@ -152,6 +156,8 @@ table dmac {
 }
 
 ```
+
+Note: Real switches are a bit more complicated than that: for example, redundant links mean that a MAC address may be on more than one port. However, you will notice when you need to think about this. Normally considering the simple version is sufficient.
 
 ### The logic: Applying the tables
 
@@ -242,4 +248,5 @@ Want to know more than this overview? Read _TCP/IP Illustrated, Vol. 1 & 2_! I p
 
 -------------------------------------------------------------------------------------------------
 
-<a name="fn1">1</a>: If you come from e.g. FreeBSD, you might be screaming that the routing table sometimes knows about MAC addresses. This is a shortcut to speed things up by avoiding the extra lookup, but conceptually it should not exist. if you happen to be implementing a router that does not care about performance, you don't have to do that (and I have not).
+<a name="fn1">1</a>: Or that is what I think -- [complain](https://github.com/AnotherKamila/kamila.is/issues/new?labels=teaching&title=[teaching/how-routers-work]+Title) if I am wrong!
+<a name="fn2">2</a>: If you come from e.g. FreeBSD, you might be screaming that the routing table sometimes knows about MAC addresses. This is a shortcut to speed things up by avoiding the extra lookup, but conceptually it should not exist. if you happen to be implementing a router that does not care about performance, you don't have to do that (and I have not).
