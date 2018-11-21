@@ -19,7 +19,7 @@ Questions? You can email me at <kamila@ksp.sk>, I like questions!
         * does not really add that much to plain FreeBSD -- especially because you are now all experts on ZFS!
     * [TrueOS](https://www.trueos.org/): FreeBSD with a graphical interface pre-configured with some nice features
         * you can get the same with just plain FreeBSD, but with TrueOS the nice extras are there right after installation
-* I will create a fish shell tutorial eventually, the link will be here
+* [Fish shell tutorial for absolute beginners [WIP]](https://kamila.is/teaching/shell/)
 
 # Notes
 

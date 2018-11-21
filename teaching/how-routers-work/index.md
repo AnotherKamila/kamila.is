@@ -2,6 +2,8 @@
 title: How do Routers Work, Really?
 ---
 
+**Work in progress**: Still need to clean up & add the complete source code. But the snippets here are correct.
+
 This is the inside view of how exactly a router operates. You only need to know this if you are poking inside a router implementation. If that is the case, my condolences.
 
 At the end of this exposition, I will give you the complete source code to a functional router (written in P4 (the new & shiny software-defined networking thing)). My aim is that you will understand every line of that.
