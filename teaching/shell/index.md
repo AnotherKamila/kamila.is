@@ -3,17 +3,19 @@ title: Shell Tutorial for Absolute Beginners
 add_to_head: <link rel="stylesheet" type="text/css" href="asciinema-player.css" />
 ---
 
+**Work in progress**: I intend to add more sections, such as redirection. The parts which are here are pretty complete.
+
 The shell (or the command line) is where you enter commands. Though it may appear scary at first sight, it is a very powerful tool that allows you to do much more than any graphical interface would. This tutorial aims to make you comfortable in the shell, assuming no previous knowledge.
 
 # Artillery Preparation
 
-This tutorial makes generous use of [asciinema](https://asciinema.org/): it is full of "videos" (not really videos) of what it looks like to type the commands I will be talking about. You can pause and replay everything, and because it is actually text, you can copy things from the window. Click the :
+This tutorial makes generous use of [asciinema](https://asciinema.org/): it is full of "videos" (not really videos) of what it looks like to type the commands I will be talking about. You can pause and replay everything, and because it is actually text, you can copy things from the window. Click this "video" to play it:
 
 <asciinema-player src="./cast/asciinema-demo.cast" speed="2" theme="solarized-dark" size="medium" idle-time-limit="0.2"></asciinema-player>
 
 We will be using the Friendly Interactive shell -- [fish](https://fishshell.com/). See [their website](https://fishshell.com/#platform_tabs) for installation instructions. For example, on FreeBSD, you can install it with `pkg install fish`.
 
-Afterwards, you can run it inside your usual shell by typing `fish`.
+Afterwards, you can run it inside your default shell by typing `fish`.
 
 This is what the process looks like on FreeBSD:
 
