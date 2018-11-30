@@ -7,5 +7,5 @@
 	remote = git@github.com:AnotherKamila/shell-for-beginners.git
 	branch = master
 	commit = c99f94dcb506204356bc650ec4dabb79738b42a2
-	parent = 5df453367b05c8937d5f0343bb0d92b40353aceb
+	parent = d1491cc4e0b658714f4eeadec254b2dbb8a9f780
 	cmdver = 0.3.1
