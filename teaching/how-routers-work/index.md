@@ -2,7 +2,7 @@
 title: How do Routers Work, Really?
 ---
 
-**Work in progress**: Still need to clean up & add the complete source code. But the snippets here are correct.
+**Work in progress**: I still need to clean this up & add the complete source code. The snippets here are conceptually correct, but some minor details need to be updated too. ETA for a more or less done version 2019-01-10 or earlier.
 
 This is the inside view of how exactly a router operates. You only need to know this if you are poking inside a router implementation. If that is the case, my condolences.
 
@@ -16,8 +16,8 @@ I accompany my explanations below with some P4 code. I think it is useful to rea
 
 # 0. Some Terminology
 
-* Some stuff is done by _the control plane/in the slow path/on the CPU/by the controller_ or similar phrases. I will refer to all of this as "the control plane".
-* Other stuff is done by _the data plane/in the fast path/in the hardware/in the switch_ and such. I will refer to this as "the data plane".
+* Figuring out what should be done with packets is done by _the control plane/in the slow path/on the CPU/by the controller_ or similar phrases. I will refer to all of this as "the control plane".
+* Actually forwarding the packets  is done by _the data plane/in the fast path/in the hardware/in the switch_ and such. I will refer to this as "the data plane".
 
 Software-defined networking makes these distinctions not always entirely obvious, but I will mention cases like that.
 
@@ -251,4 +251,5 @@ Want to know more than this overview? Read _TCP/IP Illustrated, Vol. 1 & 2_! I p
 -------------------------------------------------------------------------------------------------
 
 <a name="fn1">1</a>: Or that is what I think -- [complain](https://github.com/AnotherKamila/kamila.is/issues/new?labels=teaching&title=[teaching/how-routers-work]+Title) if I am wrong!
+
 <a name="fn2">2</a>: If you come from e.g. FreeBSD, you might be screaming that the routing table sometimes knows about MAC addresses. This is a shortcut to speed things up by avoiding the extra lookup, but conceptually it should not exist. if you happen to be implementing a router that does not care about performance, you don't have to do that (and I have not).
