@@ -1,5 +1,6 @@
 # === the basics ===
 title: kamila.is
+email: kamila@ksp.sk
 permalink: pretty
 repository: anotherkamila/kamila.is
 
@@ -10,4 +11,7 @@ defaults:
       layout: default
 
 # === Build settings ===
+excerpt_separator: <!--more-->
 exclude: [Gemfile, Gemfile.lock]
+plugins:
+  - jekyll-sitemap
