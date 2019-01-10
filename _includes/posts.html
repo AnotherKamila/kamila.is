@@ -1,11 +1,30 @@
-<ul class="post-list">
+<section class="posts-list section--center mdl-grid">
     {% for post in site.categories[include.category] %}
-    <li>
-        <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
 
-        <h2>
-            <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title | escape }}</a>
-        </h2>
-    </li>
+    <div class="mdl-card mdl-shadow--3dp mdl-cell
+                mdl-cell--{{post.grid        | default: 4}}-col
+                mdl-cell--{{post.grid_tablet | default: 4}}-col-tablet
+                mdl-cell--{{post.grid_phone  | default: 4}}-col-phone
+                ">
+
+        <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">
+                <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">
+                    {{ post.title | escape }}
+                </a>
+            </h2>
+        </div>
+
+        <div class="mdl-card__supporting-text">
+            <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+        </div>
+        <div class="mdl-card__supporting-text mdl-card--border mdl-card--expand">
+            {{post.excerpt}}
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+            <a href="{{post.url}}" class="mdl-button">Read more</a>
+        </div>
+    </div>
+
     {% endfor %}
-</ul>
+</section>

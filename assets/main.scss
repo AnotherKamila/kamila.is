@@ -2,7 +2,7 @@
 # Only the main Sass file needs front matter (the dashes are enough)
 ---
 
-@import 'custom';
+/* @import 'custom'; */
 
 .content {
     width: 96%;
@@ -26,4 +26,8 @@
 
 .site-header .mdl-layout__header-row {
     padding-left: 64px;
+}
+
+.mdl-card .post-link {
+    text-decoration: none;
 }
