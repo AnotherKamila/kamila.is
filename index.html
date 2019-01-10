@@ -1,0 +1,24 @@
+---
+---
+
+<p>
+Things on this website that you might find useful:
+</p>
+
+<ul>
+
+    {% assign sorted_pages = site.pages | sort: 'menu_order' | uniq: 'title' %}
+    {% for page in sorted_pages %}
+        {% if page.menu_order %}
+
+            <li>
+                {% assign url = page.url | remove: '/' | prepend: '/' %}
+                <a href="{{ url | prepend: site.baseurl }}">{{url}}</a>:
+                <strong>{{page.title}}</strong>
+                {{page.subtitle}}
+            </li>
+
+        {% endif %}
+    {% endfor %}
+
+</ul>
