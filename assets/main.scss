@@ -28,6 +28,21 @@
     padding-left: 64px;
 }
 
-.mdl-card .post-link {
+.mdl-card .title-link {
     text-decoration: none;
+}
+
+.posts-list .mdl-card__actions {
+    display: flex;
+    box-sizing:border-box;
+    align-items: center;
+    padding-left: 16px;
+    padding-right: 16px;
+}
+.mdl-card .meta {
+    color: #a9a9a9;
+    display: inline-block;
+    font-size: 14px;
+    margin: 0 8px 0 0;
+    text-transform: uppercase;
 }
