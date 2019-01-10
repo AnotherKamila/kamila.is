@@ -1,5 +1,6 @@
 ---
 title: How do Routers Work, Really?
+excerpt: An accessible overview of how exactly a router works, with code examples.
 ---
 
 **Work in progress**: I still need to clean this up & add the complete source code. The snippets here are conceptually correct, but some minor details need to be updated too. ETA for a more or less done version 2019-01-10 or earlier.
