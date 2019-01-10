@@ -1,28 +1,16 @@
 ---
 # Only the main Sass file needs front matter (the dashes are enough)
 ---
+
 @import 'custom';
-@import 'site_nav';
-@import 'content';
 
-$z-index-navbar: 10;
-
-.site-header {
-    left: 0;
-    position: fixed;
-    right: 0;
-    top: 0;
-    z-index: $z-index-navbar;
+.content {
+    width: 96%;
+    max-width: 60em;
+    margin: 0 auto;
 }
 
-body > .site-header + .container {
-    padding: 6em 15px 3em;
-}
-
-.collapse.in { // some stupid thing doesn't add .show... but does add .in :D
-    display: block;
-}
-
-.jumbotron p {
-    text-indent: 3em;
+.site-title a {
+    color: #fff;
+    text-decoration: none;
 }

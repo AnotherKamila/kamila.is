@@ -1,31 +1,28 @@
-<header class="site-header" role="banner">
-
-  <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse">
-
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar-sitenav" aria-controls="navbar-sitenav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <span class="site-title">
-      <a href="{{ site.url }}">{{ site.title | escape }}</a>{% if page.canonical_url %}<a href="{{ page.canonical_url | prepend: site.url }}">{{ page.canonical_url | escape }}</a>{% endif %}
-    </span>
-
-    <div class="collapse navbar-collapse" id="navbar-sitenav">
-      <ul class="navbar-nav mr-auto">
-
-        {% for item in site.data.navigation %}
-          {% assign canonical = item.url | append: '/' %}
-          <li class="nav-item">
-            <a class="nav-link" href="{{ canonical | prepend: site.url }}">
-              {{ item.url | escape }}
-              <br />
-              <small>{{ item.title | escape }}</small>
+<header class="mdl-layout__header">
+    <div class="mdl-layout__header-row">
+        <span class="mdl-layout__title">
+            <span class="site-title">
+                <a href="{{ site.url }}">{{ site.title | escape }}</a>
+                {% if page.canonical_url %}<a href="{{ page.canonical_url | prepend: site.url }}">{{ page.canonical_url | escape }}</a>{% endif %}
+            </span>
+        </span>
+        <div class="mdl-layout-spacer"></div>
+        <nav class="mdl-navigation mdl-layout--large-screen-only">
+            {% for item in site.data.navigation %}
+            {% assign canonical = item.url | append: '/' %}
+            <a class="mdl-navigation__link" href="{{ canonical | prepend: site.url }}">
+                {{ item.url | escape }}
             </a>
-          </li>
-        {% endfor %}
-
-      </ul>
+            {% endfor %}
+        </nav>
     </div>
-  </nav>
-
 </header>
+<div class="mdl-layout__drawer mdl-layout--small-screen-only">
+    <span class="mdl-layout__title">{{ site.title }}</span>
+    <nav class="mdl-navigation">
+        <a class="mdl-navigation__link" href="">Link</a>
+        <a class="mdl-navigation__link" href="">Link</a>
+        <a class="mdl-navigation__link" href="">Link</a>
+        <a class="mdl-navigation__link" href="">Link</a>
+    </nav>
+</div>
