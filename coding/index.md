@@ -1,9 +1,9 @@
 ---
 title: My Coding Projects
-subtitle: Coding for Fun and Non-monetary Profit :-)
+subtitle: A list of my projects that might or might not be more curated than my ~90 GitHub repos. With descriptions and development status.
 canonical_url: /coding
+menu_order: 20
 ---
-
 
 Kamila is coding. Um. A lot.
 
