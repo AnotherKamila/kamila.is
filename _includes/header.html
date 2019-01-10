@@ -2,7 +2,20 @@
     <div class="mdl-layout__header-row">
         <span class="mdl-layout__title">
             <span class="site-title">
-                <a href="{{ site.url }}">{{ site.title | escape }}</a>{%if page.canonical_url %}<a href="{{ page.canonical_url | prepend: site.url }}">{{ page.canonical_url | escape }}</a>{% endif %}
+
+                <a href="{{site.url | append: site.baseurl }}">{{site.title}}</a>
+                {% assign urlcrumbs = page.canonical_url | default: page.url | split: '/' %}
+                {% assign crumbs_till_here = '' | split: '' %}
+                {% for crumb in urlcrumbs %}
+                    {% if crumb != '' %}
+                        /
+                        {% assign crumb_array = crumb | split: ' ' %}
+                        {% assign crumbs_till_here = crumbs_till_here | concat: crumb_array %}
+                        {% assign url_till_here = crumbs_till_here | join: '/' %}
+                        <a href="{{url_till_here | prepend: '/' }}">{{crumb}}</a>
+                    {% endif %}
+                {% endfor %}
+
             </span>
         </span>
         <div class="mdl-layout-spacer"></div>
