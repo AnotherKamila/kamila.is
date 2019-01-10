@@ -1,6 +1,11 @@
-{% for item in site.data.navigation %}
-{% assign canonical = item | append: '/' %}
-<a class="mdl-navigation__link" href="{{ canonical | prepend: site.url }}">
-    {{ item | escape }}
-</a>
+{% assign sorted_pages = site.pages | sort: 'menu_order' | uniq: 'title' %}
+{% for item in sorted_pages %}
+    {% if item.menu_order %}
+
+        {% assign url = item.url | remove: '/' | prepend: '/' %}
+        <a class="mdl-navigation__link" href="{{ url | prepend: site.baseurl }}">
+            {{url | escape}}
+        </a>
+
+    {% endif %}
 {% endfor %}
