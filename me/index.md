@@ -16,8 +16,6 @@ I am a computer science student at [ETH Zurich](https://www.ethz.ch/) (specializ
 - **[an artist](/making)**, because making things is great
 - **a helpful person**, because despite being a little afraid of people, I like <strike>them</strike> you!
 
-I have become Christian and [here are 5 sentences about that](/christian).
-
 You might be looking for:
 ------------------------
 
