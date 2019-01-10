@@ -9,20 +9,22 @@
 
         <div class="mdl-card__title">
             <h2 class="mdl-card__title-text">
-                <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">
+                <a class="title-link" href="{{ post.url | prepend: site.baseurl }}">
                     {{ post.title | escape }}
                 </a>
             </h2>
         </div>
 
-        <div class="mdl-card__supporting-text">
-            <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
-        </div>
         <div class="mdl-card__supporting-text mdl-card--expand">
             {{post.excerpt}}
         </div>
+
         <div class="mdl-card__actions mdl-card--border">
-            <a href="{{post.url}}" class="mdl-button">Read more</a>
+            <span class="meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+            <div class="mdl-layout-spacer"></div>
+            <a href="{{post.url}}" class="mdl-button mdl-button--icon mdl-button--accent">
+                <i class="material-icons">arrow_forward</i>
+            </a>
         </div>
     </div>
 
