@@ -3,11 +3,19 @@
     <div class="mdl-logo">{{ site.title }}</div>
     <ul class="mdl-mini-footer__link-list">
       {% if site.github_username %}
-        <li>{% include icon-github.html username=site.github_username %}</li>
+        <li>
+            <a href="https://github.com/{{site.github_username}}">
+                <i class="fa fa-github"></i> {{site.github_username}}
+            </a>
+        </li>
       {% endif %}
 
       {% if site.twitter_username %}
-        <li>{% include icon-twitter.html username=site.twitter_username %}</li>
+        <li>
+            <a href="https://twitter.com/{{site.twitter_username}}">
+                <i class="fa fa-twitter"></i> {{site.twitter_username}}
+            </a>
+        </li>
       {% endif %}
     </ul>
   </div>
