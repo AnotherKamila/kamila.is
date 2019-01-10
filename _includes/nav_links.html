@@ -1,0 +1,6 @@
+{% for item in site.data.navigation %}
+{% assign canonical = item | append: '/' %}
+<a class="mdl-navigation__link" href="{{ canonical | prepend: site.url }}">
+    {{ item | escape }}
+</a>
+{% endfor %}

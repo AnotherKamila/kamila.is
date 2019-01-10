@@ -1,5 +1,7 @@
-- { url: /coding,    title: 'My Coding Projects' }
-- { url: /making,    title: 'Attempting Art' }
-- { url: /using,     title: 'Things that make my life better' }
-- { url: /christian, title: 'My Faith & Why' }
-- { url: /me,        title: 'Hello World!' }
+- /teaching
+- /coding
+- /making
+- /talking
+- /learning
+- /using
+- /me
