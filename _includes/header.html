@@ -19,9 +19,11 @@
 <div class="mdl-layout__drawer mdl-layout--small-screen-only">
     <span class="mdl-layout__title">{{ site.title }}</span>
     <nav class="mdl-navigation">
-        <a class="mdl-navigation__link" href="">Link</a>
-        <a class="mdl-navigation__link" href="">Link</a>
-        <a class="mdl-navigation__link" href="">Link</a>
-        <a class="mdl-navigation__link" href="">Link</a>
+        {% for item in site.data.navigation %}
+        {% assign canonical = item.url | append: '/' %}
+        <a class="mdl-navigation__link" href="{{ canonical | prepend: site.url }}">
+            {{ item.url | escape }}
+        </a>
+        {% endfor %}
     </nav>
 </div>
