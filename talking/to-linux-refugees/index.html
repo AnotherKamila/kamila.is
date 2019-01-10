@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>FreeBSD for Linux Refugees</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="style.css" />
+    <style type="text/css">
+     @import url('https://fonts.googleapis.com/css?family=Lobster');
+     .display { font-family: 'Lobster', cursive; font-size: 1.6em; }
+     .remark-slide-content {
+         padding: 1em 3em;
+         font-size: 32px;
+     }
+     .remark-code { font-size: 0.8em; }
+     .remark-inline-code {
+         border: 1px solid #eee;
+         background: #f9f9f9;
+         padding: 0 0.2em;
+     }
+     .remark-slide-number {font-size: 0.6em;}
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle, contrast
+
+# FreeBSD for Linux Refugees
+
+Kamila Součková  
+22 October 2018, Nukuʻalofa, Tonga  
+
+---
+
+class: center
+
+# The New Sysadmin
+
+Demo:
+
+.display[.blue[
+"The website is not working.  
+Here is the root password."
+]]
+
+---
+
+class: contrast, expanded
+
+# The Battle Plan
+
+1. Make yourself at home
+   * Hello, FreeBSD!
+2. System Administration Basics
+   * where to look
+3. Solving the Problem
+   * a look at 3 different possible causes and how FreeBSD helps us solve them
+
+---
+
+class: contrast, expanded
+count: false
+
+# The Battle Plan
+
+1. **Make yourself at home**
+   * **Hello, FreeBSD!**
+2. System Administration Basics
+   * where to look
+3. Solving the Problem
+   * a look at 3 different possible causes and how FreeBSD helps us solve them
+
+---
+
+# Make yourself at home
+
+???
+
+```
+pw useradd -n kamila -m
+pkg install fish
+chsh -s fish kamila
+pkg install vim
+pkg install sudo
+pw usermod -n kamila -G wheel
+```
+
+--
+
+* make yourself a user, get a nice shell
+  * `man pw`
+  * `pkg install bash` or `zsh` or `fish` or ...
+  * `chsh -s fish user`
+  * reminder: `sh` is really `sh`!
+* get an editor
+  * `pkg install vim` or `emacs` or ...
+  * reminder: `vi` is really `vi`!
+* `pkg install sudo; visudo`
+  * add yourself to group `wheel`
+
+---
+
+# Make yourself at home
+
+* CLI utilities (coreutils and such) are slightly different
+  * most are easy to get used to
+  * if you need GNU versions: `pkg install coreutils` and use them with a `g` prefix: `gfind`, `ggrep`...
+  * also `pkg install gtar` or other `g`-things
+* notably `make` is very different
+  * you probably want `pkg install gmake`
+  * Linux vs BSD commands ref TBA soon<sup>TM</sup>
+
+---
+
+class: contrast, expanded
+
+# The Battle Plan
+
+1. Make yourself at home
+   * Hello, FreeBSD!
+2. **System Administration Basics**
+   * **where to look**
+3. Solving the Problem
+   * a look at 3 different possible causes and how FreeBSD helps us solve them
+
+---
+
+# Where to Look
+
+* `ps` and other basic system utilities are more or less the same
+  * `netstat -l` is called `sockstat -l`
+* `/etc/rc.conf` has services
+* use `service foo start` and such
+
+---
+
+class: contrast, expanded
+
+# The Battle Plan
+
+1. Make yourself at home
+   * Hello, FreeBSD!
+2. System Administration Basics
+   * where to look
+3. **Solving the Problem**
+   * **a look at 3 different possible causes and how FreeBSD helps us solve them**
+
+---
+
+# .center[# #1]
+
+???
+
+```
+man hier
+find the config file
+man zfs, /snapshot
+note snapdir
+zfs get snapdir zroot
+try: zfs set snapdir=shown zroot, note that it tells you what you need
+zfs set snapdir=visible zroot
+cd /.zfs/snapshot (now we have it!)
+find . -name nginx.conf | xargs grep 'location'
+cp ./daily-2018-10-16/usr/local/etc/nginx/nginx.conf /usr/local/etc/nginx/nginx.conf
+service nginx start
+```
+
+--
+
+* `man hier` tells you what is where
+* packaged stuff goes to `/usr/local`, including `/usr/local/etc`
+
+--
+
+* files overwritten / corrupted / eaten by a squirrel: ZFS to the rescue!
+* `man zfs`, search for snapshot
+* can rollback everything, or mount `.zfs/snapshot` and just copy the good file
+
+---
+
+# .center[# #2]
+
+???
+
+BEFORE: `service pf start`
+
+--
+
+* firewall on FreeBSD: pf
+* `man pf.conf` explains the config file syntax
+* `man pf` has some general info about pf
+* an advanced firewall with some awesome features such as very nice logging — more details later
+
+---
+
+# .center[# #3]
+
+???
+
+```
+cat /usr/local/etc/nginx/nginx.conf, note the lua -- or will nginx tell us?
+cd /usr/ports/*/nginx
+make config
+make install
+```
+
+--
+
+* **ports** are the "recipes" for building software for FreeBSD
+    * look for them in `/usr/ports/<topic>/<program>`
+* packages are just pre-built ports
+* you can use ports to change how things are built
+    * e.g. `make config`
+* in reality, you would usually not use `make install` directly, but a helper such as `portmaster`, `synth` or `poudriere`
+
+---
+
+class: center, middle
+
+# Questions?
+
+:-)
+
+
+    </textarea>
+    <script src="remark.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>

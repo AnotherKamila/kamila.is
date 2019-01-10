@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SDN presentation: Load balancer</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="asciinema-player.css" />
+    <style type="text/css">
+     <!-- @import url('https://fonts.googleapis.com/css?family=Lobster'); -->
+     .display { font-family: 'Lobster', cursive; font-size: 1.6em; }
+     .remark-slide-content {
+         padding: 0.8em 2.4em;
+         font-size: 32px;
+     }
+     .remark-code { font-size: 0.8em; }
+     .remark-inline-code {
+         border: 1px solid #eee;
+         background: #f9f9f9;
+         padding: 0 0.2em;
+     }
+     .remark-slide-content.tall {
+       padding-top: 0;
+     }
+     .remark-slide-number {font-size: 0.6em;}
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle, contrast
+
+# "Load-aware" L4 load balancing
+
+Kamila Součková  
+Advanced Topics in Communication Networks  
+2018-12-20
+
+---
+
+class: contrast, expanded, middle
+
+# Aims
+
+1. **Implement an L4 load balancer**  
+   Single virtual IP for a pool of application servers
+2. **Be able to choose the _distribution_:**  
+   If a server is very busy, it should get fewer new connections
+
+(In the data plane. At line rate.)
+
+---
+
+# Simple L4 load balancer
+
+.floatright[.qrcode[![QR code](./img/how-routers-work.svg)]]
+
+**Up to L3: it is a router**  
+Details: [How do routers really work?](https://kamila.is/teaching/how-routers-work/)
+
+**L4 flow:**
+
+.width90[![simple flow chart](./img/simple-packet.svg)]
+
+  * kind of like the ECMP exercise
+  * mind the return path
+
+---
+
+class: contrast, expanded, middle
+
+# Changing the distribution
+
+Three problems:
+
+1. Which distribution to choose?
+2. How to implement load balancing with a given distribution?
+3. How to dynamically change the distribution while there are active connections?
+
+---
+
+class: contrast, expanded, middle
+count: false
+
+# Changing the distribution
+
+Three problems:
+
+1. **Which distribution to choose? ⇒ not SDN**
+2. How to implement load balancing with a given distribution?
+3. How to dynamically change the distribution while there are active connections?
+
+---
+
+class: contrast, expanded, middle
+count: false
+
+# Changing the distribution
+
+Three problems:
+
+1. Which distribution to choose?
+2. **How to implement load balancing with a given distribution?**
+3. How to dynamically change the distribution while there are active connections?
+
+---
+
+# Weighted load balancing
+
+Same as the equal-cost case, except we add the server multiple times:
+
+.center[![buckets](./img/buckets.svg)]
+
+blue server will get 2/5 of requests,  
+pink server will get 3/5
+
+**Disadvantage:** table gets big quickly
+
+---
+
+# Idea: Making the table smaller
+
+How can we conceptually add an entry N times with fewer actual entries?
+
+.width90[![flat table](./img/prefix-tree-intro.svg)]
+.center[![table size \leq \ln \sum weights](./img/latex-sum.svg)]
+
+.footnote[\* not implemented due to lack of time]
+
+---
+
+count: false
+
+# Idea: Making the table smaller
+
+How can we conceptually add an entry N times with fewer actual entries?
+
+.width90[![prefix tree](./img/prefix-tree.svg)]
+.center[![table size \leq \ln \sum weights](./img/latex.svg)]
+
+.footnote[\* not implemented due to lack of time]
+
+---
+
+class: contrast, expanded, middle
+count: false
+
+# Changing the distribution
+
+Three problems:
+
+1. Which distribution to choose?
+2. How to implement load balancing with a given distribution?
+3. **How to dynamically change the distribution while there are active connections?**
+
+---
+
+# The problem:
+
+.center.width80[![hash problem](./img/hash-problem.svg)]
+
+--
+
+**Fix:** Keep server assignments in a connections table
+
+.center.width100[![conn table](./img/connections.svg)]
+
+---
+
+# The second problem:
+
+Table writes are not instant:
+
+.center.width95[![outstanding](./img/timeline.svg)]
+
+--
+
+**Fix:** Keep old pool data,
+discard only after all connections using them are in `conn_table`
+
+---
+
+exclude: true
+
+# Not breaking connections
+
+.center.width90[![pinkbox](./img/pinkbox.svg)]
+
+---
+
+# Old pool data???
+
+**Fix:** Versioned tables:
+
+```c
+table ipv4_dips {
+    key = {
+*       meta.version: exact;
+        meta.server_pool: exact;
+        meta.flow_hash: exact;
+    }
+    ...
+}
+```
+
+write to a register from the control plane to set the active version
+
+---
+
+# The third problem:
+
+For a given packet, how to determine to which pool version that connection belongs?
+
+--
+
+**Fix:**
+
+Hard-code a few "version slots" (I use 4) and cycle through them.
+
+Use a Bloom filter (set membership) to decide whether the packet belongs to version slot _i_.
+
+Insert new connections into its version's Bloom filter.
+
+---
+
+class: tall
+
+# Life of a packet
+
+.center.width100[![flow diagram](./img/life-of-a-packet.svg)]
+
+---
+
+# Bloom filters: Controller
+
+1. Need to track outstanding writes
+   ⇒ make table writes asynchronous:
+    ```python
+    def recv_packet(self, packet):
+        ...
+        self.pending_writes[version].append(
+            self.conn_table.add(...))  # async
+    ```
+
+2. Wait for completion before overwriting a version:
+    ```python
+    def commit(self):
+        await DeferredList(
+            self.pending_writes[self.vips.next_version])
+        ...
+    ```
+
+.right.footnote[\* `await` is actually spelled `yield` in Python 2 + Twisted &nbsp;&nbsp;&nbsp;]
+
+---
+
+# How not to go crazy
+
+1.  Each component is written and tested separately:
+    ```py
+    class Router(IPv4Routing, ArpLazy,
+                    L2SwitchLazy, BaseController):
+        pass  # :D
+    ```
+2. Asynchronous (using the [Twisted](https://twistedmatrix.com/) framework)
+    * easier to handle `conn_table` writes correctly (see before)
+    * makes it much easier to test things
+3. Tests!
+
+???
+
+Cleanly structured code
+
+---
+
+exclude: true
+
+# Tests
+
+* integration tests
+* launch `p4run`
+* run and communicate with clients, servers, and controller
+
+```py
+@pt.inlineCallbacks
+def test_add_dip(remote_module, p4run):
+    client, server, lb = ...
+    ...
+    pool_h = yield lb.add_pool('10.0.0.1', 8000)
+    yield lb.add_dip(pool_h, p4run.IP['h2'], 8001)
+    ...
+    yield client.callRemote('make_connections',
+        '10.0.0.1', 8000, count=47)
+    num_conns = yield server.callRemote('get_conn_count')
+    assert num_conns == 47
+```
+
+---
+
+# Tests example: Single run
+
+<asciinema-player src="cast/test-singlerun.cast" speed='0.9' idle-time-limit='4'></asciinema-player>
+
+???
+
+Here's an example of running one test:
+it's an integration test, so it starts p4run for me,
+then it starts the servers, clients, and the controller
+here you can see the table_add's from the controller, it also started the server and client
+now it has told the clients to connect to the servers through the loadbalancer and it's checking that the connections work
+here it says 47/47 connections succeeded
+and the test passed
+---
+
+# Tests example: Session
+
+<asciinema-player src="cast/test-session2.cast" speed='5' idle-time-limit='0.8'></asciinema-player>
+
+---
+
+class: contrast, center, middle
+
+# Demo!
+
+---
+
+exclude: true
+
+# Demo
+
+We need to:
+* start servers
+* configure load balancer:
+  * teach it how to get load and how to balance
+  * add server pools
+* connect to servers
+
+---
+
+class: tall
+
+# Conclusion
+
+.center.width60[![screenshot](./img/demo1-narrow-loadonly.png)]
+
+* table versioning + Bloom filters to find version
+* prefixes idea for weights
+* test-driven development
+* interesting software engineering aspects
+
+---
+
+class: center, middle
+
+# Questions?
+
+:-)
+
+---
+
+.width100[![demo](./img/demo1-wide.png)]
+
+
+    </textarea>
+    <script src="remark.js" type="text/javascript"></script>
+    <script type="text/javascript">
+     var slideshow = remark.create({
+         highlightLines: true
+     });
+    </script>
+
+    <script>
+    var ds = document.getElementsByTagName('asciinema-player');
+    for (var i = 0; i < ds.length; ++i) {
+      var d = ds[i];
+      d.setAttribute('font-size', '0.5em');
+      d.setAttribute('rows', '21');
+    }
+    </script>
+    <script src="asciinema-player.js"></script>
+  </body>
+</html>
