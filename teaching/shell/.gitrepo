@@ -6,6 +6,7 @@
 [subrepo]
 	remote = git@github.com:AnotherKamila/shell-for-beginners.git
 	branch = master
-	commit = c99f94dcb506204356bc650ec4dabb79738b42a2
-	parent = d1491cc4e0b658714f4eeadec254b2dbb8a9f780
-	cmdver = 0.3.1
+	commit = a2e92a63184f31edbf0f8c88587e24ca6231a82a
+	parent = 171f54ccd41a0e31b86305c49dbffd97235e80eb
+	cmdver = 0.4.0
+	method = merge
