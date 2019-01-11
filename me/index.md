@@ -2,7 +2,7 @@
 title: Hello World!
 subtitle: Who is this weirdo?
 canonical_url: /me
-menu_order: 70
+menu_order: 80
 grid: 5
 grid_tablet: 8
 ---
