@@ -3,6 +3,8 @@ title: Hello World!
 subtitle: Who is this weirdo?
 canonical_url: /me
 menu_order: 70
+grid: 5
+grid_tablet: 8
 ---
 
 <figure class="figure float-right ml-3">
