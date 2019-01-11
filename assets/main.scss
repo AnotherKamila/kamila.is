@@ -4,15 +4,21 @@
 
 /* @import 'custom'; */
 
+.mdl-layout__content {
+    display: flex;
+    flex-direction: column;
+}
+
 .content {
     width: 96%;
     max-width: 60em;
     margin: 3em auto;
-}
-
-.content {
     font-size: 17px;
     line-height: 1.6em;
+}
+
+pre, code {
+    font-size: 0.9em;
 }
 
 .site-title a {
@@ -26,6 +32,10 @@
 
 .site-header .mdl-layout__header-row {
     padding-left: 64px;
+}
+
+.mdl-mini-footer__link-list .fab {
+    padding-right: 5px;
 }
 
 .mdl-card .title-link {
