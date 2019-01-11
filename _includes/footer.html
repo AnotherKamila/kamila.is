@@ -1,11 +1,13 @@
-<footer class="mdl-mini-footer">
+<div class="mdl-layout-spacer"></div>
+<footer class="mdl-mini-footer site-footer">
   <div class="mdl-mini-footer__left-section">
     <div class="mdl-logo">{{ site.title }}</div>
     <ul class="mdl-mini-footer__link-list">
+
       {% if site.github_username %}
         <li>
             <a href="https://github.com/{{site.github_username}}">
-                <i class="fa fa-github"></i> {{site.github_username}}
+                <i class="fab fa-github"></i> {{site.github_username}}
             </a>
         </li>
       {% endif %}
@@ -13,10 +15,19 @@
       {% if site.twitter_username %}
         <li>
             <a href="https://twitter.com/{{site.twitter_username}}">
-                <i class="fa fa-twitter"></i> {{site.twitter_username}}
+                <i class="fab fa-twitter"></i> {{site.twitter_username}}
             </a>
         </li>
       {% endif %}
+
+      {% if site.repository %}
+        <li>
+            <a href="https://github.com/{{site.repository}}">
+                <i class="fab fa-osi"></i> This site's source code lives on GitHub
+            </a>
+        </li>
+      {% endif %}
+
     </ul>
   </div>
 </footer>
