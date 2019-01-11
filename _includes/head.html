@@ -23,14 +23,9 @@
     <link rel="icon" href="{{ '/favicon.ico' | prepend: site.baseurl }}" />
 
     <!-- See https://gist.github.com/AnotherKamila/365f98406eea74a3c523bfde08c6db48 for custom MDL -->
-    <link rel="stylesheet" href="{{ "/assets/mdl/material.min.css" | prepend: site.baseurl }}" />
-    <script defer src="{{ "/assets/mdl/material.min.js" | prepend: site.baseurl }}"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700&subset=latin-ext" type="text/css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    {% include mdl-head.html %}
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ "/assets/main.css" | prepend: site.baseurl }}">
 
-    {% if page.add_to_head %}
     {{ page.add_to_head }}
-    {% endif %}
 </head>

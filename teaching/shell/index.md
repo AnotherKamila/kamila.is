@@ -132,6 +132,8 @@ This document lives [on GitHub](https://github.com/AnotherKamila/shell-for-begin
  You can also set it as your default shell for your user (but NOT for root) with `chsh -s fish` (on less smart systems, you may need to tell it something like `/usr/bin/fish`).
  -->
 
+
+<!-- the stuff below is needed to configure and enable asciinema -->
 <script>
 var ds = document.getElementsByTagName('asciinema-player');
 for (var i = 0; i < ds.length; ++i) {
@@ -141,5 +143,13 @@ for (var i = 0; i < ds.length; ++i) {
   d.setAttribute('speed', 1.7);
   //d.setAttribute('idle-time-limit', 0.2);
 }
+
+// doing it this way because of the very annoying interaction with MDL on https://kamila.is
+window.addEventListener('load', function() {
+setTimeout(function() {
+    var script_tag = document.createElement('script');
+    script_tag.setAttribute('src','./asciinema-player.js');
+    document.head.appendChild(script_tag);
+  }, 500);
+});
 </script>
-<script src="asciinema-player.js"></script>
