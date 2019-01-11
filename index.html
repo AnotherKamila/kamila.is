@@ -5,20 +5,46 @@
 Things on this website that you might find useful:
 </p>
 
-<ul>
+
+<section class="posts-list section--center mdl-grid">
 
     {% assign sorted_pages = site.pages | sort: 'menu_order' | uniq: 'title' %}
     {% for page in sorted_pages %}
         {% if page.menu_order %}
 
-            <li>
-                {% assign url = page.url | remove: '/' | prepend: '/' %}
-                <a href="{{ url | prepend: site.baseurl }}">{{url}}</a>:
-                <strong>{{page.title}}</strong>
-                {{page.subtitle}}
-            </li>
+            {% assign url = page.url | remove: '/' | prepend: '/' %}
+
+            <div class="card-with-image
+                        mdl-card mdl-shadow--4dp mdl-cell
+                        mdl-cell--{{page.grid        | default: 4}}-col
+                        mdl-cell--{{page.grid_tablet | default: 4}}-col-tablet
+                        mdl-cell--{{page.grid_phone  | default: 4}}-col-phone
+                        "
+                 style="background: url('{{site.baseurl}}/assets/img/{{url}}.jpg') center / cover;">
+
+                <div class="mdl-card__title">
+                    <h2 class="mdl-card__title-text">
+                        <a class="title-link" href="{{ url | prepend: site.baseurl }}">
+                            {{ url | escape }}
+                        </a>
+                    </h2>
+                </div>
+
+                <div class="mdl-card--expand"></div>
+
+                <div class="mdl-card__supporting-text bottom-text">
+                    <h4>{{page.title | escape}}</h4>
+                    {{page.subtitle | escape}}
+
+                    <a href="{{page.url}}" class="mdl-button mdl-button--icon arrow">
+                        <i class="material-icons">arrow_forward</i>
+                    </a>
+                </div>
+
+            </div>
 
         {% endif %}
     {% endfor %}
+</section>
 
-</ul>
+
