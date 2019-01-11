@@ -1,11 +1,9 @@
-# WIP
+# kamila.is source
 
-:-)
+Builds with Jekyll (using the github-pages gem).
 
-# Notes for the future me
+# License
 
-I am currently using **both** git submodules **and** git subrepo, for hysterical raisins. This is terrible and somebody should fix it one day. For now, I have to:
+The content is licensed under CC-BY-4.0 (as indicated by the LICENSE file).
 
-* do the usual submodule farce
-* `git subrepo push --all` in addition to `git push` to update the remote repos
-  * hey -- this could be a git hook!
+The code is dual-licensed under CC-BY-4.0 and MIT (because licensing code under CC is weird ¯\_(ツ)_/¯).
