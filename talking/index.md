@@ -1,7 +1,8 @@
 ---
 title: Talks
 subtitle: Slides for some of the talks I gave in various places.
-menu_order: 40
+menu_order: 30
+grid: 3
 ---
 
 Slides for some of the talks I gave in various places.

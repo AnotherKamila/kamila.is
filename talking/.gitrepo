@@ -6,7 +6,7 @@
 [subrepo]
 	remote = git@github.com:AnotherKamila/talks.git
 	branch = master
-	commit = c671790b0f4aaa6ab0848caac6dbb229a0fb7061
-	parent = 98195dab5df635a0bfd315a55b385294d1685827
+	commit = 5544134d688e3298d5536d785f538bb500109bee
+	parent = 9ed2db14ff43d9fe278c27cad5f4f4d4dabd56c8
 	method = merge
 	cmdver = 0.4.0
