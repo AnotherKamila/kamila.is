@@ -3,7 +3,7 @@
         <span class="mdl-layout__title">
             <span class="site-title">
 
-                <a href="{{site.url | append: site.baseurl }}">{{site.title}}</a>
+                <a href="{{ '/' | prepend: site.baseurl | prepend: site.url }}">{{site.title}}</a>
                 {% assign urlcrumbs = page.canonical_url | default: page.url | split: '/' %}
                 {% assign crumbs_till_here = '' | split: '' %}
                 {% for crumb in urlcrumbs %}
