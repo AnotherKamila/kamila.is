@@ -1,10 +1,10 @@
 ---
 title: Debugging PF rules
 excerpt: |
-  PF, the firewall available in OpenBSD and FreeBSD, is much easier to configure than other alternatives. Still, firewalls are difficult and it's nearly impossible to get it right on the first try. The good thing is that PF makes it very easy to debug things. Here is a quick reference for debugging PF.
+  PF, the firewall available in OpenBSD and FreeBSD, is much easier to configure than other alternatives. Still, firewalls are difficult and it's nearly impossible to get it right on the first try. The good thing is that PF makes it very easy to debug things. Here is a quick reference for that.
 ---
 
-PF, the firewall available in OpenBSD (which is where PF was developed) and FreeBSD (which is what I use), is much easier to configure than other alternatives. Still, firewalls are difficult and it's nearly impossible to get it right on the first try. The good thing is that PF makes it very easy to debug things. Here is a quick reference for debugging PF.
+PF, the firewall available in OpenBSD (which is where PF was developed) and FreeBSD (which is what I use), is much easier to configure than other alternatives. Still, firewalls are difficult and it's nearly impossible to get it right on the first try. The good thing is that PF makes it very easy to debug things. Here is a quick reference for that.
 
 # Syntax check
 
