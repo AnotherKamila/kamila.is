@@ -45,7 +45,7 @@ listening on pflog0, link-type PFLOG (OpenBSD pflog file), capture size 262144 b
 18:16:53.940265 rule 1/0(match): pass in on wlan0: 192.168.0.100.58254 > 172.217.168.78.443: UDP, length 1350
 ```
 
-(Note that only the first packet of each connection is logged, as PF keeps state and therefore further packets of the same connection take the quick path and aren't matched against the logging rules.)
+(Note that by default only the first packet of each connection is logged, as PF keeps state and therefore further packets of the same connection take the quick path. If you want to log all packets of a connection, use `log all`. You could have guessed it! :D)
 
 ## How to enable it
 
