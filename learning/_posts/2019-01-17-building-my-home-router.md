@@ -6,7 +6,7 @@ tags: [freebsd, networking, wireless, configuration]
 How I built the router I use at home, from hardware to configuration.
 <!--more-->
 
-{% include figure.html src="../assets/router-finished.jpg" caption="The finished router. Clearly, the most important thing about a router is whether it supports googly eyes." %}
+{% include figure.html src="../assets/router-finished.jpg" caption="The finished router. Clearly, the most important thing about a router is support for googly eyes." %}
 
 # Hardware
 
