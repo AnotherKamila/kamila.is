@@ -6,7 +6,7 @@ excerpt: |
 
 PF, the firewall available in OpenBSD (which is where PF was developed) and FreeBSD (which is what I use), is much easier to configure than other alternatives. Still, firewalls are difficult and it's nearly impossible to get it right on the first try. The good thing is that PF makes it very easy to debug things. Here is a quick reference for that.
 
-# Syntax check
+# Check the syntax
 
 `service pf reload` will print syntax errors, if any.
 
@@ -22,7 +22,7 @@ To see all sorts of other details about PF's state, you can use the `pfctl(8)` u
 * `pfctl -s nat` (or `pfctl -sn`): shows the NAT rules
 * `pfctl -s all` (or `pfctl -sa`): shows all the things
 
-# pflog: readable logs of what is happening with packets
+# pflog: See what is happening with the packets
 
 When it comes to firewalls, `pflog` is just the best thing ever. Seriously.
 
