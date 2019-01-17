@@ -88,7 +88,7 @@ pre, code {
 }
 
 .content pre {
-    overflow-x: scroll;
+    overflow-x: auto;
 }
 
 .toc {
@@ -115,4 +115,8 @@ pre, code {
         font-weight: bold;
         color: #aaa;
     }
+}
+
+.content figure {
+    text-align: center;
 }
