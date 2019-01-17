@@ -1,0 +1,6 @@
+# Maps tags to fontawesome classes
+freebsd: fab fa-freebsd
+networking: fas fa-network-wired
+wireless: fas fa-wifi
+configuration: fas fa-terminal
+code: fas fa-code

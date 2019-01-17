@@ -1,5 +1,6 @@
 ---
 title: Building my FreeBSD-based home router
+tags: [freebsd, networking, wireless, configuration]
 ---
 
 How I built the router I use at home, from hardware to configuration.
