@@ -86,3 +86,7 @@ pre, code {
 .content img {
     max-width: 100%;
 }
+
+.content pre {
+    overflow-x: scroll;
+}
