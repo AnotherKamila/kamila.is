@@ -90,3 +90,29 @@ pre, code {
 .content pre {
     overflow-x: scroll;
 }
+
+.toc {
+    display: inline-block;
+    border-left: 3px #ccc solid;
+    font-size: 0.8em;
+    margin: 0 0 2em 0;
+    ul {
+        list-style: none;
+        padding-left: 16px;
+        margin: 0;
+    }
+    a {
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: none;
+        text-decoration: underline;
+    }
+    h1 {
+        padding-left: 16px;
+        margin: 0 0 0.2em 0;
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #aaa;
+    }
+}
