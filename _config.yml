@@ -12,6 +12,9 @@ defaults:
   - scope: {path: ""}
     values:
       layout: default
+  - scope: {path: "teaching"}
+    values:
+      layout: tocpost
   - scope: {path: "learning"}
     values:
       layout: tocpost
