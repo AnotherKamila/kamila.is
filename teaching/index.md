@@ -4,6 +4,7 @@ subtitle: Things I wrote when teaching that might be useful to a wide audience.
 menu_order: 10
 grid: 8
 grid_tablet: 8
+layout: default
 ---
 
 Things I wrote that might be useful to a wide audience.
