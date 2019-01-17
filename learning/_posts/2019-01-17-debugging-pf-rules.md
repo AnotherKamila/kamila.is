@@ -50,9 +50,9 @@ listening on pflog0, link-type PFLOG (OpenBSD pflog file), capture size 262144 b
 ## How to enable it
 
 1. Add logging into the PF rules that interest you. Examples:
-    * `nat on ...` -> `nat log on ...`
-    * `block all` -> `block log all`
-    * `pass in quick ...` -> `pass in log quick ...`
+    * `nat on ...` → `nat log on ...`
+    * `block all` → `block log all`
+    * `pass in quick ...` → `pass in log quick ...`
     
     Then reload pf with `service pf reload`.
 2. Start the `pflog` service, which creates the `pflog` interface:
