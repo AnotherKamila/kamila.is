@@ -18,9 +18,9 @@ The "you could have guessed it" way (because guessing works on FreeBSD): `servic
 
 To see all sorts of other details about PF's state, you can use the `pfctl(8)` utility. As usual in FreeBSD, `man pfctl` is very useful. For quick reference, these are the things I use most often:
 
-* `pfctl -s rules` (show rules): shows how it has interpreted the filtering rules in your config file, including substitutions and defaults
-* `pfctl -s nat`: shows the NAT rules
-* `pfctl -s all`: shows all the things
+* `pfctl -s rules` (show rules; can be shortened to `pfctl -sr`): shows how it has interpreted the filtering rules in your config file, including substitutions and defaults
+* `pfctl -s nat` (or `pfctl -sn`): shows the NAT rules
+* `pfctl -s all` (or `pfctl -sa`): shows all the things
 
 # pflog: readable logs of what is happening with packets
 
