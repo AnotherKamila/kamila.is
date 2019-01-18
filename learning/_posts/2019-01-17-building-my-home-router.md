@@ -180,9 +180,14 @@ At this point, you probably want to add `ifconfig` lines for your wired interfac
 * in `/etc/rc.conf`:
   ```
   wlans_ath0="wlan0"
-  create_args_wlan0="wlanmode hostap"
 
-  ifconfig_wlan0="inet 192.168.0.1/16 mode 11g channel 3" # or 11n, if you can
+  # replace CH with your country code to select
+  # the right regulatory domain for wireless transmission
+  create_args_wlan0="wlanmode hostap country CH"
+
+  # use 11n if you have it; pick a reasonable channel;
+  # experiment with txpower to find the lowest that works for you
+  ifconfig_wlan0="inet 192.168.0.1/16 mode 11g channel 3 txpower 7"
 
   hostapd_enable="YES"
   ```
