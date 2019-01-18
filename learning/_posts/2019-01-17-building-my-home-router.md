@@ -45,14 +45,14 @@ The APU needs to be installed over serial. [This](https://blog.tyk.nu/blog/freeb
 1. The APU's baud rate is 115200 ([PCEngines](https://pcengines.ch/howto.htm#serialconsole)).
 2. One of the many options for opening a serial console: `cu -l /dev/ttyUSB0 -s 115200`.
 3. At boot menu, press 3 to escape to loader prompt. Don't mind the messed up screen, we'll fix that now. Set up serial by typing:
-    ```
-    set comconsole_speed="115200"
-    set console="comconsole"
-    ```
+```
+set comconsole_speed="115200"
+set console="comconsole"
+```
 4. Avoid an annoying race condition by typing
-    ```
-    kern.cam.boot_delay="10000"
-    ```
+```
+kern.cam.boot_delay="10000"
+```
 5. Then type `boot` to boot.
 
 ### Installation options
@@ -70,10 +70,10 @@ After the installation finished, I opened a shell to immediately configure a few
 * `/etc/sshd/sshd_config`: set `PermitRootLogin without-password` so I can ssh in
 * add my SSH key to the root account
 * configure serial console, so that it's there: in `/boot/loader.conf`:
-    ```
-    console="comconsole"
-    comconsole_speed="115200"
-    ```
+```
+console="comconsole"
+comconsole_speed="115200"
+```
 
 ## Things it can do + how
 
@@ -116,7 +116,7 @@ Files that need editing:
   pf_enable="YES"
   dhcpd_enable="YES"
   ```
-* `/usr/local/etc/dhcpd.conf`
+* `/usr/local/etc/dhcpd.conf`:
   ```
   option domain-name "home.kamila.is"
   option domain-name-servers 9.9.9.9  # or use local DNS, e.g. with unbound
@@ -128,9 +128,8 @@ Files that need editing:
     range 192.168.0.100 192.168.0.200;
     option routers 192.168.0.1;
   }
-
   ```
-* `/etc/pf.conf`  
+* `/etc/pf.conf`:
   Here's a minimal and too permissive config:
   ```
   ##### Macros ################################################################
@@ -157,7 +156,7 @@ Files that need editing:
   ##### Packet filtering ######################################################
 
   block log all
-  
+
   # this should probably block more
   pass in  from $int_net
   pass out on $ext_if all
@@ -168,11 +167,10 @@ Files that need editing:
 
   pass quick inet proto icmp all icmp-type echoreq  # always allow ping
   pass quick proto tcp from any to any port ssh     # always allow ssh
-
   ```
 
 {% include note.html type='alternative' text="
-At this point, you probably want to add `ifconfig` lines for your wired interfaces, and probably bridge some things. I didn't bother, as none of my usual devices have an Ethernet port, so if I end up using those wired NICs, I'll configure them separately.
+You probably also need to add `ifconfig` lines for your wired interfaces, and probably bridge some things. I didn't bother, as none of my usual devices have an Ethernet port, so if I end up using those wired NICs, I'll configure them separately.
 " %}
 
 ### Wireless AP
