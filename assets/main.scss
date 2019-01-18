@@ -123,6 +123,7 @@ pre, code {
 
 .content figure {
     text-align: center;
+    margin: 2em auto;
 }
 
 .note-container {
@@ -133,6 +134,10 @@ pre, code {
     flex-grow: 0;
     flex-shrink: 1;
     margin: 1em 0;
+
+    p:last-child {
+        margin-bottom: 0;
+    }
 
     .circle-container {
         display: flex;

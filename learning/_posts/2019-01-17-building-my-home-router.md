@@ -14,13 +14,19 @@ I used a [PCEngines APU3](https://pcengines.ch/apu3c4.htm), because PCEngines ha
 
 I also got one of their wireless modules and a pair of antennas + pigtails, and the nice aluminium case. I added a 3rd party SSD and a 3G modem. 
 
+{%include note.html type='alternative' text="
+If you don't need a large SSD, it is possible (and cheaper) to boot from an SD card.
+
+You really shouldn't bother with 3G unless you know you want to.
+" %}
+
 {% include figure.html src='../assets/router-modules-arrows.jpg' caption="The modules I added to the APU. Note that for my use case I connected one of the antennas to the modem." %}
 
 Because my wireless card is 11g only, I actually only need one antenna for WiFi. I decided to use the other antenna for 3G, because, conveniently, it is there. I will replace it with a proper 3G antenna (so, 2.1GHz instead of the WiFi's 2.4) once I get one. In the meantime, this setup works surprisingly well.
 
 Note the following:
 * In case only one antenna is used for wireless, it should be connected to the first connector (so, 0 if they are labelled 0 and 1, or 1 if they are labelled 1 and 2).
-* This modem has 3 antenna connectors, and according to its datasheet these are 'M' for "main", 'G' for GPS, and 'A' for "auxiliary" (¯\\\_(ツ)\_/¯). The antenna should be connected to "main".
+* This 3G modem has 3 antenna connectors, and according to its datasheet these are 'M' for "main", 'G' for GPS, and 'A' for "auxiliary" (¯\\\_(ツ)\_/¯). The antenna should be connected to "main".
 
 # Software
 
@@ -51,7 +57,7 @@ The APU needs to be installed over serial. [This](https://blog.tyk.nu/blog/freeb
 
 ### Installation options
 
-I added a 500GB mSATA SSD because it was kinda cheap and I want to do more than just routing. Therefore, I installed with root-on-ZFS because it shouldn't eat that much RAM with just one disk and ZFS is awesome. After installation and with everything set up, I am using only about 400M of memory and a quick `dd conv=sync` test shows write speed of 280MB/s, so it appears that the system is happy with ZFS.
+I got a 500GB mSATA SSD because it was kinda cheap and I want to do more than just routing. Therefore, I installed with root-on-ZFS because it shouldn't eat that much RAM with just one disk and ZFS is awesome. After installation and with everything set up, I am using only about 400M of memory and a quick `dd conv=sync` test shows write speed of 280MB/s, so it appears that the system is happy with ZFS.
 
 I checked all security options besides the ones that would interfere with debugging (the reasoning being that I want to be able to debug any problems and otherwise I can afford to enable everything.)
 
@@ -88,7 +94,7 @@ ppp_profile="u3g"
 ppp_mode="ddial"  # brings the link up if it is dropped
 ```
 
-Modems are evil and might not work after a reboot because they haven't been sufficiently power-cycled. Mine does that. Workaround: Pull out the cable for a few seconds instead of a soft reboot.
+Modems are evil and might not work after a reboot because they haven't been sufficiently power-cycled. Mine does that. Workaround: Pull out the power cable for a few seconds instead of a soft reboot.
 
 Idea (NOT working for me yet):
 ```
@@ -124,7 +130,7 @@ Files that need editing:
   }
 
   ```
-* `/etc/pf.conf`
+* `/etc/pf.conf`  
   Here's a minimal and too permissive config:
   ```
   ##### Macros ################################################################
@@ -165,6 +171,10 @@ Files that need editing:
 
   ```
 
+{% include note.html type='alternative' text="
+At this point, you probably want to add `ifconfig` lines for your wired interfaces, and probably bridge some things. I didn't bother, as none of my usual devices have an Ethernet port, so if I end up using those wired NICs, I'll configure them separately.
+" %}
+
 ### Wireless AP
 
 * in `/etc/rc.conf`:
@@ -172,8 +182,7 @@ Files that need editing:
   wlans_ath0="wlan0"
   create_args_wlan0="wlanmode hostap"
 
-  # or 11n, if your wireless card supports it
-  ifconfig_wlan0="inet 192.168.0.1/16 mode 11g channel 3"
+  ifconfig_wlan0="inet 192.168.0.1/16 mode 11g channel 3" # or 11n, if you can
 
   hostapd_enable="YES"
   ```
@@ -213,4 +222,4 @@ Use [link aggregation](https://www.freebsd.org/doc/handbook/network-aggregation.
 
 ## SCION!
 
-Make [SCION](https://scion-architecture.net) runnable on FreeBSD and become the second household with native SCION connectivity.
+Make [SCION](https://scion-architecture.net) runnable on FreeBSD and become one of the first households with native SCION connectivity.
