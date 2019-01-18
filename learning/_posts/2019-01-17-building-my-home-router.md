@@ -216,6 +216,10 @@ I need to get IPv6 connectivity (via an OpenVPN tunnel, as my provider doesn't o
 
 I want to have all the configuration in `ansible` (using my [BSDops](https://github.com/AnotherKamila/bsdops)) and thereby make it completely trivial to reproduce my setup. That is not quite the case yet.
 
+## Caching DNS with unbound
+
+While this is only one config file and I could just do it immediately, I'll call it "blocked" until I have the above, because I want that config file to be templated and managed by `bsdops`.
+
 ## Separate "guest" WiFi
 
 My wifi has some devices that I might not want to expose to everyone who visits my flat. Having two SSIDs, one of which I don't share, would simplify access control.
@@ -228,3 +232,12 @@ Use [link aggregation](https://www.freebsd.org/doc/handbook/network-aggregation.
 ## SCION!
 
 Make [SCION](https://scion-architecture.net) runnable on FreeBSD and become one of the first households with native SCION connectivity.
+
+---------------------------------------------------------------------------------------------
+
+Notes to self:
+* add zfs-periodic
+* backups via zfs-send
+* run SCION with runit
+* check that the SCION web UI is read-only and if yes, make it accessible over the network
+* add runit and run things like my homemade thermostat
