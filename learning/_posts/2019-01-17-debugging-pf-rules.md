@@ -7,7 +7,7 @@ tags: [freebsd, networking, configuration]
 
 PF, the firewall available in OpenBSD (which is where PF was developed) and FreeBSD (which is what I use), is much easier to configure than other alternatives. Still, firewalls are difficult and it's nearly impossible to get it right on the first try. The good thing is that PF makes it very easy to debug things. Here is a quick reference for that.
 
-#titles Check the syntax
+# Check the syntax
 
 `service pf reload` will print syntax errors, if any.
 
