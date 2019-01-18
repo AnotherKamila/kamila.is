@@ -24,11 +24,13 @@ Note the following:
 
 # Software
 
-I chose to use FreeBSD and configure it as a router "by hand". If you'd prefer to use a ready-made solution which can be configured using a web interface, but still has the full power of FreeBSD underneath, [pfSense](https://www.pfsense.org/) is a great option.
+{%include note.html type='alternative' text='
+I chose to use FreeBSD and configure it as a router "by hand". If you\'d prefer to use a ready-made solution which can be configured using a web interface, but still has the full power of FreeBSD underneath, [pfSense](https://www.pfsense.org/) is a great option.
+' %}
 
-# Installation
+## Installation
 
-## Booting the installation image
+### Booting the installation image
 
 I used a USB stick (FreeBSD-12.0-RELEASE-amd64-mini-memstick.img). Booting it over network also works.
 
@@ -47,7 +49,7 @@ The APU needs to be installed over serial. [This](https://blog.tyk.nu/blog/freeb
     ```
 5. Then type `boot` to boot.
 
-## Installation options
+### Installation options
 
 I added a 500GB mSATA SSD because it was kinda cheap and I want to do more than just routing. Therefore, I installed with root-on-ZFS because it shouldn't eat that much RAM with just one disk and ZFS is awesome. After installation and with everything set up, I am using only about 400M of memory and a quick `dd conv=sync` test shows write speed of 280MB/s, so it appears that the system is happy with ZFS.
 
@@ -55,7 +57,7 @@ I checked all security options besides the ones that would interfere with debugg
 
 I did not create a non-root user because [my config management](https://github.com/anotherkamila/bsdops) takes care of that.
 
-## Post-installation config
+### Post-installation config
 
 After the installation finished, I opened a shell to immediately configure a few things:
 
@@ -67,9 +69,9 @@ After the installation finished, I opened a shell to immediately configure a few
     comconsole_speed="115200"
     ```
 
-# Things it can do
+## Things it can do + how
 
-## 3G modem
+### 3G modem
 
 This Just Works (TM) with the default configuration file.
 (My SIM card has no PIN.)
@@ -94,7 +96,7 @@ Idea (NOT working for me yet):
 usbconfig -d `usbconfig | grep -i huawei | cut -d: -f1` power_off
 ```
 
-## Basic router setup (gateway + NAT for v4)
+### Basic router setup (gateway + NAT for v4)
 
 I used `dhcpd` as my DHCP server (`pkg install dhcpd`).
 
@@ -163,7 +165,7 @@ Files that need editing:
 
   ```
 
-## Wireless AP
+### Wireless AP
 
 * in `/etc/rc.conf`:
   ```

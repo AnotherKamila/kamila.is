@@ -1,0 +1,13 @@
+{% assign note_kind = include.type | default: 'note' %}
+<div class="note-container mdl-shadow--3dp">
+    <header class="circle-container">
+        <div class="circle-container__circle mdl-color--accent mdl-color-text--white">
+            <i title="{{ note_kind | capitalize }}" class="circle-icon material-icons">
+                {{site.data.note_icons[note_kind]}}
+            </i>
+        </div>
+    </header>
+    <div>
+        {{ include.text | markdownify }}
+    </div>
+</div>

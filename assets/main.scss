@@ -124,3 +124,33 @@ pre, code {
 .content figure {
     text-align: center;
 }
+
+.note-container {
+    padding: 30px 35px;
+    color: rgba(0,0,0,.54);
+    display: flex;
+    flex-direction: row;
+    flex-grow: 0;
+    flex-shrink: 1;
+    margin: 1em 0;
+
+    .circle-container {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        flex-grow: 0;
+        flex-shrink: 1;
+        margin-right: 30px;
+
+        .circle-container__circle {
+            width: 64px;
+            height: 64px;
+            border-radius: 32px;
+            text-align: center;
+        }
+        .circle-icon {
+            font-size: 1.8em;
+            line-height: 64px;
+        }
+    }
+}
