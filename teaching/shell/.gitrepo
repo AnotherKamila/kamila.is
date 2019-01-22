@@ -1,0 +1,12 @@
+; DO NOT EDIT (unless you know what you are doing)
+;
+; This subdirectory is a git "subrepo", and this file is maintained by the
+; git-subrepo command. See https://github.com/git-commands/git-subrepo#readme
+;
+[subrepo]
+	remote = git@github.com:AnotherKamila/shell-for-beginners
+	branch = master
+	commit = e0d23ac19b4f1fc64984528607421a8632a087a8
+	parent = 6c0fe68d1bc28dceb1deb1c631b814d0766433c3
+	method = merge
+	cmdver = 0.4.0
