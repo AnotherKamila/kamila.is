@@ -3,19 +3,21 @@ title: Shell Tutorial for Absolute Beginners
 add_to_head: <link rel="stylesheet" type="text/css" href="asciinema-player.css" />
 ---
 
-**Work in progress**: I intend to add more sections, such as redirection. The parts which are here are pretty complete.
+Almost all software you use has a graphical user interface, where you make things happen in the software mostly by clicking/tapping on things. But there's another type of user interface, called the "shell" or "command line", where you make things happen by telling the computer what to do by typing specific words (they're called "commands").
 
-The shell (or the command line) is where you enter commands. Though it may appear scary at first sight, it is a very powerful tool that allows you to do much more than any graphical interface would. This tutorial aims to make you comfortable in the shell, assuming no previous knowledge.
+The command line is a really powerful tool that allows you to do much more than any graphical interface would. But it can also be scary and unfamiliar! So this tutorial aims to make you comfortable in the shell, assuming no previous knowledge."
 
-# Artillery Preparation
+# Preparation: What you need to follow this tutorial
 
-This tutorial makes generous use of [asciinema](https://asciinema.org/): it is full of "videos" (not really videos) of what it looks like to type the commands I will be talking about. You can pause and replay everything, and because it is actually text, you can copy things from the window. Click this "video" to play it:
+This tutorial is full of "videos" (not really videos) of what it looks like to do the things I am talking about. You can pause and replay everything, and you can copy things from the window (it's just text). Click this "video" to play it:
 
 <asciinema-player src="./cast/asciinema-demo.cast" speed="2" theme="solarized-dark" size="medium" idle-time-limit="0.2">If you see this message instead of the "video", something went wrong. Sorry about that. Try reloading the page.</asciinema-player>
 
-We will be using the Friendly Interactive shell -- [fish](https://fishshell.com/). See [their website](https://fishshell.com/#platform_tabs) for installation instructions. For example, on FreeBSD, you can install it with `pkg install fish`.
+This tutorial uses [fish](https://fishshell.com/) (the "friendly interactive shell"), which you need to install. If your system has a graphical package manager, you can use that. Otherwise, see [their website](https://fishshell.com/#platform_tabs) for installation instructions. For example, on FreeBSD, you can install it by typing the command `pkg install fish`. [Ask me](https://github.com/AnotherKamila/shell-for-beginners/issues/new) if you need help.
 
-Afterwards, you can run it inside your default shell by typing `fish`.
+<!-- TODO Installation instructions that don't require the command line would be much preferred :D -->
+
+After you have installed it, you can run it inside your "normal" shell by typing `fish`.
 
 This is what the process looks like on FreeBSD:
 
@@ -23,23 +25,19 @@ This is what the process looks like on FreeBSD:
 If you see this, reload the page.
 </asciinema-player>
 
-## An appetiser: A bit of fishy awesomeness
-
-Notice that Fish suggests things you might want to type, and the predictions get better over time. Press the right arrow to accept the suggestion. This does not immediately execute the command, you can still edit it, so do not be afraid to press right arrow a lot :-)
-
-Also: Notice that Fish colors what you type to help you easily see what you're doing. For example, text highlighted red is an error (non-existent command, unclosed quotes, or something like that); underlined text is an existing file; and similar. This helps immediately see things like typos, and over time your subconsciousness will magically correct such things for you (speaking from experience here).
+If you have `fish` running, we can dive right in!
 
 # Moving around the filesystem
 
 ## Basics
 
-Similarly to Windows, files on Unix-like systems are arranged in directories (folders). 
+Similarly to other operating systems, files on Unix-like systems are arranged in directories (folders). 
 
-You can use the `cd` (change directory) command to go to a directory, and the `ls` command to list the contents of a directory:
+All commands are run from a directory, and your shell knows which directory you are in. Many commands will work in the current directory unless you tell them otherwise.
+
+You can use the`ls` command to list the contents of a directory, and the `cd` (change directory) command to go to another directory:
 
 <asciinema-player src="cast/cd-ls.cast">If you see this, reload the page.</asciinema-player>
-
-As you probably noticed, your shell knows which directory you are in currently, and `cd` tells it to change it. Many commands (such as `ls`) will work in the current directory unless told otherwise.
 
 The *shortened* path to the current directory is displayed in the command prompt: if you see e.g. `kamila@mymachine ~/M/Album2>`, you know you are in the directory `Album2`, which is inside something that begins with an M (in this case `Music`). The `~` stands for your home directory. (The first part of the prompt is your username and hostname.)
 
@@ -69,26 +67,26 @@ Some useful commands are:
 ### Bonus: Some more useful file-related commands
 
 * `less` lets you scroll in big files (quit with `q`; press `h` for help):
-<!--<asciinema-player src="cast/more-file-commands-less.cast">If you see this, reload the page.</asciinema-player>-->
 * `tree` prints the file tree (you may need to install it first)
-<!--<asciinema-player src="cast/more-file-commands-tree.cast">If you see this, reload the page.</asciinema-player>-->
 * `rmdir` removes an empty directory
-<!--<asciinema-player src="cast/more-file-commands-rmdir.cast">If you see this, reload the page.</asciinema-player>-->
-* `cp -a` copies a directory and all its contents.  
-* `rm -r` removes a directory and all its contents.
-<!--<asciinema-player src="cast/more-file-commands-cprm.cast">If you see this, reload the page.</asciinema-player>-->
+* `cp -a` copies a directory and all its contents.
+* `rm` removes a file.
+* `rmdir` removes an empty directory. It will refuse to remove a directory if it isn't empty, to prevent accidentally deleting things.
 * `ls -l` shows more info about the files, like when it was changed or file size; add `-h` to show human-readable file sizes
-<!--<asciinema-player src="cast/more-file-commands-ll.cast">If you see this, reload the page.</asciinema-player>-->
 
 Try them!
 
 # Awesome fish sauce
 
-Fish has some very helpful features. Here are the most useful ones.
+## An Appetiser
 
-Note: This is difficult to explain when you don't see which exact keys I am pressing. Go try it yourself!
+Notice that Fish suggests things you might want to type, and the predictions get better over time. Press the right arrow to accept the suggestion. This does not immediately execute the command, you can still edit it, so do not be afraid to press right arrow a lot :-)
+
+Also: Notice that Fish colors what you type to help you easily see what you're doing. For example, text highlighted red is an error (non-existent command, unclosed quotes, or something like that); underlined text is an existing file; and similar. This helps immediately see things like typos, and over time your subconsciousness will magically correct such things for you (speaking from experience here).
 
 ## Tab completion
+
+Note: This is difficult to explain when you don't see which exact keys I am pressing. Go try it yourself!
 
 You can press the Tab key to autocomplete commands or files at any time. If there is a unique completion, fish will complete it; if not, it will list the options. If you press Tab multiple times, it will cycle through possible options; press Enter to accept a completion. 
 
@@ -124,16 +122,19 @@ You will often do several things with the same file: for this, type your command
 
 <asciinema-player src="cast/history-alt-2.cast">If you see this, reload the page.</asciinema-player>
 
-# Suggestions?
-
-This document lives [on GitHub](https://github.com/AnotherKamila/shell-for-beginners/). Comments, suggestions, improvements, or anything else is welcome! Feel free to open an issue or send a pull request.
-
 <!--
 # TODO things
 
  You can also set it as your default shell for your user (but NOT for root) with `chsh -s fish` (on less smart systems, you may need to tell it something like `/usr/bin/fish`).
  -->
 
+# Suggestions?
+
+This document lives [on GitHub](https://github.com/AnotherKamila/shell-for-beginners/). Comments, suggestions, improvements, or anything else is welcome! Feel free to open an issue or send a pull request.
+
+# Credits
+
+* [asciinema](https://asciinema.org/) is used for the "videos"
 
 <!-- the stuff below is needed to configure and enable asciinema -->
 <script>
