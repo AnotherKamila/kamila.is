@@ -11,5 +11,8 @@ Also lives on GitHub: [anotherkamila/talks](https://github.com/anotherkamila/tal
 
 * **[FreeBSD](freebsd)**
   * [FreeBSD for Linux Refugees](to-linux-refugees)
+* **Project-related**
+  * SDN / P4
+    * ["Load-aware" L4 load balancing in P4](sdn-loadbalancing)
 * **Security**
   * [Paper Overview: A Comprehensive Formal Security Analysis of OAuth 2.0](oauth)
