@@ -145,7 +145,7 @@ You could have a special-purpose end host with a P4-enabled SmartNIC, and do som
 
 * software-engineer-friendly
 * simple way to add tests
-* ready for multi-platform
+* ready for multi-platform usage
 * already used by 2 other ETH students
 
 ---
@@ -249,7 +249,6 @@ support `varbit`
 
 Fix: Don't even save the path: use `packet_mod`:
 
-.floatleft.margin0[
 ```c
 parser ExModDeparser(packet_mod p, in headers_t h) {
     state start {
@@ -262,7 +261,6 @@ parser ExModDeparser(packet_mod p, in headers_t h) {
     ...
 }
 ```
-]
 
 Xilinx extension, **not** standard P4 — but standard P4 can use `varbit`
 
@@ -335,8 +333,6 @@ layout: false
 
 # Portability
 
-actually, two problems:
-
 * keeping the code portable despite the differences in P4 support
 * making it simple to compile this BR for a different platform
 
@@ -370,7 +366,7 @@ Planning to support at least:
 
 * modular design makes it easier to test incremental changes and locate bugs
 * tackling the hard bits first ⇒ I can't get stuck
-* the NetFPGA's P4 stack is pretty much a PoC; documentation is generally severely lacking  
+* **the NetFPGA's P4 stack is pretty much a PoC**; documentation is generally severely lacking  
   therefore:
   * try things ASAP
   * change plan if something doesn't work
