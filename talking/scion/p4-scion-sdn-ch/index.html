@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>P4 in the wild: Line-rate packet forwarding for the SCION future Internet architecture</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="asciinema-player.css" />
+    <style type="text/css">
+     <!-- @import url('https://fonts.googleapis.com/css?family=Lobster'); -->
+     .display { font-family: 'Lobster', cursive; font-size: 1.6em; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle, contrast
+
+# P4 in the wild: Line-rate packet forwarding for the SCION future Internet architecture
+
+Kamila Součková  
+Master thesis (in progress)  
+SDN Switzerland, 2019-07-05
+
+---
+
+class: center, middle
+
+# WIP: old slides follow
+
+---
+
+
+class: contrast, expanded, middle, narrow
+
+1. **Aims**  
+   What are we trying to achieve?
+2. **Challenges**  
+   The interesting parts
+3. **Current status**  
+   Where are we now?
+
+---
+
+exclude: true
+class: expanded
+
+Aims
+
+* **Production-ready SCION border router**  
+  forwarding at 40Gbps or more
+* **SCION as a library**  
+  Modular, portable, high-performance P4 code for parsing, verification, and forwarding
+* **General guidelines for high-speed P4**  
+   What have we learned about high-speed P4-based packet processing on FPGAs?
+
+---
+
+class: contrast, expanded, middle, center
+
+# Aims
+
+---
+
+exclude: true
+
+# #1: Prod-ready SCION BR
+
+.center.width100[![Parts of the project](./img/scion-breakdown.svg)]
+
+---
+
+
+# #1: Prod-ready SCION BR
+
+* forwarding at **40Gbps or more**
+* integrated with existing SCION infra
+  * control plane
+  * monitoring
+* more than just “it works”:
+  * metrics
+  * runtime configurability
+  * proper error handling
+
+---
+
+# #2: SCION as a library
+
+&nbsp;
+
+&nbsp;
+
+.center[Modular, portable, high-performance P4 code for parsing, verification, and forwarding]
+
+???
+
+Now, why is this a good idea?
+1. because modular code is easier to deal with
+2. [NEXT] because you can base other things on it
+
+---
+
+
+.center.width100[![Parts of the project](./img/scion-breakdown.svg)]
+
+???
+
+you can take my BR and pick and choose which parts you want:
+
+---
+
+.center.width100[![Parts of the project](./img/scion-breakdown-swap-aes.svg)]
+
+???
+
+bring your own AES or even use a completely different MAC validation scheme
+
+---
+
+.center.width100[![Parts of the project](./img/scion-breakdown-parser.svg)]
+
+???
+
+change parser: swap your L2, use different encaps, or even parse the IFIDs in HFs in some special way
+
+---
+
+count: false
+
+.center.width100[![Parts of the project](./img/scion-breakdown.svg)]
+
+---
+
+.center.width100[![NMS](./img/scion-nms.svg)]
+
+.center[Example: Network monitoring system]
+
+---
+
+.center.width100[![NMS](./img/scion-smartnic.svg)]
+
+.center[Example: Special-purpose end host with a P4-capable SmartNIC]
+
+???
+
+You could have a special-purpose end host with a P4-enabled SmartNIC, and do some of the data processing straight in the NIC => use my parser and deparser in a completely different architecture
+
+---
+
+# #3: Guidelines for high-speed P4
+
+**a) P4+NetFPGA project template suitable for large projects**
+
+* software-engineer-friendly
+* simple way to add tests
+* ready for multi-platform usage
+* already used by 2 other ETH students
+
+---
+
+# #3: Guidelines for high-speed P4
+
+**b) What have we learned about high-speed P4-based packet processing on FPGAs?**
+
+Or, tips that help software engineers write code that performs well on hardware.
+
+* Not yet clear (still learning!)
+* simple example:  
+  `inout` parameters get compiled into long paths, which makes it difficult to meet timing requirements ⇒ avoid them in critical spots
+
+???
+
+and where to look to find out which spots are critical
+
+???
+
+so, those are the aims, now, how do we meet them? what are the most challenging aspects of the project?
+
+---
+
+class: contrast, expanded, middle, center
+
+# Challenges
+
+???
+
+the first challenge I encountered right at the beginning of the project was [NEXT] implementing the parser
+
+---
+
+layout: true
+
+# Implementing the parser
+
+SCION header:
+
+.floatleft.margin0[
+![header stack](./img/header-stack.svg)
+]
+
+---
+???
+my experience with NetFPGA, this would be different with a different compiler
+---
+
+.floatright.margin0[
+First idea: Use header stacks:
+
+```c
+struct ScionHeader_t {
+    ...
+    HopField_h[32] seg1_hfs;
+    ...
+}
+```
+]
+
+---
+
+.floatright.margin0[
+First idea: Use header stacks:
+
+```c
+struct ScionHeader_t {
+    ...
+    HopField_h[32] seg1_hfs;
+    ...
+}
+```
+
+.red[NetFPGA compiler does not  
+support header stacks]
+]
+
+---
+
+layout: false
+
+# Implementing the parser
+
+Fix: We don't need to parse the whole path, we just need to save it so we can emit it later ⇒ use a `varbit` field
+
+.floatleft.margin0.width80[
+![header stack](./img/header-stack-varbit.svg)
+]
+
+--
+
+.floatright.margin0.red[
+NetFPGA compiler does not  
+support `varbit`
+]
+
+---
+
+# Implementing the parser
+
+Fix: Don't even save the path: use `packet_mod`:
+
+```c
+parser ExModDeparser(packet_mod p, in headers_t h) {
+    state start {
+*       p.update(h.ethernet);
+        transition select(h.ethernet.ethertype) {
+            ETHERTYPE_IPV4: deparse_ipv4;
+            ETHERTYPE_IPV6: deparse_ipv6;
+        }
+    }
+    ...
+}
+```
+
+Xilinx extension, **not** standard P4 — but standard P4 can use `varbit`
+
+---
+
+# Implementing the parser
+
+Fix: Don't even save the path: use `packet_mod`:
+
+1. modify NetFPGA design to use the `packet_mod`-enabled `XilinxStreamSwitch` architecture  
+   .light[\* experimental :-)]
+2. skip over the path with `packet.advance(size)`
+
+--
+
+.red[NetFPGA requires even `packet.advance(size)` to be a compile-time constant]
+
+--
+
+.center[Therefore...]
+
+---
+
+# Implementing the parser
+
+.light[Fix: Don't even save the path: use `packet_mod`:]
+
+1. .light[modify NetFPGA design to use the `packet_mod`-enabled `XilinxStreamSwitch` architecture]  
+   .light[\* experimental :-)]
+2. .light[skip over the path with `packet.advance(size)`]
+3. **Create a lot of separate sub-parsers: one for skipping 1 HF, one for skipping 2, etc.**
+   Select the correct sub-parser at runtime, but the jump size is fixed at compile time.
+
+---
+
+# Implementing the parser
+
+Create a lot of separate sub-parsers: up to max length.
+
+Problem: To support reasonably long paths (~64 HFs), we need a lot of sub-parsers.  
+⇒ Requires a lot of FPGA area + RAM to build it.
+
+---
+
+layout: true
+
+# Implementing the parser
+
+Create a lot of separate sub-parsers: up to max length.
+
+Problem: To support reasonably long paths (~64 HFs), we need a lot of sub-parsers.  
+⇒ Requires a lot of FPGA area + RAM to build it.
+
+Fix: Two stages of max length 8:
+
+---
+count: false
+.width100[![sqrt1](./img/sqrt1.svg)]
+---
+count: false
+.width100[![sqrt2](./img/sqrt2.svg)]
+---
+count: false
+.width100[![sqrt3](./img/sqrt3.svg)]
+---
+count: false
+.width100[![sqrt4](./img/sqrt4.svg)]
+---
+layout: false
+
+# Portability
+
+* keeping the code portable despite the differences in P4 support
+* making it simple to compile this BR for a different platform
+
+---
+
+# Portability
+
+Pieces of the solution:
+* preprocessor `#define`s decouple platform from features; code depends only on features
+* well-thought-out repo structure => minimise work needed to add new platform
+* do it & document it
+
+Planning to support at least:
+* NetFPGA
+* P4lang's software switch
+
+---
+
+# Parser Performance / Timing
+
+* at 200MHz, the timing is very tight, mostly due to the parser
+* need to figure out how to improve this
+* complicated by P4 => HDL translation
+  * no direct control over the resulting design
+* interestingly, a "hand-made" Verilog implementation has the same problem
+  * by another student here at ETH
+
+---
+
+# Making progress quickly
+
+* modular design makes it easier to test incremental changes and locate bugs
+* tackling the hard bits first ⇒ I can't get stuck
+* **the NetFPGA's P4 stack is pretty much a PoC**; documentation is generally severely lacking  
+  therefore:
+  * try things ASAP
+  * change plan if something doesn't work
+  * **guess**
+
+---
+
+# Making progress quickly: Reuse, Reduce, Recycle
+
+.center.width80.pushup[![Parts of the project](./img/scion-controlplane.svg)]
+
+transparently pass unhandled packets to SW through 1:1 "fake" network interfaces (really DMA)  
+⇒ iteratively move functionality into HW
+
+---
+
+class: contrast, expanded, middle, center
+
+# Current status
+
+---
+
+class: bottom
+
+.center.width100[![Status](./img/scion-breakdown-status.svg)]
+
+---
+
+exclude: true
+
+# Current status
+
+The look of this slide: cases pic from SCION book that shows which cases I implement and then on click a big number saying 40Gbps (hopefully :D)
+
+    </textarea>
+    <script src="remark.js" type="text/javascript"></script>
+    <script type="text/javascript">
+     var slideshow = remark.create({
+         countIncrementalSlides: false,
+         highlightLines: true
+     });
+    </script>
+
+    <!-- <script>
+         var ds = document.getElementsByTagName('asciinema-player');
+         for (var i = 0; i < ds.length; ++i) {
+         var d = ds[i];
+         d.setAttribute('font-size', '0.5em');
+         d.setAttribute('rows', '21');
+         }
+         </script>
+         <script src="asciinema-player.js"></script> -->
+  </body>
+</html>
