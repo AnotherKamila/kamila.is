@@ -5,25 +5,27 @@ excerpt: |
 tags: [freebsd, networking, configuration]
 ---
 
-PF, the firewall available in OpenBSD (which is where PF was developed) and FreeBSD (which is what I use), is much easier to configure than other alternatives. Still, firewalls are difficult and it's nearly impossible to get it right on the first try. The good thing is that PF makes it very easy to debug things. Here is a quick reference for that.
+PF, the firewall available in OpenBSD (which is where PF was developed) and FreeBSD (which is what I use), is much easier to configure than other alternatives. Still, firewalls are difficult and it's nearly impossible to get it right on the first try. The good thing is that PF makes it easier to debug things. Here is a quick reference for that.
 
-# Check the syntax
+# 1. Check the syntax
 
 `service pf reload` will print syntax errors, if any.
 
 If you just want to check the syntax of your config file without actually loading it, you can use `service pf check`.
 
-# Show the firewall's state
+# 2. Show the firewall's state
 
 The "you could have guessed it" way (because guessing works on FreeBSD): `service pf status` :-)
 
 To see all sorts of other details about PF's state, you can use the `pfctl(8)` utility. As usual in FreeBSD, `man pfctl` is very useful. For quick reference, these are the things I use most often:
 
-* `pfctl -s rules` (show rules; can be shortened to `pfctl -sr`): shows how it has interpreted the filtering rules in your config file, including substitutions and defaults
-* `pfctl -s nat` (or `pfctl -sn`): shows the NAT rules
-* `pfctl -s all` (or `pfctl -sa`): shows all the things
+* `pfctl -s rules` (show rules; can be shortened to `pfctl -sr`): shows how it has interpreted the filtering rules in your config file, including substitutions and defaults. If you are seeing "weird" behaviour, check this first.
+* `pfctl -s nat` (or `pfctl -sn`): Shows the NAT rules.
+* `pfctl -s all` (or `pfctl -sa`): Shows all the things.
 
-# pflog: See what is happening with the packets
+Do not skip checking these, as often the problem is "you think something and PF thinks something else".
+
+# 3. pflog: See what is happening with the packets
 
 When it comes to firewalls, `pflog` is just the best thing ever. Seriously.
 
@@ -60,6 +62,6 @@ listening on pflog0, link-type PFLOG (OpenBSD pflog file), capture size 262144 b
     `service pflog onestart`
 3. Look at what is going through the interface: `tcpdump -eni pflog0`
 
-This makes it obvious when your packets are matching different rules than intended, and that's why debugging PF doesn't suck :-)
+This makes it obvious when your packets are matching different rules than intended, and that's why debugging PF sucks less :-)
     
-Note: Logging decreases performance. There is no performance hit if you just have the `log` statements in your PF config file, but having `pflogd` log all the packets will have a noticeable effect. Therefore, on my systems I tend to not start `pflog` on boot and only `onestart` it when I'm actually going to use it.
+Note: Logging decreases performance. There is no performance hit if you just have the `log` statements in your PF config file, but having `pflogd` log all the packets will have a noticeable effect. Therefore, on my systems I tend to not enable `pflog` on boot and only `onestart` it when I'm actually going to use it.
