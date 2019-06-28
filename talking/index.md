@@ -9,7 +9,13 @@ Slides for some of the talks I gave in various places.
 
 Also lives on GitHub: [anotherkamila/talks](https://github.com/anotherkamila/talks).
 
-* **[FreeBSD](freebsd)**
+* **SCION**
+  * multiple presentations on my HW router project (newer are hopefully better):
+    * [P4 in the wild: Line-rate packet forwarding for the SCION future Internet architecture](scion/p4-scion-sdn-ch)
+      SDN Switzerland workshop, 2019-07-05
+    * [High-speed SCION border router with P4+NetFPGA](scion/p4-scion-sidn)
+      ETH / SIDN meeting, 2019-04-11
+* **FreeBSD**
   * [FreeBSD for Linux Refugees](to-linux-refugees)
 * **Project-related**
   * SDN / P4
