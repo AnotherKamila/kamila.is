@@ -210,6 +210,22 @@ Things I haven't done yet but want to in the future.
 
 I need to get IPv6 connectivity (via an OpenVPN tunnel, as my provider doesn't offer native IPv6) and then also enable IPv6 on my wifi.
 
++++
+
+```sh
+pkg install wireguard
+wireguard-go wg0
+
+# generate keys
+umask 0777
+wg genkey > private
+wg genkey < private > public
+# send public to ungleich :-) (or whoever :D)
+
+# configure the interface
+
+```
+
 ## Complete and publishable configuration
 
 I want to have all the configuration in `ansible` (using my [BSDops](https://github.com/AnotherKamila/bsdops)) and thereby make it completely trivial to reproduce my setup. That is not quite the case yet.

@@ -35,6 +35,8 @@ li ul {margin: 0.2em 0;}
 .indent {margin-left: 40px;}
 .indenthalf {margin-left: 20px;}
 .small {font-size: 0.8em;}
+.large {font-size: 1.6em;}
+.huge  {font-size: 3em;}
 .footnote {font-size: 0.6em;}
 
 .half {width: 50%;}

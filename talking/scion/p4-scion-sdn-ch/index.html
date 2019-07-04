@@ -34,6 +34,7 @@ class: contrast, expanded, middle, narrow
 1. **Aims**
 2. **Challenges**
 3. **Current status**
+4. **Future plans**
 
 ---
 
@@ -102,7 +103,7 @@ _.hl[Isolation]_
 
 .hl[_on Next-generation Networks]_  
  * new control plane & data plane (replaces IP + BGP)  
- * free end host-controlled multipath :-)
+ * endhost-controlled multipath for free :-)
 
 ---
 
@@ -116,7 +117,7 @@ class: expanded
 * PKI per ISD
 * routing within ISD independent
 
-* **Core ASes** manage ISD: PKI, inter-ISD control plane
+* managed by **core ASes**: PKI, inter-ISD control plane
 * non-core ASes: only intra-ISD (simple)
 
 ---
@@ -133,7 +134,7 @@ class: expanded1
    among core ASes
  * intra-ISD:  
    only downstream
-* AS receiving PCB adds itself & forwards it
+* AS receiving beacon adds itself & forwards it
   * ⇒ PCB contains known good path to core
   * adds its signature ⇒ PCBs can be verified
 
@@ -144,7 +145,7 @@ class: expanded1
 * AS chooses how to extend / what to forward ⇒ enables routing policies
 * available *path segments* registered to *path servers*
 * end hosts request from path servers
-* segments combined into end to end paths:
+* segments combined into end-to-end paths:
 
 .center[
 .displayinlineblock.width30[![segments example 1](./img/segments1.png)]
@@ -172,7 +173,6 @@ class: expanded
 .floatright.width60[![forwarding path packet](./img/path.png)]
 
 * path in packet header
-* combine PCBs to build
 * every border router processes only its own *hop field*
 * checks to ensure path authenticity
 
@@ -185,6 +185,7 @@ class: contrast, expanded, middle, narrow
 1. **Aims**
 2. **Challenges**
 3. **Current status**
+3. **Future plans**
 
 ---
 
@@ -218,17 +219,15 @@ exclude: true
 
 ---
 
+class: expanded1
 
 # #1: Ready-to-deploy SCION BR
 
 * forwarding at **40Gbps or more**
+* usable with real traffic
 * integrated with existing SCION infra
   * control plane
-  * monitoring
-* more than just “it works”:
-  * metrics
-  * runtime configurability
-  * proper error handling
+  * monitoring / metrics
 
 ---
 
@@ -308,15 +307,59 @@ exclude: true
 
 ---
 
+exclude: true
+
 # #3: Guidelines for high-speed P4
 
-**b) What have we learned about high-speed P4-based packet processing on FPGAs?**
+**<strike>P4+NetFPGA guidelines + project template suitable for large projects</strike>**
 
-Or, tips that help software engineers write code that performs well on hardware.
+.center.huge[:-(]
 
-* Not yet clear (still learning!)
-* simple example:  
-  `inout` parameters get compiled into long paths, which makes it difficult to meet timing requirements ⇒ avoid them in critical spots
+Discarded, as the current P4 toolchain for NetFPGA is **not** suitable for production --
+see Challenges for details.
+
+
+---
+
+# #3: Guidelines for high-speed P4
+
+**tips that help software engineers write P4 code that performs well on FPGA-based hardware**
+
+**meeting timing requirements** a frequent problem  
+⇒ check the **critical path** in your implemented design
+ * find it in the timing report
+ * you'll have to guess about the correspondence to the P4 code, but it can be done
+
+---
+
+# #3: Guidelines for high-speed P4
+
+some examples:
+
+* to meet timing, avoid long data paths
+  * `inout` parameters get compiled into long paths ⇒ avoid them in critical spots
+  * rewrite code like this:
+
+<div style="clear: both;"></div>
+<div style="position: relative; margin: -1em auto; width: 90%;">
+.floatleft[
+```sh
+if [long computation 1]
+then [long computation 2]
+```
+]
+.floatright[
+```sh
+[computation 1];
+[computation 2];
+[combine the results]    
+```
+]
+    <div style="position: absolute; top: 1.4em; left: 52.5%;">⇒</div>
+</div>
+<div style="clear: both; margin-bottom: -1em;"></div>
+
+* CAM tables (`exact` match) are relatively expensive ⇒ prefer to combine multiple lookups into one or completely avoid tables
 
 ???
 
@@ -342,14 +385,20 @@ so, those are the aims, now, how do we meet them? what are the most challenging 
 
 ---
 
-exclude: true
 class: contrast, expanded, middle, center
 
 # Challenges
 
 ???
 
-the first challenge I encountered right at the beginning of the project was [NEXT] implementing the parser
+---
+
+# Making progress quickly: Reuse, Reduce, Recycle
+
+.center.width80.pushup[![Parts of the project](./img/scion-controlplane.svg)]
+
+transparently pass unhandled packets to SW through 1:1 "fake" network interfaces (really DMA)  
+⇒ iteratively move functionality into HW
 
 ---
 
@@ -405,7 +454,7 @@ layout: false
 
 Fix: We don't need to parse the whole path, we just need to save it so we can emit it later ⇒ use a `varbit` field
 
-.floatleft.margin0.width80[
+.floatleft.margin0.width30[
 ![header stack](./img/header-stack-varbit.svg)
 ]
 
@@ -471,7 +520,7 @@ Fix: Don't even save the path: use `packet_mod`:
 
 # Implementing the parser
 
-Create a lot of separate sub-parsers: up to max length.
+Create a lot of separate sub-parsers: up to .hl[max length].
 
 Problem: To support reasonably long paths (~64 HFs), we need a lot of sub-parsers.  
 ⇒ Requires a lot of FPGA area + RAM to build it.
@@ -482,7 +531,7 @@ layout: true
 
 # Implementing the parser
 
-Create a lot of separate sub-parsers: up to max length.
+Create a lot of separate sub-parsers: up to .hl[max length].
 
 Problem: To support reasonably long paths (~64 HFs), we need a lot of sub-parsers.  
 ⇒ Requires a lot of FPGA area + RAM to build it.
@@ -503,10 +552,14 @@ count: false
 .width100[![sqrt4](./img/sqrt4.svg)]
 ---
 layout: false
+class: expanded1
 
 # Portability
 
 * keeping the code portable despite the differences in P4 support
+  * P4 should be target-independent, but…
+    * different externs
+    * different compiler limitations (ahem)
 * making it simple to compile this BR for a different platform
 
 ---
@@ -521,19 +574,23 @@ Pieces of the solution:
 Planning to support at least:
 * NetFPGA
 * P4lang's software switch
+* later: other FPGA-based NICs
 
 ---
 
-# Parser Performance / Timing
+class: expanded1
 
-* at 200MHz, the timing is very tight, mostly due to the parser
-* need to figure out how to improve this
-* complicated by P4 => HDL translation
+# Performance / Timing
+
+* at 200MHz, the timing is very tight
+* NetFPGA compiler has many bugs
+  * workarounds cost extra resources
+* complicated by P4 ⇒ HDL translation
   * no direct control over the resulting design
-* interestingly, a "hand-made" Verilog implementation has the same problem
-  * by another student here at ETH
 
 ---
+
+exclude: true
 
 # Making progress quickly
 
@@ -547,33 +604,11 @@ Planning to support at least:
 
 ---
 
-# Making progress quickly: Reuse, Reduce, Recycle
-
-.center.width80.pushup[![Parts of the project](./img/scion-controlplane.svg)]
-
-transparently pass unhandled packets to SW through 1:1 "fake" network interfaces (really DMA)  
-⇒ iteratively move functionality into HW
-
----
-
-class: contrast, expanded, middle, center
-
-# Current status
-
----
-
-class: bottom
-
-.TODO[update pic]
-
-.center.width100[![Status](./img/scion-breakdown-status.svg)]
-
----
-
-# Suggestions for the SCION protocol
+# Suggestions for SCION protocol
 
 * <strike>require few table lookups</strike> ✓
-  * tables need a lot of FPGA area => a lot of power
+* <strike>variable lengths are bad</strike> ✓
+  * SCION avoids them where possible
 * define maximum sizes:
   * max path length
   * max HF size
@@ -582,6 +617,17 @@ class: bottom
 * consider re-thinking MAC chaining for peering paths
   * further research into the tradeoffs is needed
 
+---
+
+class: contrast, expanded, middle, center
+
+# Status
+
+---
+
+class: bottom
+
+.center.width100[![Status](./img/scion-breakdown-status.svg)]
 
 ---
 
@@ -593,10 +639,10 @@ class: expanded1
 * production-readiness
   * handle all the cases
   * with a different P4 compiler...
-* power requirements measurement/optimisation
+* power requirements optimisation
   * compare with IP
 * make it faster!
-  * 1Tbps using multiple FPGA-enabled NICs
+  * planning 1Tbps using multiple FPGA-enabled NICs
 
 ---
 
