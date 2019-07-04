@@ -23,35 +23,184 @@ SDN Switzerland, 2019-07-05
 
 ---
 
-class: center, middle
+class: contrast, expanded, middle, narrow
 
-# WIP: old slides follow
+###### Background
+
+.indenthalf[**What is SCION?**]
+
+###### My project
+
+1. **Aims**
+2. **Challenges**
+3. **Current status**
 
 ---
 
+# SCION
+
+future Internet architecture  
+
+--
+
+→ changing the Internet is really hard, so… Why?
+
+--
+
+.width100[![bgp route leak article screenshot](./img/bgp-leak-article.png)]
+
+---
+
+.width100[![bgp route leak article screenshot](./img/bgp-leak-article.png)]
+
+.pushuplots[
+.small.center[last week's BGP route leak only one of many examples  
+of the current Internet's shortcomings]
+
+SCION is designed for **.hl[route control]**, **.hl[failure isolation]**, and **.hl[explicit trust information]** for end-to-end communication  
+]
+
+---
+
+class: no-margins
+
+# SCION
+
+_.hl[Scalability]_  
+&nbsp;  
+&nbsp;  
+
+_.hl[Control]_  
+&nbsp;  
+&nbsp;  
+
+_.hl[Isolation]_  
+&nbsp;  
+&nbsp;  
+
+_.hl[on Next-generation Networks]_  
+&nbsp;  
+
+---
+
+count: false
+class: no-margins
+
+# SCION
+
+_.hl[Scalability]_  
+ * packet-carried forwarding state
+ * hierarchical design
+
+_.hl[Control]_  
+ * end-host selects path
+ * ISPs decide available paths
+
+_.hl[Isolation]_  
+ * Isolation Domains (failures stay within one)
+ * built-in DoS protection
+
+.hl[_on Next-generation Networks]_  
+ * new control plane & data plane (replaces IP + BGP)  
+ * free end host-controlled multipath :-)
+
+---
+
+class: expanded
+
+# Isolation Domains (ISDs)
+
+.floatright.width65[![ISDs](./img/isds.png)]
+
+* e.g. ISD ≈ country
+* PKI per ISD
+* routing within ISD independent
+
+* **Core ASes** manage ISD: PKI, inter-ISD control plane
+* non-core ASes: only intra-ISD (simple)
+
+---
+
+class: expanded1
+
+.floatright.width50[![PCBs](./img/pcbs.png)]
+
+# Path discovery
+
+* core ASes create *path construction beacons* (PCBs) & flood
+* hierarchical:
+ * inter-ISD:  
+   among core ASes
+ * intra-ISD:  
+   only downstream
+* AS receiving PCB adds itself & forwards it
+  * ⇒ PCB contains known good path to core
+  * adds its signature ⇒ PCBs can be verified
+
+---
+
+# Path discovery
+
+* AS chooses how to extend / what to forward ⇒ enables routing policies
+* available *path segments* registered to *path servers*
+* end hosts request from path servers
+* segments combined into end to end paths:
+
+.center[
+.displayinlineblock.width30[![segments example 1](./img/segments1.png)]
+.displayinlineblock.width30[![segments example 2](./img/segments2.png)]
+.displayinlineblock.width30[![segments example 2](./img/segments3.png)]
+]
+
+---
+
+# Path discovery
+
+every PCB contains *hop fields* for path construction:
+
+* ingress, egress interface
+* timestamp + expiration time
+* chained cryptographic MACs with AS-specific keys ⇒ paths cannot be "invented"  
+  .center.width90[![HF MACs chaining](./img/macs.svg)]
+
+---
+
+class: expanded
+
+# Packet forwarding
+
+.floatright.width60[![forwarding path packet](./img/path.png)]
+
+* path in packet header
+* combine PCBs to build
+* every border router processes only its own *hop field*
+* checks to ensure path authenticity
+
+---
 
 class: contrast, expanded, middle, narrow
 
-1. **Aims**  
-   What are we trying to achieve?
-2. **Challenges**  
-   The interesting parts
-3. **Current status**  
-   Where are we now?
+###### SCION border router in P4
+
+1. **Aims**
+2. **Challenges**
+3. **Current status**
 
 ---
 
 exclude: true
 class: expanded
 
-Aims
+# Aims
 
-* **Production-ready SCION border router**  
+* **Ready-to-deploy SCION border router**  
   forwarding at 40Gbps or more
 * **SCION as a library**  
   Modular, portable, high-performance P4 code for parsing, verification, and forwarding
-* **General guidelines for high-speed P4**  
-   What have we learned about high-speed P4-based packet processing on FPGAs?
+* **Guidelines for high-speed P4**  
+  What have we learned about high-speed P4-based packet processing on FPGAs?
+* **Optimising the SCION protocol for HW**  
+  How can we adjust SCION to enable more efficient implementations in HW?
 
 ---
 
@@ -70,7 +219,7 @@ exclude: true
 ---
 
 
-# #1: Prod-ready SCION BR
+# #1: Ready-to-deploy SCION BR
 
 * forwarding at **40Gbps or more**
 * integrated with existing SCION infra
@@ -146,6 +295,8 @@ You could have a special-purpose end host with a P4-enabled SmartNIC, and do som
 
 ---
 
+exclude: true
+
 # #3: Guidelines for high-speed P4
 
 **a) P4+NetFPGA project template suitable for large projects**
@@ -171,12 +322,27 @@ Or, tips that help software engineers write code that performs well on hardware.
 
 and where to look to find out which spots are critical
 
+---
+
+# #4: Optimising the SCION protocol for HW
+
+&nbsp;
+
+&nbsp;
+
+.center[
+How can we adjust SCION to enable more efficient implementations in HW?
+
+⇒ to answer, let's talk about the challenges...
+]
+
 ???
 
 so, those are the aims, now, how do we meet them? what are the most challenging aspects of the project?
 
 ---
 
+exclude: true
 class: contrast, expanded, middle, center
 
 # Challenges
@@ -207,9 +373,9 @@ First idea: Use header stacks:
 
 ```c
 struct ScionHeader_t {
-    ...
+    …
     HopField_h[32] seg1_hfs;
-    ...
+    …
 }
 ```
 ]
@@ -221,9 +387,9 @@ First idea: Use header stacks:
 
 ```c
 struct ScionHeader_t {
-    ...
+    …
     HopField_h[32] seg1_hfs;
-    ...
+    …
 }
 ```
 
@@ -265,7 +431,7 @@ parser ExModDeparser(packet_mod p, in headers_t h) {
             ETHERTYPE_IPV6: deparse_ipv6;
         }
     }
-    ...
+    …
 }
 ```
 
@@ -287,7 +453,7 @@ Fix: Don't even save the path: use `packet_mod`:
 
 --
 
-.center[Therefore...]
+.center[Therefore…]
 
 ---
 
@@ -398,7 +564,39 @@ class: contrast, expanded, middle, center
 
 class: bottom
 
+.TODO[update pic]
+
 .center.width100[![Status](./img/scion-breakdown-status.svg)]
+
+---
+
+# Suggestions for the SCION protocol
+
+* <strike>require few table lookups</strike> ✓
+  * tables need a lot of FPGA area => a lot of power
+* define maximum sizes:
+  * max path length
+  * max HF size
+* make things explicit
+  * include end host address length in header
+* consider re-thinking MAC chaining for peering paths
+  * further research into the tradeoffs is needed
+
+
+---
+
+class: expanded1
+
+# Future plans
+
+* SCION packet header redesign
+* production-readiness
+  * handle all the cases
+  * with a different P4 compiler...
+* power requirements measurement/optimisation
+  * compare with IP
+* make it faster!
+  * 1Tbps using multiple FPGA-enabled NICs
 
 ---
 

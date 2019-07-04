@@ -6,7 +6,8 @@ pre, code {font-family: 'Input', 'Inconsolata', monospace; font-size: 0.8em}
 
 .remark-slide-content {
     padding: 0.8em 2.4em;
-    font-size: 32px;
+    font-size: 30px;
+    cursor: url(./img/laserdot.png), auto;
 }
 .remark-code { font-size: 0.8em; }
 .remark-inline-code {
@@ -19,10 +20,20 @@ pre, code {font-family: 'Input', 'Inconsolata', monospace; font-size: 0.8em}
 
 li ul {margin: 0.2em 0;}
 .expanded li {margin: 0.5em 0;}
+.expanded1 li {margin: 0.5em 0;}
+.expanded1 li ul li {margin: 0;}
+.no-margins p,
+.no-margins ul,
+.no-margins ul li {
+    margin-top: 0;
+    margin-bottom: 0;
+}
 
-.floatleft {float: left; margin-right: 2em;}
-.floatright {float: right; margin-left: 2em;}
+.floatleft {float: left; margin-right: 1.6em;}
+.floatright {float: right; margin-left: 1.6em;}
 .margin0 {margin: 0;}
+.indent {margin-left: 40px;}
+.indenthalf {margin-left: 20px;}
 .small {font-size: 0.8em;}
 .footnote {font-size: 0.6em;}
 
@@ -39,21 +50,50 @@ li ul {margin: 0.2em 0;}
 .remark-slide-content.tall {padding-top: 0;}
 .remark-slide-content.narrow {padding-left: 5em; padding-right: 5em;}
 
+h6 {
+    text-transform: uppercase;
+    font-size: 0.6em;
+    margin: 0.4em 0 0.2em 0;
+}
+
 .green {color: #859900;}
 .red {color: #dc322f;}
 .blue {color: #268bd2;}
 .light {color: #839496;}
 .nobold {font-weight: normal;}
+.hl {color: #268bd2;}
 
 .qrcode img {max-width: 160px;}
 
-.width100 img {width: 100%;}
-.width95  img {width:  95%;}
-.width90  img {width:  90%;}
-.width80  img {width:  80%;}
-.width70  img {width:  70%;}
-.width60  img {width:  60%;}
-.width50  img {width:  50%;}
-.width40  img {width:  40%;}
-.width30  img {width:  30%;}
+.width100 {width: 100%;}
+.width95  {width:  95%;}
+.width90  {width:  90%;}
+.width80  {width:  80%;}
+.width70  {width:  70%;}
+.width65  {width:  65%;}
+.width60  {width:  60%;}
+.width50  {width:  50%;}
+.width45  {width:  45%;}
+.width40  {width:  40%;}
+.width30  {width:  30%;}
+.width100 img,
+.width95  img,
+.width90  img,
+.width80  img,
+.width70  img,
+.width65  img,
+.width60  img,
+.width50  img,
+.width45  img,
+.width40  img,
+.width30  img {
+    width: 100%;
+}
 .pushup {margin-top: -1.6em;}
+.pushuplots {margin-top: -2.6em;}
+
+.centerblock {margin: 0 auto;}
+.displayinlineblock {display: inline-block;}
+
+.TODO {color: red;}
+.TODO::before { content: 'TODO'; font-weight: bold; background: red; color: white; padding: 0 0.2em; border-radius: 0.2em; margin-right: 0.3em; font-size: 0.8em; }
