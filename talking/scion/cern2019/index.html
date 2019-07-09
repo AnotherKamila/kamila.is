@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SCION: a future Internet architecture that you can use today</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="style.css" />
+    <!-- <link rel="stylesheet" href="asciinema-player.css" /> -->
+    <style type="text/css">
+     <!-- @import url('https://fonts.googleapis.com/css?family=Lobster'); -->
+     .display { font-family: 'Lobster', cursive; font-size: 1.6em; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle, contrast, narrow
+
+# SCION:
+## a future Internet architecture that you can use today
+
+Kamila Součková  
+CERN openlab summer students visit at ETH, 2019-07-11
+
+---
+
+exclude: true
+
+class: contrast, expanded, middle, narrow
+
+###### Background
+
+.indenthalf[**What is SCION?**]
+
+###### My project
+
+1. **Aims**
+2. **Challenges**
+3. **Current status**
+4. **Future plans**
+
+---
+
+# Who is that weirdo?
+
+&nbsp;
+
+.center.effinghuge.light[**→**]
+
+&nbsp;
+
+Master student here at ETH, doing my thesis with SCION
+
+---
+
+# SCION
+
+future Internet architecture  
+
+--
+
+→ changing the Internet is really hard, so… Why?
+
+--
+
+.width100[![bgp route leak article screenshot](./img/bgp-leak-article.png)]
+
+---
+
+# What is wrong with the Internet?
+
+originally a research network: the web invented at CERN
+
+ * access was not widespread
+ * everyone trusted everyone else
+ * if it broke for a day, nobody cared
+
+--
+
+Today​:
+
+ * everyone has access and everyone has data on it
+ * huge number of entities, they don’t trust each other
+ * if it breaks for a few hours, everybody cares
+
+---
+
+# What is wrong with the Internet?
+
+In the future:
+
+* automation ⇒ internet will really become critical infrastructure
+  * drones, self-driving cars, remotely operated robots...
+* more and more data online ⇒ trust will be even more of an issue
+* geofencing (requiring data to stay within the jurisdiction of a country)
+* attacks will get harder to stop
+
+---
+
+# How does the Internet work today?
+
+.floatright.width30[![router](img/router.jpeg)]
+
+* you write destination IP address on packet and send it off
+  * no control over **how** it gets there
+* **BGP** (border gateway protocol) used to tell the *routers* how to reach the destination
+  * tables with prefix → next hop
+  * BGP announces: "this prefix goes to me"  
+    … and everybody believes it
+
+---
+
+.width100[![bgp route leak article screenshot](./img/bgp-leak-article.png)]
+
+.pushuplots.center[
+BGP route leak from two weeks ago  
+only one of many examples
+
+another one: about 2 months ago a lot of European traffic went through China
+]
+
+---
+
+class: middle, center
+
+SCION is designed for  
+**.hl[route control]**,  
+**.hl[failure isolation]**, and  
+**.hl[explicit trust information]**  
+for end-to-end communication
+
+---
+
+class: no-margins
+
+# SCION
+
+_.hl[Scalability]_  
+&nbsp;  
+&nbsp;  
+
+_.hl[Control]_  
+&nbsp;  
+&nbsp;  
+
+_.hl[Isolation]_  
+&nbsp;  
+&nbsp;  
+
+_.hl[on Next-generation Networks]_  
+&nbsp;  
+
+---
+
+count: false
+class: no-margins
+
+# SCION
+
+_.hl[Scalability]_  
+ * packet-carried forwarding state
+ * hierarchical design
+
+_.hl[Control]_  
+ * end-host selects path
+ * ISPs decide available paths
+
+_.hl[Isolation]_  
+ * Isolation Domains (failures stay within one)
+ * built-in DoS protection
+
+.hl[_on Next-generation Networks]_  
+ * new control plane & data plane (replaces IP + BGP)  
+ * endhost-controlled multipath for free :-)
+
+---
+
+class: expanded
+
+# Isolation Domains (ISDs)
+
+.floatright.width65[![ISDs](./img/isds.png)]
+
+* e.g. ISD ≈ country
+* PKI per ISD
+* routing within ISD independent
+
+* managed by **core ASes**: PKI, inter-ISD control plane
+* non-core ASes: only intra-ISD (simple)
+
+---
+
+class: expanded1
+
+.floatright.width50[![PCBs](./img/pcbs.png)]
+
+# Path discovery
+
+* core ASes create *path construction beacons* (PCBs) & flood
+* hierarchical:
+ * inter-ISD:  
+   among core ASes
+ * intra-ISD:  
+   only downstream
+* AS receiving beacon adds itself & forwards it
+  * ⇒ PCB contains known good path to core
+  * adds its signature ⇒ PCBs can be verified
+
+---
+
+# Path discovery
+
+* AS chooses how to extend / what to forward ⇒ enables routing policies
+* available *path segments* registered to *path servers*
+* end hosts request from path servers
+* segments combined into end-to-end paths:
+
+.center[
+.displayinlineblock.width30[![segments example 1](./img/segments1.png)]
+.displayinlineblock.width30[![segments example 2](./img/segments2.png)]
+.displayinlineblock.width30[![segments example 2](./img/segments3.png)]
+]
+
+---
+
+# Path discovery
+
+every PCB contains *hop fields* for path construction:
+
+* ingress, egress interface
+* timestamp + expiration time
+* chained cryptographic MACs with AS-specific keys ⇒ paths cannot be "invented"  
+  .center.width90[![HF MACs chaining](./img/macs.svg)]
+
+---
+
+class: expanded
+
+# Packet forwarding
+
+.floatright.width60[![forwarding path packet](./img/path.png)]
+
+* path in packet header
+* every border router processes only its own *hop field*
+* checks to ensure path authenticity
+
+---
+
+# My Master thesis
+
+.floatright.width60[![netfpga](img/netfpga.png)]
+
+current SCION router runs as an application on servers — can process a few Gbps  
+
+⇒ I am building a SCION router in hardware  
+* using an **FPGA**: huge chip with lots of configurable "cells"
+* currently 40Gbps, planning to do 1Tbps
+
+???
+
+ * "in hardware" => you may be imagining that I'm making a chip at home, but I'm not quite that hard core  
+you can configure each cell to do what you want, e.g. "you be an AND gate", "you be memory", "you be a wire", ...
+
+1Tbps is approx 1.5 billion packets per second for small packets
+
+---
+
+# Conclusion: SCION is a disruptive technology that we can use today
+
+* many network attacks impossible by design
+  * communication guarantees in spite of DDoS attacks
+  * route hijacks from outside actors impossible
+* new security properties: geofencing, path verification, source authentication
+* improved efficiency
+  * multipath ⇒ increased bandwidth
+  * fast failover
+  * potentially cheaper & more energy-efficient HW
+* international research: CH, DE, NL, US, KR, SG…
+
+    </textarea>
+    <script src="remark.js" type="text/javascript"></script>
+    <script type="text/javascript">
+     var slideshow = remark.create({
+         countIncrementalSlides: false,
+         highlightLines: true
+     });
+    </script>
+
+    <!-- <script>
+         var ds = document.getElementsByTagName('asciinema-player');
+         for (var i = 0; i < ds.length; ++i) {
+         var d = ds[i];
+         d.setAttribute('font-size', '0.5em');
+         d.setAttribute('rows', '21');
+         }
+         </script>
+         <script src="asciinema-player.js"></script> -->
+  </body>
+</html>
