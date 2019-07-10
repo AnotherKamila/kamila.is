@@ -12,6 +12,12 @@ Slides for some of the talks I gave in various places.
 Also lives on GitHub: [anotherkamila/talks](https://github.com/anotherkamila/talks).
 
 * **SCION**
+  {% for post in site.categories.talking %}
+  {% if post.categories contains 'scion' %}
+  * [{{post.title}}]({{post.url}})  
+    {{post.venue}}, {{post.date | date: "%Y/%m/%d"}}
+  {% endif %}
+  {% endfor %}
   * multiple presentations on my HW router project (newer are hopefully better):
     * [P4 in the wild: Line-rate packet forwarding for the SCION future Internet architecture](scion/p4-scion-sdn-ch)  
       SDN Switzerland workshop, 2019-07-05
