@@ -68,17 +68,17 @@ h6 {
 
 .qrcode img {max-width: 160px;}
 
-.width100 {width: 100%;}
-.width95  {width:  95%;}
-.width90  {width:  90%;}
-.width80  {width:  80%;}
-.width70  {width:  70%;}
-.width65  {width:  65%;}
-.width60  {width:  60%;}
-.width50  {width:  50%;}
-.width45  {width:  45%;}
-.width40  {width:  40%;}
-.width30  {width:  30%;}
+.width100 {width: 100%; display: inline-block; }
+.width95  {width:  95%; display: inline-block; }
+.width90  {width:  90%; display: inline-block; }
+.width80  {width:  80%; display: inline-block; }
+.width70  {width:  70%; display: inline-block; }
+.width65  {width:  65%; display: inline-block; }
+.width60  {width:  60%; display: inline-block; }
+.width50  {width:  50%; display: inline-block; }
+.width45  {width:  45%; display: inline-block; }
+.width40  {width:  40%; display: inline-block; }
+.width30  {width:  30%; display: inline-block; }
 .width100 img,
 .width95  img,
 .width90  img,
@@ -90,12 +90,14 @@ h6 {
 .width45  img,
 .width40  img,
 .width30  img {
+    display: inline-block;
     width: 100%;
 }
+.trans80 { opacity: 0.8; }
 .pushup {margin-top: -1.6em;}
 .pushuplots {margin-top: -2.6em;}
 
-.centerblock {margin: 0 auto;}
+.centerblock {display: block; margin: 0 auto;}
 .displayinlineblock {display: inline-block;}
 
 .TODO {color: red;}

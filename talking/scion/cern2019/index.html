@@ -15,7 +15,7 @@
 
 class: center, middle, contrast, narrow
 
-# SCION:
+.displayinlineblock.width50.trans80[![SCION](img/title.png)]
 ## a future Internet architecture that you can use today
 
 Kamila Součková  
@@ -44,7 +44,9 @@ class: contrast, expanded, middle, narrow
 
 &nbsp;
 
-.center.effinghuge.light[**→**]
+<!-- .center.effinghuge.light[**→**] -->
+.center.effinghuge.light[**↓**]
+
 
 &nbsp;
 
@@ -63,6 +65,21 @@ future Internet architecture
 --
 
 .width100[![bgp route leak article screenshot](./img/bgp-leak-article.png)]
+
+???
+
+Cloudflare, Google, Amazon, Reddit...
+
+---
+
+.width100[![bgp route leak article screenshot](./img/bgp-leak-article.png)]
+
+.pushuplots.center[
+BGP route leak from two weeks ago  
+only one of many examples
+
+another one: about 2 months ago a lot of European traffic went through China
+]
 
 ---
 
@@ -109,20 +126,27 @@ In the future:
 
 ---
 
-.width100[![bgp route leak article screenshot](./img/bgp-leak-article.png)]
+# The YouTube/Pakistan incident
 
-.pushuplots.center[
-BGP route leak from two weeks ago  
-only one of many examples
+* an ISP in Pakistan wanted to block YouTube **inside Pakistan**
+  * BGP announcement: "YouTube is here"
+* configuration error caused the announcement to go to the rest of the world  
+  _… and everybody believed it!_
 
-another one: about 2 months ago a lot of European traffic went through China
-]
+--
+
+.center.red[**YouTube is _not_ in Pakistan**]
+
+--
+
+.center[but today's Internet trusts everyone with everything]
+.center.light[and workarounds (RPKI, BGPsec) insufficient]
 
 ---
 
 class: middle, center
 
-SCION is designed for  
+**SCION** is designed for  
 **.hl[route control]**,  
 **.hl[failure isolation]**, and  
 **.hl[explicit trust information]**  
@@ -171,6 +195,14 @@ _.hl[Isolation]_
 .hl[_on Next-generation Networks]_  
  * new control plane & data plane (replaces IP + BGP)  
  * endhost-controlled multipath for free :-)
+
+---
+
+# Major game changers in SCION
+
+&nbsp;
+
+.width100[![game changers](img/gamechangers.png)]
 
 ---
 
@@ -229,7 +261,7 @@ every PCB contains *hop fields* for path construction:
 * ingress, egress interface
 * timestamp + expiration time
 * chained cryptographic MACs with AS-specific keys ⇒ paths cannot be "invented"  
-  .center.width90[![HF MACs chaining](./img/macs.svg)]
+  .width90[![HF MACs chaining](./img/macs.svg)]
 
 ---
 
@@ -242,6 +274,44 @@ class: expanded
 * path in packet header
 * every border router processes only its own *hop field*
 * checks to ensure path authenticity
+
+---
+
+# Incremental deployment
+
+* SCION-IP gateway (SIG) enables legacy hosts to transparently use SCION
+* SCION over IP enables "mixed" networks
+
+.centerblock.width95[![SIG deployment](img/sig.png)]
+
+---
+
+# Deployment status
+
+Research (SCIONLab):
+ * ISPs: Swisscom, SWITCH, KDDI, GEANT, DFN
+ * Korea: KISTI (KREONET), KU, KAIST, ETRI
+ * Deployed 50 ASes worldwide
+ * Global interest, e.g., ESA
+
+Commercial (Anapaya):
+ * ISPs: Deutsche Telekom, Swisscom, SWITCH, Init7
+ * Bank deployment: 4 major Swiss banks, some in production use
+ * Swiss government has SCION in production use
+
+---
+
+# SCION commercial development
+
+* Anapaya Systems founded in 2017 as ETH Zurich spinoff
+* current customers: banks, Swiss government, ISPs
+* tight collaboration with ETH
+
+.center[
+.width40[![Anapaya logo](img/anapaya-logo.png)]
+
+[https://www.anapaya.net](https://www.anapaya.net)
+]
 
 ---
 
