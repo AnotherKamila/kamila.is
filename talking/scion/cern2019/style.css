@@ -78,6 +78,7 @@ h6 {
 .width50  {width:  50%; display: inline-block; }
 .width45  {width:  45%; display: inline-block; }
 .width40  {width:  40%; display: inline-block; }
+.width35  {width:  35%; display: inline-block; }
 .width30  {width:  30%; display: inline-block; }
 .width100 img,
 .width95  img,
@@ -89,6 +90,7 @@ h6 {
 .width50  img,
 .width45  img,
 .width40  img,
+.width35  img,
 .width30  img {
     display: inline-block;
     width: 100%;
@@ -99,6 +101,32 @@ h6 {
 
 .centerblock {display: block; margin: 0 auto;}
 .displayinlineblock {display: inline-block;}
+.rel {position: relative;}
+
+.circlist ol {
+    list-style-type: none;
+}
+.circlist ol li {
+    counter-increment: circlistcounter;
+    position: relative;
+}
+.circlist ol li::before {
+    font-size: 0.8em;
+    font-weight: bold;
+    content: counter(circlistcounter);
+    background: #268bd2;
+    color: white;
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    line-height: 1;
+    border-radius: 5em;
+    padding: 0.1em;
+    text-align: center;
+    position: absolute;
+    left: -1.5em;
+    top: 0.3em;
+}
 
 .TODO {color: red;}
 .TODO::before { content: 'TODO'; font-weight: bold; background: red; color: white; padding: 0 0.2em; border-radius: 0.2em; margin-right: 0.3em; font-size: 0.8em; }

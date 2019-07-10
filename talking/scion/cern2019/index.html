@@ -172,6 +172,8 @@ _.hl[Isolation]_
 
 _.hl[on Next-generation Networks]_  
 &nbsp;  
+&nbsp;  
+&nbsp;  
 
 ---
 
@@ -194,15 +196,8 @@ _.hl[Isolation]_
 
 .hl[_on Next-generation Networks]_  
  * new control plane & data plane (replaces IP + BGP)  
- * endhost-controlled multipath for free :-)
-
----
-
-# Major game changers in SCION
-
-&nbsp;
-
-.width100[![game changers](img/gamechangers.png)]
+ * endhost-controlled multipath for free :-)  
+ * provable security: protocol & code
 
 ---
 
@@ -271,9 +266,29 @@ class: expanded
 
 .floatright.width60[![forwarding path packet](./img/path.png)]
 
-* path in packet header
+* path in packet header,  
+  no routing tables
 * every border router processes only its own *hop field*
 * checks to ensure path authenticity
+
+---
+
+class: circlist, expanded1
+
+.floatright.width35[![game changers](img/gamechangers2.png)]
+
+# Secure by design
+
+1. provable security:  
+   protocol + code
+1. heterogeneous trust model:  
+   ISDs
+1. path-aware networking:  
+   client chooses path
+1. new routing + forwarding architecture:  
+   beaconing; packet-carried forwarding state
+1. built-in DDoS defence mechanisms:  
+   hidden paths; source authentication; bandwidth reservation
 
 ---
 
