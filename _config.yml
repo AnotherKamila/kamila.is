@@ -12,6 +12,9 @@ defaults:
   - scope: {path: ""}
     values:
       layout: default
+  - scope: {path: "talking"}
+    values:
+      layout: remark
   - scope: {path: "teaching"}
     values:
       layout: tocpost
@@ -26,3 +29,4 @@ include:
   - .well-known
 plugins:
   - jekyll-sitemap
+future: true

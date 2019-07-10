@@ -1,42 +1,17 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>SCION: a future Internet architecture that you can use today</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" href="style.css" />
-    <!-- <link rel="stylesheet" href="asciinema-player.css" /> -->
-    <style type="text/css">
-     <!-- @import url('https://fonts.googleapis.com/css?family=Lobster'); -->
-     .display { font-family: 'Lobster', cursive; font-size: 1.6em; }
-    </style>
-  </head>
-  <body>
-    <textarea id="source">
+---
+title: "SCION: a future Internet architecture that you can use today"
+venue: CERN openlab summer students visit at ETH
+---
 
 class: center, middle, contrast, narrow
 
-.displayinlineblock.width50.trans80[![SCION](img/title.png)]
+.displayinlineblock.width50.trans80[![SCION](../img/title.png)]
 ## a future Internet architecture that you can use today
 
+&nbsp;
+
 Kamila Součková  
-CERN openlab summer students visit at ETH, 2019-07-11
-
----
-
-exclude: true
-
-class: contrast, expanded, middle, narrow
-
-###### Background
-
-.indenthalf[**What is SCION?**]
-
-###### My project
-
-1. **Aims**
-2. **Challenges**
-3. **Current status**
-4. **Future plans**
+{{page.venue}}, {{page.date | date: "%Y/%m/%d"}}
 
 ---
 
@@ -64,7 +39,7 @@ future Internet architecture
 
 --
 
-.width100[![bgp route leak article screenshot](./img/bgp-leak-article.png)]
+.width100[![bgp route leak article screenshot](../img/bgp-leak-article.png)]
 
 ???
 
@@ -72,7 +47,7 @@ Cloudflare, Google, Amazon, Reddit...
 
 ---
 
-.width100[![bgp route leak article screenshot](./img/bgp-leak-article.png)]
+.width100[![bgp route leak article screenshot](../img/bgp-leak-article.png)]
 
 .pushuplots.center[
 BGP route leak from two weeks ago  
@@ -115,7 +90,7 @@ In the future:
 
 # How does the Internet work today?
 
-.floatright.width30[![router](img/router.jpeg)]
+.floatright.width30[![router](../img/router.jpeg)]
 
 * you write destination IP address on packet and send it off
   * no control over **how** it gets there
@@ -205,7 +180,7 @@ class: expanded
 
 # Isolation Domains (ISDs)
 
-.floatright.width65[![ISDs](./img/isds.png)]
+.floatright.width65[![ISDs](../img/isds.png)]
 
 * e.g. ISD ≈ country
 * PKI per ISD
@@ -218,7 +193,7 @@ class: expanded
 
 class: expanded1
 
-.floatright.width50[![PCBs](./img/pcbs.png)]
+.floatright.width50[![PCBs](../img/pcbs.png)]
 
 # Path discovery
 
@@ -242,9 +217,9 @@ class: expanded1
 * segments combined into end-to-end paths:
 
 .center[
-.displayinlineblock.width30[![segments example 1](./img/segments1.png)]
-.displayinlineblock.width30[![segments example 2](./img/segments2.png)]
-.displayinlineblock.width30[![segments example 2](./img/segments3.png)]
+.displayinlineblock.width30[![segments example 1](../img/segments1.png)]
+.displayinlineblock.width30[![segments example 2](../img/segments2.png)]
+.displayinlineblock.width30[![segments example 2](../img/segments3.png)]
 ]
 
 ---
@@ -257,7 +232,7 @@ every PCB contains *hop fields* for path construction:
 * timestamp + expiration time
 * chained cryptographic MACs with AS-specific keys ⇒ paths cannot be "invented"  
 
-.width90[![HF MACs chaining](./img/macs.svg)]
+.width90[![HF MACs chaining](../img/macs.svg)]
 
 ---
 
@@ -265,7 +240,7 @@ class: expanded
 
 # Packet forwarding
 
-.floatright.width60[![forwarding path packet](./img/path.png)]
+.floatright.width60[![forwarding path packet](../img/path.png)]
 
 * path in packet header,  
   no routing tables
@@ -276,7 +251,7 @@ class: expanded
 
 class: circlist, expanded1
 
-.floatright.width35[![game changers](img/gamechangers2.png)]
+.floatright.width35[![game changers](../img/gamechangers2.png)]
 
 # Secure by design
 
@@ -298,7 +273,7 @@ class: circlist, expanded1
 * SCION-IP gateway (SIG) enables legacy hosts to transparently use SCION
 * SCION over IP enables "mixed" networks
 
-.centerblock.width95[![SIG deployment](img/sig.png)]
+.centerblock.width95[![SIG deployment](../img/sig.png)]
 
 ---
 
@@ -324,7 +299,7 @@ Commercial (Anapaya):
 * tight collaboration with ETH
 
 .center[
-.width40[![Anapaya logo](img/anapaya-logo.png)]
+.width40[![Anapaya logo](../img/anapaya-logo.png)]
 
 https://www.anapaya.net
 ]
@@ -333,7 +308,7 @@ https://www.anapaya.net
 
 # My Master thesis
 
-.floatright.width60[![netfpga](img/netfpga.png)]
+.floatright.width60[![netfpga](../img/netfpga.png)]
 
 current SCION router runs as an application on servers — can process a few Gbps  
 
@@ -361,7 +336,7 @@ class: expanded1
 * https://github.com/scionproto/scion  
   source code
 
-.floatright.width30.pushup[![qr code for this URL](qr.svg)]  
+.floatright.width30.pushup[![QR code for this URL](../qr/cern2019.svg)]  
 
 * [ht​tps://kamila.is/talking/​scion/cern2019](https://kamila.is/talking/scion/cern2019/)&nbsp;&nbsp;&nbsp;→  
   this presentation
@@ -379,24 +354,3 @@ class: expanded1
   * fast failover
   * potentially cheaper & more energy-efficient HW
 * international research: CH, DE, NL, US, KR, SG…
-
-    </textarea>
-    <script src="remark.js" type="text/javascript"></script>
-    <script type="text/javascript">
-     var slideshow = remark.create({
-         countIncrementalSlides: false,
-         highlightLines: true
-     });
-    </script>
-
-    <!-- <script>
-         var ds = document.getElementsByTagName('asciinema-player');
-         for (var i = 0; i < ds.length; ++i) {
-         var d = ds[i];
-         d.setAttribute('font-size', '0.5em');
-         d.setAttribute('rows', '21');
-         }
-         </script>
-         <script src="asciinema-player.js"></script> -->
-  </body>
-</html>
