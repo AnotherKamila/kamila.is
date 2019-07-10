@@ -140,7 +140,7 @@ In the future:
 --
 
 .center[but today's Internet trusts everyone with everything]
-.center.light[and workarounds (RPKI, BGPsec) insufficient]
+.center.light[and workarounds (RPKI, BGPsec) are insufficient]
 
 ---
 
@@ -154,7 +154,7 @@ for end-to-end communication
 
 ---
 
-class: no-margins
+class: no-margins, tall
 
 # SCION
 
@@ -178,7 +178,7 @@ _.hl[on Next-generation Networks]_
 ---
 
 count: false
-class: no-margins
+class: no-margins, tall
 
 # SCION
 
@@ -196,7 +196,7 @@ _.hl[Isolation]_
 
 .hl[_on Next-generation Networks]_  
  * new control plane & data plane (replaces IP + BGP)  
- * endhost-controlled multipath for free :-)  
+    * endhost-controlled multipath for free :-)  
  * provable security: protocol & code
 
 ---
@@ -256,7 +256,8 @@ every PCB contains *hop fields* for path construction:
 * ingress, egress interface
 * timestamp + expiration time
 * chained cryptographic MACs with AS-specific keys ⇒ paths cannot be "invented"  
-  .width90[![HF MACs chaining](./img/macs.svg)]
+
+.width90[![HF MACs chaining](./img/macs.svg)]
 
 ---
 
