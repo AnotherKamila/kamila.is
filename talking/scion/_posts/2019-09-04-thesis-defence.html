@@ -1,0 +1,647 @@
+---
+title: FPGA-based line-rate packet forwarding for the SCION future Internet architecture
+venue: Master thesis defence
+---
+
+class: center, middle, contrast
+
+# FPGA-based line-rate packet forwarding for the SCION future Internet architecture
+
+Kamila Součková  
+{{page.venue}}
+ETH Zurich, {{page.date | date: "%Y/%m/%d"}}
+
+---
+
+class: contrast, expanded, middle, narrow
+
+1. **Intro**  
+   Why? What?
+3. **Design & Implementation**  
+   How?
+4. **Results**  
+   Throughput and packet loss
+5. **What have we learned?**  
+   Implications for packet forwarding & SCION
+
+---
+class: center, middle, contrast
+# Intro
+Why? What?
+---
+
+# Why? (TODO this slide is terrible)
+
+- SCION is an Internet architecture for the future: Scalability, Control and
+  Isolation On Next-generation networks
+- already deployed in practice (SCIONLab, Anapaya)
+  - all software-based ⇒ limited throughput, high $$$ per bit
+- in order to succeed, SCION must work well in hardware
+  - throughput, cost, energy efficiency
+- the sooner we try to make a HW implementation, the earlier we can improve the
+  design to work better in HW
+
+---
+
+# What?
+
+methods for high-speed packet forwarding:
+
+.centerblock.width80[![Methods for high-speed packet forwarding](../img/high-speed-packet-forwarding.svg)]
+
+---
+
+count: false
+
+# What?
+
+methods for high-speed packet forwarding:
+
+.centerblock.width80[![Methods for high-speed packet forwarding](../img/high-speed-packet-forwarding-SCION.svg)]
+
+---
+
+count: false
+
+# What?
+
+methods for high-speed packet forwarding:
+
+.centerblock.width80[![Methods for high-speed packet forwarding](../img/high-speed-packet-forwarding-FPGA.svg)]
+
+--
+
+.floatleft.width50[![netfpga](../img/netfpga.png)]
+
+.floatleft.width40.margin0[
+NetFPGA SUME:  
+4x 10GbE  
+Virtex 7 FPGA
+]
+
+---
+
+class: expanded
+
+# Contributions of this project
+
+1. PoC router that **forwards SCION at line rate**
+2. testing **feasibility of SCION in hardware** + enabling going faster in the future
+3. **suggestions for the SCION protocol** for better suitability for HW
+
+---
+
+# P4
+
+FPGA design is very time-consuming, requires expertise, and changes cost a lot of effort
+
+⇒ P4: language for programming packet forwarding planes
+* **high-level** ⇒ less effort to write and maintain
+* **target-independent** ⇒ same code runs on many platforms (in theory :D)
+* **looks like software** ⇒ less need for domain expertise
+
+---
+
+# How do FPGAs work?
+
+* software: sequence of instructions
+* FPGA: circuit; data moves through
+
+TODO explain timing
+
+---
+class: center, middle, contrast
+# Design & Implementation
+How?
+---
+
+class: expanded
+
+# Forwarding in SCION
+
+.floatright.width60[![forwarding path packet](../img/path.png)]
+
+* PCFS: path in packet header
+* every border router processes only its own *hop field*
+* checks to ensure path authorisation ⇒ AES-based MAC
+
+---
+
+.center.width100[![Parts of the project](../img/scion-breakdown.svg)]
+
+???
+
+* modular
+  * because easier to deal with
+  * swapping parts makes sense (e.g. AES or encaps)
+  * because you can make other things with it
+* integrated with existing SCION infra
+  * control plane
+* monitoring / metrics
+
+---
+
+TODO this part stops making sense here, ignore everything until the Results section
+
+---
+exclude: true
+
+# Making progress quickly: Reuse, Reduce, Recycle
+
+.center.width80.pushup[![Parts of the project](../img/scion-controlplane.svg)]
+
+transparently pass unhandled packets to SW through 1:1 "fake" network interfaces (really DMA)  
+⇒ iteratively move functionality into HW
+
+---
+
+layout: true
+
+# Implementing the parser
+
+SCION header:
+
+.floatleft.margin0[
+![header stack](../img/header-stack.svg)
+]
+
+---
+???
+my experience with NetFPGA, this would be different with a different compiler
+---
+
+.floatright.margin0[
+First idea: Use header stacks:
+
+```c
+struct ScionHeader_t {
+    …
+    HopField_h[32] seg1_hfs;
+    …
+}
+```
+]
+
+---
+
+.floatright.margin0[
+First idea: Use header stacks:
+
+```c
+struct ScionHeader_t {
+    …
+    HopField_h[32] seg1_hfs;
+    …
+}
+```
+
+.red[NetFPGA compiler does not  
+support header stacks]
+]
+
+---
+
+layout: false
+
+# Implementing the parser
+
+Fix: We don't need to parse the whole path, we just need to save it so we can emit it later ⇒ use a `varbit` field
+
+.floatleft.margin0.width30[
+![header stack](../img/header-stack-varbit.svg)
+]
+
+--
+
+.floatright.margin0.red[
+NetFPGA compiler does not  
+support `varbit`
+]
+
+---
+
+# Implementing the parser
+
+Fix: Don't even save the path: use `packet_mod`:
+
+```c
+parser ExModDeparser(packet_mod p, in headers_t h) {
+    state start {
+*       p.update(h.ethernet);
+        transition select(h.ethernet.ethertype) {
+            ETHERTYPE_IPV4: deparse_ipv4;
+            ETHERTYPE_IPV6: deparse_ipv6;
+        }
+    }
+    …
+}
+```
+
+Xilinx extension, **not** standard P4 — but standard P4 can use `varbit`
+
+---
+
+# Implementing the parser
+
+Fix: Don't even save the path: use `packet_mod`:
+
+1. modify NetFPGA design to use the `packet_mod`-enabled `XilinxStreamSwitch` architecture  
+   .light[\* experimental :-)]
+2. skip over the path with `packet.advance(size)`
+
+--
+
+.red[NetFPGA requires even `packet.advance(size)` to be a compile-time constant]
+
+--
+
+.center[Therefore…]
+
+---
+
+# Implementing the parser
+
+.light[Fix: Don't even save the path: use `packet_mod`:]
+
+1. .light[modify NetFPGA design to use the `packet_mod`-enabled `XilinxStreamSwitch` architecture]  
+   .light[\* experimental :-)]
+2. .light[skip over the path with `packet.advance(size)`]
+3. **Create a lot of separate sub-parsers: one for skipping 1 HF, one for skipping 2, etc.**
+   Select the correct sub-parser at runtime, but the jump size is fixed at compile time.
+
+---
+
+# Implementing the parser
+
+Create a lot of separate sub-parsers: up to .hl[max length].
+
+Problem: To support reasonably long paths (~64 HFs), we need a lot of sub-parsers.  
+⇒ Requires a lot of FPGA area + RAM to build it.
+
+---
+
+layout: true
+
+# Implementing the parser
+
+Create a lot of separate sub-parsers: up to .hl[max length].
+
+Problem: To support reasonably long paths (~64 HFs), we need a lot of sub-parsers.  
+⇒ Requires a lot of FPGA area + RAM to build it.
+
+Fix: Two stages of max length 8:
+
+---
+count: false
+.width100[![sqrt1](../img/sqrt1.svg)]
+---
+count: false
+.width100[![sqrt2](../img/sqrt2.svg)]
+---
+count: false
+.width100[![sqrt3](../img/sqrt3.svg)]
+---
+count: false
+.width100[![sqrt4](../img/sqrt4.svg)]
+---
+layout: false
+class: expanded1
+
+# Portability
+
+* P4 should be target-independent, but…
+  * different externs
+  * different compiler limitations (ahem)
+* pieces of the solution:
+  * preprocessor `#define`s decouple platform from features; code depends only on features
+  * our repo structure minimises work needed to add new platform
+
+---
+exclude: true
+
+class: expanded1
+
+# Performance / Timing
+
+* at 200MHz, the timing is very tight
+* NetFPGA compiler has many bugs
+  * workarounds cost extra resources
+* complicated by P4 ⇒ HDL translation
+  * no direct control over the resulting design
+
+
+
+
+
+
+
+
+
+---
+class: center, middle, contrast
+# Results
+Throughput and packet loss
+---
+
+.floatright.width60[![spirent testcenter](../img/a-random-spirent.png)]
+
+# Method
+
+Spirent TestCenter traffic generator  
+(replays pre-generated packets)
+
+<div style="clear: both;"></div>
+
+full design does not meet timing ⇒ tested:
+  1. everything but updating IP overlay
+  2. everything but AES
+results identical
+
+all measurements repeatable
+
+???
+traffic generator does not know about SCION ⇒ replays pre-generated packets
+  1. everything but updating IP overlay:  
+     parsing, HF validation, forwarding
+  2. everything but AES:  
+     parsing, timestamp check, routing, IP overlay update
+
+---
+
+# Theory
+
+&nbsp;
+
+.center[
+our design is pipelined,  
+processes 256 bits every cycle,  
+runs at 200 MHz
+
+200·10<sup>6</sup> · 256  
+.hl.large[≈ 51 Gbps]
+
+⇒ should saturate 40 Gbps link
+]
+
+---
+
+class: center
+
+# Throughput: 1500B frames
+
+&nbsp;
+
+.width100[![throughput graph](../img/throughput-1500B.jpg)]
+
+9.93 Gbps per port ⇒ **39.72 Gbps**
+
+---
+
+class: center
+
+# Throughput: 115B frames
+
+&nbsp;
+
+.width100[![throughput graph](../img/throughput-115B.jpg)]
+
+9.93 Gbps per port ⇒ **39.72 Gbps**
+
+---
+
+# Packet loss (over 45s)
+
+.floatleft[
+<table class="numeric-table">
+  <thead>
+    <tr>
+      <th>Load</th>
+      <th>Loss<br></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>8 Gbps</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>16 Gbps</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>24 Gbps</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>32 Gbps</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>40 Gbps</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+  <caption>1500B frames</caption>
+</table>
+]
+
+--
+
+.floatleft[
+<table class="numeric-table">
+  <thead>
+    <tr>
+      <th>Load</th>
+      <th>Loss<br></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>8 Gbps</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>16 Gbps</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>24 Gbps</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>32 Gbps</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>40 Gbps</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+  <caption>115B frames</caption>
+</table>
+]
+
+--
+
+.large[0]_?!_
+
+--
+
+processing faster than line rate,  
+very even traffic distribution
+
+⇒ no buffering :-)
+
+---
+
+# Analysis
+
+.centerblock.width50[![throughput graph](../img/throughput-115B-nokey.jpg)]
+- line rate, 0% packet loss achieved
+- timing "almost there" ⇒ without workarounds for the bad compiler, the full design would work
+  - throughput would not change
+
+.center.hl[**⇒ SCION can be forwarded at 40 Gbps**]
+
+---
+class: center, middle, contrast
+# What have we learned?
+Implications for packet forwarding & SCION
+---
+
+class: expanded1
+
+# High-speed packet processing
+
+* P4 suitable even for complex protocols
+  * line rate by default!
+  * but: targets may not support enough of P4
+* P4-NetFPGA not suitable for complex things :-/
+  * barely a PoC; very scarce documentation
+* FPGA-based implementations:  
+  not that many limitations, but timing can be a problem
+* looking forward to more mature targets & toolchains :-)
+
+---
+
+class: expanded1
+
+# Writing P4 that meets timing
+
+* find critical path (how depends on toolchain)
+* careful with data dependencies:  
+  delays accumulate
+  * avoid `inout` parameters in critical spots
+  * full FPGA is bad
+  * CAM tables are somewhat expensive ⇒ may help to combine multiple lookups into one table
+  * rewrite code like this:
+
+<div style="clear: both;"></div>
+<div style="position: relative; margin: -1em auto; width: 90%;">
+.floatleft[
+```sh
+if [long computation 1]
+then [long computation 2]
+```
+]
+.floatright[
+```sh
+[long computation 1];
+[long computation 2];
+[combine the results]    
+```
+]
+    <div style="position: absolute; top: 1.4em; left: 52.5%;">⇒</div>
+</div>
+<div style="clear: both; margin-bottom: -1em;"></div>
+
+---
+# Suggestions for SCION protocol
+
+* <strike>avoid state on routers, require few table lookups</strike> ✓
+* define maximum sizes: path length, HF size
+* avoid variable lengths
+    * alignment is good ✓
+    * HF "continue" flag should be removed
+* make things explicit
+    * include host address length in header
+* consider re-thinking MAC chaining
+    * further research into the tradeoffs is needed
+
+.small[collaboration with many people in NetSec, Anapaya and SIDN  
+.hl[redesign in progress :-)]]
+
+---
+TODO do I have time for future work?
+---
+
+# Conclusion
+
+.light[
+- P4-NetFPGA not suitable for complex projects
+- P4 is a useful tool, ★★★★☆ would buy again :-)
+]
+
+.centerblock.width60[![throughput graph](../img/throughput-115B-nokey.jpg)]
+
+- SCION can be forwarded at high speeds
+- SCION header redesign will incorporate our (relatively minor) suggestions
+
+???
+TODO not sure if I like this slide
+
+
+
+
+
+
+
+
+
+---
+
+class: contrast, center, middle
+
+# Say hi!
+
+Email: **scion&#064;&#107;&#097;&#109;&#105;&#108;&#097;&#046;&#105;&#115;**  
+Twitter: **@anotherkamila**  
+Matrix: **@kamila:unchat.cat**  
+
+.width20[![](https://chart.apis.google.com/chart?cht=qr&chs=500x500&choe=UTF-8&chld=H&chl=https://kamila.is/talking/scion/thesis-defence)]
+
+
+
+
+
+
+
+
+
+
+
+---
+
+old SDN crap follows, don't look at this
+
+---
+
+count: false
+
+.center.width100[![Parts of the project](./img/scion-breakdown.svg)]
+
+---
+
+.center.width100[![NMS](./img/scion-nms.svg)]
+
+.center[Example: Network monitoring system]
+
+---
+
+.center.width100[![NMS](./img/scion-smartnic.svg)]
+
+.center[Example: Special-purpose end host with a P4-capable SmartNIC]
+
+???
+
+You could have a special-purpose end host with a P4-enabled SmartNIC, and do some of the data processing straight in the NIC => use my parser and deparser in a completely different architecture
