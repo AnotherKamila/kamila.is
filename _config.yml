@@ -1,7 +1,7 @@
 # === the basics ===
+url: https://kamila.is/
 title: kamila.is
 email: kamila@ksp.sk
-permalink: pretty
 permalink: /:categories/:title/
 repository: anotherkamila/kamila.is
 github_username:  anotherkamila
