@@ -8,7 +8,7 @@ class: center, middle, contrast
 # FPGA-based line-rate packet forwarding for the SCION future Internet architecture
 
 Kamila Součková  
-{{page.venue}}
+{{page.venue}}  
 ETH Zurich, {{page.date | date: "%Y/%m/%d"}}
 
 ---
@@ -28,20 +28,35 @@ class: contrast, expanded, middle, narrow
 class: center, middle, contrast
 # Intro
 Why? What?
+
 ---
 
-# Why? (TODO this slide is terrible)
+layout: true
+class: bg-top
+background-image: url(../img/banner-2000px-cut.jpg)
 
-- SCION is an Internet architecture for the future: Scalability, Control and
-  Isolation On Next-generation networks
-- already deployed in practice (SCIONLab, Anapaya)
-  - all software-based ⇒ limited throughput, high $$$ per bit
-- in order to succeed, SCION must work well in hardware
+# .white[Why?]
+
+<div style="margin: -0.6em 0 5.3em 0;">
+.centerblock.width60[![SCION](../img/badge-white.png)]
+</div>
+
+---
+
+- already deployed in practice
+  - SCIONLab, Anapaya
+- all software-based
+  - limited throughput, high $$$ per bit
+
+---
+
+- in order to succeed, SCION must work well in HW
   - throughput, cost, energy efficiency
-- the sooner we try to make a HW implementation, the earlier we can improve the
-  design to work better in HW
+- actually implementing may show opportunities for design improvement
 
 ---
+
+layout: false
 
 # What?
 
@@ -85,6 +100,8 @@ class: expanded
 
 # Contributions of this project
 
+&nbsp;
+
 1. PoC router that **forwards SCION at line rate**
 2. testing **feasibility of SCION in hardware** + enabling going faster in the future
 3. **suggestions for the SCION protocol** for better suitability for HW
@@ -101,13 +118,38 @@ FPGA design is very time-consuming, requires expertise, and changes cost a lot o
 * **looks like software** ⇒ less need for domain expertise
 
 ---
+layout: true
 
+.floatright.width50[![FPGA diagram](../img/fpga-diagram.png)]
 # How do FPGAs work?
 
-* software: sequence of instructions
-* FPGA: circuit; data moves through
+- software: sequence of arbitrary instructions
+- FPGA: fixed **circuit**; data moves through
+  - pipelining:
 
-TODO explain timing
+---
+
+.centerblock.width60[![pipelining 3 stages](../img/pipeline-3.svg)]
+
+---
+count: false
+
+.centerblock.width60[![pipelining 4 stages](../img/pipeline-4.svg)]
+
+---
+layout: false
+class: expanded
+
+.floatright.width50[![FPGA diagram](../img/fpga-diagram.png)]
+# How do FPGAs work?
+
+recurring problem in FPGA design:
+ - signal propagation speed is finite
+ - _timing constraints_: data must arrive on output on time
+ - if the circuit is too complicated, the signal propagation delay will be too large ⇒ _timing constraint violation_ ⇒ the circuit won't work
+ - delays accumulate
+
+
 
 ---
 class: center, middle, contrast
@@ -123,21 +165,72 @@ class: expanded
 
 * PCFS: path in packet header
 * every border router processes only its own *hop field*
-* checks to ensure path authorisation ⇒ AES-based MAC
+* checks to ensure path authorisation
 
 ---
 
-.center.width100[![Parts of the project](../img/scion-breakdown.svg)]
+# Path authorisation check
+
+1. check ingress interface
+2. check timestamp and expiration
+3. check MAC
+   - AES-based CMAC with AS-specific key ⇒ hop fields cannot be "invented"
+   - chained:
+
+.centerblock.width90[![HF MACs chaining](../img/macs.svg)]
+
+---
+
+class: tall
+
+# Design of the router
+
+.centerblock.width90[![Parts of the project](../img/scion-breakdown.svg)]
 
 ???
 
 * modular
-  * because easier to deal with
+  * better while developing:
+    may take a bit more time,
+    but we can reuse our work
+    and it simplifies debugging
   * swapping parts makes sense (e.g. AES or encaps)
   * because you can make other things with it
 * integrated with existing SCION infra
   * control plane
 * monitoring / metrics
+
+---
+
+# Reduce, Reuse, Recycle
+
+pretend to be a NIC:  
+expose "fake" network interfaces to the host,  
+pass packets through when they can't be handled
+
+.centerblock.width70[![control plane with DMA-based interfaces](../img/scion-controlplane.svg)]
+
+⇒ use .hl[unmodified] SW router for unhandled packets
+
+???
+⇒ error handling Solved(TM)
+⇒ iteratively move functionality into HW
+
+---
+
+class: expanded1, bg-top-right
+background-image: url(../img/bugs.png)
+# Challenges
+
+among others:
+* project building workflow:  
+  complicated, time-consuming, not automated, buggy
+* documentation: almost nonexistent and occasionally wrong
+* P4-NetFPGA scripts full of bugs
+* P4-NetFPGA compiler full of bugs
+  * ⇒ expensive workarounds needed
+    * which unearth more bugs
+      * which require more workarounds
 
 ---
 
@@ -314,6 +407,7 @@ class: expanded1
   * different compiler limitations (ahem)
 * pieces of the solution:
   * preprocessor `#define`s decouple platform from features; code depends only on features
+    * `#ifdef TARGET_SUPPORTS_PACKET_MOD` rather than `#ifdef NETFPGA`
   * our repo structure minimises work needed to add new platform
 
 ---
@@ -585,7 +679,7 @@ TODO do I have time for future work?
 .centerblock.width60[![throughput graph](../img/throughput-115B-nokey.jpg)]
 
 - SCION can be forwarded at high speeds
-- SCION header redesign will incorporate our (relatively minor) suggestions
+- SCION header redesign will incorporate our suggestions
 
 ???
 TODO not sure if I like this slide
