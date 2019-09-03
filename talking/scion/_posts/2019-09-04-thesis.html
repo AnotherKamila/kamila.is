@@ -52,7 +52,7 @@ background-image: url(../img/banner-2000px-cut.jpg)
 
 - in order to succeed, SCION must work well in HW
   - throughput, cost, energy efficiency
-- actually implementing may show opportunities for design improvement
+- actual implementation may show opportunities for design improvement
 
 ---
 
@@ -114,8 +114,11 @@ FPGA design is very time-consuming, requires expertise, and changes cost a lot o
 
 ⇒ P4: language for programming packet forwarding planes
 * **high-level** ⇒ less effort to write and maintain
-* **target-independent** ⇒ same code runs on many platforms (in theory :D)
+* **target-independent** ⇒ same code runs on many platforms
 * **looks like software** ⇒ less need for domain expertise
+
+???
+target independent --  in theory :D
 
 ---
 layout: true
@@ -149,6 +152,8 @@ recurring problem in FPGA design:
 
 signal propagation speed  
 is finite
+
+<div style="clear:both;"></div>
 
 - if the circuit is too complicated, the signal propagation delay will be too large ⇒ _timing constraint violation_ ⇒ the circuit won't work
 - delays accumulate
@@ -212,7 +217,7 @@ among others:
 * documentation: almost nonexistent and sometimes wrong
 * P4-NetFPGA scripts full of bugs
 * P4-NetFPGA compiler full of bugs
-  * ⇒ expensive workarounds needed
+  * expensive workarounds needed
       * which unearth more bugs…
 
 ???
@@ -266,11 +271,17 @@ timestamp
 
 --
 
-.doc.bug[the module must be pipelined (took a while to find out)]
+.doc.bug[the module must be pipelined (was undocumented)]
 
 --
 
 .bug[externs corrupt state ⇒ the first table after calling an extern won't work]
+
+???
+[BEFORE CLICK]: so we did that, we copied a checksum extern and stuffed an AES module into it instead, tried it, and it worked!
+But only for the first packet.
+Then we needed to reboot the host and then it would again correctly calculate AES for one packet, and then it would get stuck and need a reboot again.
+This does not scale very well.
 
 ---
 
@@ -525,6 +536,12 @@ runs at 200 MHz
 ]
 
 ---
+class: center, middle
+
+.centerblock.width20[![cross fingers icon](../img/cross-fingers.svg)]
+# .large[DEMO TIME]
+
+---
 
 class: center
 
@@ -624,22 +641,10 @@ class: center
 
 --
 
-.large[0]_?!_
-
---
-
 processing faster than line rate,  
 very even traffic distribution
 
 ⇒ no buffering :-)
-
----
-
-class: center, middle
-
-.centerblock.width20[![cross fingers icon](../img/cross-fingers.svg)]
-
-# .large[DEMO TIME]
 
 ---
 
@@ -665,7 +670,8 @@ class: expanded1
 
 * P4 suitable even for complex protocols
   * line rate by default!
-  * but: targets may not support enough of P4
+  * but: targets have notable limitations
+  * not as target-independent as we had hoped
 * P4-NetFPGA not suitable for complex things :-/
   * barely a PoC; very scarce documentation
 * FPGA-based implementations:  
