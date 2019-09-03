@@ -2,8 +2,8 @@
 title: FPGA-based line-rate packet forwarding for the SCION future Internet architecture
 venue: Master thesis defence
 ---
-
-class: center, middle, contrast
+class: center, middle, contrast, no-slide-number
+count: false
 
 # FPGA-based line-rate packet forwarding for the SCION future Internet architecture
 
@@ -12,7 +12,6 @@ Kamila Součková
 ETH Zurich, {{page.date | date: "%Y/%m/%d"}}
 
 ---
-
 class: contrast, expanded, middle, narrow
 
 1. **Intro**  
@@ -25,7 +24,8 @@ class: contrast, expanded, middle, narrow
    Implications for packet forwarding & SCION
 
 ---
-class: center, middle, contrast
+class: center, middle, contrast, no-slide-number
+count: false
 # Intro
 Why? What?
 
@@ -138,21 +138,24 @@ count: false
 
 ---
 layout: false
-class: expanded
+class: expanded1
 
 .floatright.width50[![FPGA diagram](../img/fpga-diagram.png)]
 # How do FPGAs work?
 
 recurring problem in FPGA design:
- - signal propagation speed is finite
- - _timing constraints_: data must arrive on output on time
- - if the circuit is too complicated, the signal propagation delay will be too large ⇒ _timing constraint violation_ ⇒ the circuit won't work
- - delays accumulate
 
+.floatleft.width40[![pipeline timing broken](../img/pipeline-timingfucked.svg)]
 
+signal propagation speed  
+is finite
+
+- if the circuit is too complicated, the signal propagation delay will be too large ⇒ _timing constraint violation_ ⇒ the circuit won't work
+- delays accumulate
 
 ---
-class: center, middle, contrast
+class: center, middle, contrast, no-slide-number
+count: false
 # Design & Implementation
 How?
 ---
@@ -166,18 +169,7 @@ class: expanded
 * PCFS: path in packet header
 * every border router processes only its own *hop field*
 * checks to ensure path authorisation
-
----
-
-# Path authorisation check
-
-1. check ingress interface
-2. check timestamp and expiration
-3. check MAC
-   - AES-based CMAC with AS-specific key ⇒ hop fields cannot be "invented"
-   - chained:
-
-.centerblock.width90[![HF MACs chaining](../img/macs.svg)]
+  * AES-based HF MAC
 
 ---
 
@@ -198,14 +190,41 @@ class: tall
   * because you can make other things with it
 * integrated with existing SCION infra
   * control plane
-* monitoring / metrics
+  * monitoring / metrics
+
+----------------------
+
+going to talk about 3 interesting aspects:
+- control plane
+- path authorisation check
+- parsing of SCION packet
+TODO may be worth reordering?
 
 ---
 
-# Reduce, Reuse, Recycle
+class: expanded1, bg-top-right
+background-image: url(../img/bugs.png)
+# Challenges
+
+among others:
+* project building workflow:  
+  complicated, time-consuming, not automated, buggy
+* documentation: almost nonexistent and sometimes wrong
+* P4-NetFPGA scripts full of bugs
+* P4-NetFPGA compiler full of bugs
+  * ⇒ expensive workarounds needed
+      * which unearth more bugs…
+
+???
+also:
+* it's a lot of work!
+
+---
+
+## Control plane: "Reduce, Reuse, Recycle"
 
 pretend to be a NIC:  
-expose "fake" network interfaces to the host,  
+expose network interfaces to the host,  
 pass packets through when they can't be handled
 
 .centerblock.width70[![control plane with DMA-based interfaces](../img/scion-controlplane.svg)]
@@ -218,32 +237,40 @@ pass packets through when they can't be handled
 
 ---
 
-class: expanded1, bg-top-right
-background-image: url(../img/bugs.png)
-# Challenges
+# Hop field validation
 
-among others:
-* project building workflow:  
-  complicated, time-consuming, not automated, buggy
-* documentation: almost nonexistent and occasionally wrong
-* P4-NetFPGA scripts full of bugs
-* P4-NetFPGA compiler full of bugs
-  * ⇒ expensive workarounds needed
-      * which unearth more bugs…
+1. check ingress interface
+2. check timestamp and expiration
+3. check MAC
+  - chained ⇒ checks whole path
+  - AES-CMAC with AS-specific key:  
+    subkeys + **1 AES per block**
 
----
+.centerblock.width90[![HF MACs chaining](../img/macs.svg)]
 
-TODO this part stops making sense here, ignore everything until the Results section
+???
+timestamp
 
 ---
-exclude: true
 
-# Making progress quickly: Reuse, Reduce, Recycle
+# Adding AES
 
-.center.width80.pushup[![Parts of the project](../img/scion-controlplane.svg)]
+- AES-CMAC needed for HF MAC check
+- P4 allows calling external modules through `extern` functions:  
+  ```c
+  extern void aes128(in  bit<128> key,
+  					     in  bit<128> data,
+  					     out bit<128> result);
+  ```
+- to add an extern, copy existing and poke at it :-/
 
-transparently pass unhandled packets to SW through 1:1 "fake" network interfaces (really DMA)  
-⇒ iteratively move functionality into HW
+--
+
+.doc.bug[the module must be pipelined (took a while to find out)]
+
+--
+
+.bug[externs corrupt state ⇒ the first table after calling an extern won't work]
 
 ---
 
@@ -260,7 +287,9 @@ SCION header:
 ---
 ???
 my experience with NetFPGA, this would be different with a different compiler
+
 ---
+count: false
 
 .floatright.margin0[
 First idea: Use header stacks:
@@ -275,6 +304,7 @@ struct ScionHeader_t {
 ]
 
 ---
+count: false
 
 .floatright.margin0[
 First idea: Use header stacks:
@@ -343,7 +373,25 @@ Fix: Don't even save the path: use `packet_mod`:
 
 --
 
-.red[NetFPGA requires even `packet.advance(size)` to be a compile-time constant]
+.red[NetFPGA requires `packet.advance(size)` to be a compile-time constant]
+
+---
+
+layout: true
+# Implementing the parser
+
+.light[Fix: Don't even save the path: use `packet_mod`:]
+
+---
+
+1. .light[modify NetFPGA design to use the `packet_mod`-enabled `XilinxStreamSwitch` architecture]  
+   .light[\* experimental :-)]
+2. **loop** until current to skip over hop fields with `packet.advance(HF_SIZE)`
+
+--
+
+.red.bug[loop in parser generates invalid intermediate code  
+(off-by-one in the compiler?)]
 
 --
 
@@ -351,18 +399,14 @@ Fix: Don't even save the path: use `packet_mod`:
 
 ---
 
-# Implementing the parser
-
-.light[Fix: Don't even save the path: use `packet_mod`:]
-
 1. .light[modify NetFPGA design to use the `packet_mod`-enabled `XilinxStreamSwitch` architecture]  
    .light[\* experimental :-)]
-2. .light[skip over the path with `packet.advance(size)`]
-3. **Create a lot of separate sub-parsers: one for skipping 1 HF, one for skipping 2, etc.**
+2. **Create a lot of separate sub-parsers: one for skipping 1 HF, one for skipping 2, etc.**  
    Select the correct sub-parser at runtime, but the jump size is fixed at compile time.
 
 ---
 
+layout: false
 # Implementing the parser
 
 Create a lot of separate sub-parsers: up to .hl[max length].
@@ -395,9 +439,12 @@ count: false
 ---
 count: false
 .width100[![sqrt4](../img/sqrt4.svg)]
+--
+.bottomtick[]
 ---
 layout: false
 class: expanded1
+exclude: true
 
 # Portability
 
@@ -410,28 +457,28 @@ class: expanded1
   * our repo structure minimises work needed to add new platform
 
 ---
-exclude: true
-
+layout: false
 class: expanded1
 
-# Performance / Timing
+# Area and timing constraints
 
-* at 200MHz, the timing is very tight
-* NetFPGA compiler has many bugs
-  * workarounds cost extra resources
-* complicated by P4 ⇒ HDL translation
-  * no direct control over the resulting design
+* workarounds for all the bugs very expensive:  
+  NetFPGA almost full (!)
+* at 200 MHz, timing violated
+  * originally > 6 ns, .hl[optimised down to 5.1 ns (20%)], but we need 5.0 ns
+  * further attempts just move problem around
+  * complicated by P4 ⇒ HDL translation:  
+    not much control over the resulting design
+  * 160 MHz would suffice, but changing clock is non-trivial
 
+--
 
-
-
-
-
-
+⇒ test partial designs with some features disabled
 
 
 ---
-class: center, middle, contrast
+class: center, middle, contrast, no-slide-number
+count: false
 # Results
 Throughput and packet loss
 ---
@@ -448,7 +495,8 @@ Spirent TestCenter traffic generator
 full design does not meet timing ⇒ tested:
   1. everything but updating IP overlay
   2. everything but AES
-results identical
+
+(results identical)
 
 all measurements repeatable
 
@@ -587,6 +635,14 @@ very even traffic distribution
 
 ---
 
+class: center, middle
+
+.centerblock.width20[![cross fingers icon](../img/cross-fingers.svg)]
+
+# .large[DEMO TIME]
+
+---
+
 # Analysis
 
 .centerblock.width50[![throughput graph](../img/throughput-115B-nokey.jpg)]
@@ -597,7 +653,8 @@ very even traffic distribution
 .center.hl[**⇒ SCION can be forwarded at 40 Gbps**]
 
 ---
-class: center, middle, contrast
+class: center, middle, contrast, no-slide-number
+count: false
 # What have we learned?
 Implications for packet forwarding & SCION
 ---
@@ -614,6 +671,9 @@ class: expanded1
 * FPGA-based implementations:  
   not that many limitations, but timing can be a problem
 * looking forward to more mature targets & toolchains :-)
+
+???
+plus new compiler
 
 ---
 
@@ -665,9 +725,20 @@ then [long computation 2]
 .hl[redesign in progress :-)]]
 
 ---
-TODO do I have time for future work?
----
+class: expanded1
 
+# Future work
+
+* completing features / upgrading for newer SCION
+  * redesign ⇒ changes (simplifications?)
+* researching resource usage
+  * esp. power consumption
+* other targets / higher throughput / other applications
+
+.floatleft.margin0.width48[![network monitoring system](../img/scion-nms.svg)]
+.floatright.margin0.width48[![end host with smartNIC](../img/scion-smartnic.svg)]
+
+---
 # Conclusion
 
 .light[
@@ -683,17 +754,9 @@ TODO do I have time for future work?
 ???
 TODO not sure if I like this slide
 
-
-
-
-
-
-
-
-
 ---
-
-class: contrast, center, middle
+class: center, middle, contrast, no-slide-number
+count: false
 
 # Say hi!
 
@@ -702,39 +765,3 @@ Twitter: **@anotherkamila**
 Matrix: **@kamila:unchat.cat**  
 
 .width20[![](https://chart.apis.google.com/chart?cht=qr&chs=500x500&choe=UTF-8&chld=H&chl={{site.url}}{{site.baseurl}}{{page.url}})]
-
-
-
-
-
-
-
-
-
-
-
----
-
-old SDN crap follows, don't look at this
-
----
-
-count: false
-
-.center.width100[![Parts of the project](./img/scion-breakdown.svg)]
-
----
-
-.center.width100[![NMS](./img/scion-nms.svg)]
-
-.center[Example: Network monitoring system]
-
----
-
-.center.width100[![NMS](./img/scion-smartnic.svg)]
-
-.center[Example: Special-purpose end host with a P4-capable SmartNIC]
-
-???
-
-You could have a special-purpose end host with a P4-enabled SmartNIC, and do some of the data processing straight in the NIC => use my parser and deparser in a completely different architecture
