@@ -15,9 +15,9 @@ ETH Zurich, {{page.date | date: "%Y/%m/%d"}}
 class: contrast, expanded, middle, narrow
 
 1. **Intro**  
-   Why? What?
+   Why? How?
 3. **Design & Implementation**  
-   How?
+   What?
 4. **Results**  
    Throughput and packet loss
 5. **What have we learned?**  
@@ -27,7 +27,7 @@ class: contrast, expanded, middle, narrow
 class: center, middle, contrast, no-slide-number
 count: false
 # Intro
-Why? What?
+Why? How?
 
 ---
 
@@ -45,14 +45,13 @@ background-image: url(../img/banner-2000px-cut.jpg)
 
 - already deployed in practice
   - SCIONLab, Anapaya
-- all software-based
-  - not optimised for speed
+- in order to succeed, SCION must work at line rate
+  - throughput, cost, energy efficiency
 
 ---
 
-- in order to succeed, SCION must work at line rate
-  - throughput, cost, energy efficiency
-- actual implementation may show opportunities for design improvement
+- currently all software-based
+- actual high-speed implementation may show opportunities for design improvement
 
 ---
 
@@ -91,20 +90,9 @@ methods for high-speed packet forwarding:
 .floatleft.width40.margin0[
 NetFPGA SUME:  
 4x 10GbE  
-Virtex 7 FPGA
+Virtex 7 FPGA  
+P4
 ]
-
----
-
-class: expanded
-
-# Contributions of this project
-
-&nbsp;
-
-1. PoC router that **forwards SCION at line rate**
-2. testing **feasibility of SCION in hardware** + enabling going faster in the future
-3. **suggestions for the SCION protocol** for better suitability for HW
 
 ---
 
@@ -159,10 +147,21 @@ is finite
 - delays accumulate
 
 ---
+class: expanded
+
+# Contributions of this project
+
+&nbsp;
+
+1. PoC router that **forwards SCION at line rate**
+2. testing **feasibility of SCION in hardware** + enabling going faster in the future
+3. **suggestions for the SCION protocol** for better suitability for HW
+
+---
 class: center, middle, contrast, no-slide-number
 count: false
 # Design & Implementation
-How?
+What?
 ---
 
 class: expanded
