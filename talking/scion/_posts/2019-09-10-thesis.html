@@ -730,34 +730,12 @@ then [long computation 2]
 .hl[redesign in progress :-)]]
 
 ---
-class: expanded1
-
-# Future work
-
-* completing features / upgrading for newer SCION
-  * redesign ⇒ changes (simplifications?)
-* researching resource usage
-  * esp. power consumption
-* other targets / higher throughput / other applications
-
-.floatleft.margin0.width48[![network monitoring system](../img/scion-nms.svg)]
-.floatright.margin0.width48[![end host with smartNIC](../img/scion-smartnic.svg)]
-
----
 # Conclusion
 
-.light[
-- P4-NetFPGA not suitable for complex projects
-- P4 is a useful tool, ★★★★☆ would buy again :-)
-]
-
-.centerblock.width60[![throughput graph](../img/throughput-115B-nokey.jpg)]
+.centerblock.width70[![throughput graph](../img/throughput-115B-nokey.jpg)]
 
 - SCION can be forwarded at high speeds
-- SCION header redesign will incorporate our suggestions
-
-???
-TODO not sure if I like this slide
+- upcoming header redesign will incorporate our suggestions
 
 ---
 class: center, middle, contrast, no-slide-number
@@ -770,3 +748,25 @@ Twitter: **@anotherkamila**
 Matrix: **@kamila:unchat.cat**  
 
 .width20[![](https://chart.apis.google.com/chart?cht=qr&chs=500x500&choe=UTF-8&chld=H&chl={{site.url}}{{site.baseurl}}{{page.url}})]
+
+---
+class: center, middle, contrast, no-slide-number
+count: false
+
+# Appendix
+
+---
+class: no-slide-number
+count: false
+class: expanded1
+
+# Future work
+
+* completing features / upgrading for newer SCION
+* redesign ⇒ changes (simplifications?)
+* researching resource usage
+* esp. power consumption
+* other targets / higher throughput / other applications
+
+.floatleft.margin0.width48[![network monitoring system](../img/scion-nms.svg)]
+.floatright.margin0.width48[![end host with smartNIC](../img/scion-smartnic.svg)]
