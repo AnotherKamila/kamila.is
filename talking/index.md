@@ -14,8 +14,10 @@ Also lives on GitHub: [anotherkamila/talks](https://github.com/anotherkamila/tal
 * **SCION**
   {% for post in site.categories.talking %}
   {% if post.categories contains 'scion' %}
+  {% unless post.secret %}
   * [{{post.title}}]({{post.url}})  
     {{post.venue}}, {{post.date | date: "%Y/%m/%d"}}
+  {% endunless %}
   {% endif %}
   {% endfor %}
   * multiple presentations on my HW router project (newer are hopefully better):

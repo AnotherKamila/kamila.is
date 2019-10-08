@@ -1,0 +1,340 @@
+---
+title: "SCION: a future Internet architecture that you can use today"
+venue: VIScon
+speaker: |
+    Giacomo Giuliari, Mateusz Kowalski,  
+    Juan A. Garcia Pardo, Kamila Součková
+secret: true
+---
+
+class: center, middle, contrast, narrow
+
+.displayinlineblock.width50.trans80[![SCION](../img/title.png)]
+## a future Internet architecture that you can use today
+
+&nbsp;
+
+{{page.speaker | markdownify }}
+{{page.venue}}, {{page.date | date_to_string }}
+
+---
+
+# SCION
+
+future Internet architecture  
+
+--
+
+→ changing the Internet is really hard, so… Why?
+
+--
+
+.width100[![bgp route leak article screenshot](../img/bgp-leak-article.png)]
+
+???
+
+Cloudflare, Google, Amazon, Reddit...
+
+---
+
+.width100[![bgp route leak article screenshot](../img/bgp-leak-article.png)]
+
+.pushuplots.center[
+BGP route leak from the summer  
+only one of many examples
+
+another one: about 2 months ago a lot of European traffic went through China
+]
+
+---
+
+# What is wrong with the Internet?
+
+originally a research network
+
+* access was not widespread, everyone trusted everyone
+* if it broke for a day, nobody cared
+* end hosts were slow and stupid
+
+--
+
+Today​:
+
+* many entities, they don’t trust each other
+* if it breaks for a few hours, everybody cares
+* end hosts are fast and smart, performance matters
+
+???
+
+* everyone has access and everyone has data on it
+
+---
+
+# What is wrong with the Internet?
+
+In the future:
+
+* automation ⇒ internet will really become critical infrastructure
+  * drones, self-driving cars, remote robots...
+* more and more data online ⇒ trust will be even more of an issue
+  * geofencing (requiring data to stay within the country)
+  * attacks will get harder to stop
+* more data transfers and faster hosts => network will be the bottleneck
+
+---
+
+# How does the Internet work today?
+
+.floatright.width30[![router](../img/router.jpeg)]
+
+* you write destination IP address on packet and send it off
+  * no control over **how** it gets there
+  * no possibility of using multiple paths
+* **BGP** (border gateway protocol) used to tell the *routers* how to reach the destination
+  * tables with prefix → next hop
+  * BGP announces: "this prefix goes to me"  
+    *… and everybody believes it*
+
+---
+
+# The YouTube/Pakistan incident
+
+* an ISP in Pakistan wanted to block YouTube **inside Pakistan**
+  * BGP announcement: "YouTube is here"
+* configuration error caused the announcement to go to the rest of the world  
+  _… and everybody believed it!_
+
+--
+
+.center.red[**YouTube is _not_ in Pakistan**]
+
+--
+
+.center[but today's Internet trusts everyone with everything]
+.center.light[and workarounds (RPKI, BGPsec) are insufficient]
+
+---
+
+class: middle, center
+
+**SCION** is designed for  
+**.hl[route control]**,  
+**.hl[failure isolation]**, and  
+**.hl[explicit trust information]**  
+for end-to-end communication
+
+---
+
+class: no-margins, tall
+
+# SCION
+
+_.hl[Scalability]_  
+&nbsp;  
+&nbsp;  
+
+_.hl[Control]_  
+&nbsp;  
+&nbsp;  
+
+_.hl[Isolation]_  
+&nbsp;  
+&nbsp;  
+
+_.hl[on Next-generation Networks]_  
+&nbsp;  
+&nbsp;  
+&nbsp;  
+
+---
+
+count: false
+class: no-margins, tall
+
+# SCION
+
+_.hl[Scalability]_  
+ * packet-carried forwarding state
+ * hierarchical design
+
+_.hl[Control]_  
+ * end-host selects path
+ * ISPs decide available paths
+
+_.hl[Isolation]_  
+ * Isolation Domains (failures stay within one)
+ * built-in DoS protection
+
+.hl[_on Next-generation Networks]_  
+ * new control plane & data plane (replaces IP + BGP)  
+    * endhost-controlled multipath for free :-)  
+ * provable security: protocol & code
+
+---
+
+class: expanded
+
+# Isolation Domains (ISDs)
+
+.floatright.width65[![ISDs](../img/isds.png)]
+
+* e.g. ISD ≈ country
+* PKI per ISD
+* routing within ISD independent
+
+* managed by **core ASes**: PKI, inter-ISD control plane
+* non-core ASes: only intra-ISD (simple)
+
+---
+
+class: expanded1
+
+.floatright.width50[![PCBs](../img/pcbs.png)]
+
+# Path discovery
+
+* core ASes create *path construction beacons* (PCBs) & flood
+* hierarchical:
+ * inter-ISD:  
+   among core ASes
+ * intra-ISD:  
+   only downstream
+* AS receiving beacon adds itself & forwards it
+  * ⇒ PCB contains known good path to core
+  * adds its signature ⇒ PCBs can be verified
+
+---
+
+# Path discovery
+
+* AS chooses how to extend / what to forward ⇒ enables routing policies
+* available *path segments* registered to *path servers*
+* end hosts request from path servers
+* segments combined into end-to-end paths:
+
+.center[
+.displayinlineblock.width30[![segments example 1](../img/segments1.png)]
+.displayinlineblock.width30[![segments example 2](../img/segments2.png)]
+.displayinlineblock.width30[![segments example 2](../img/segments3.png)]
+]
+
+---
+
+# Path discovery
+
+every PCB contains *hop fields* for path construction:
+
+* ingress, egress interface
+* timestamp + expiration time
+* chained cryptographic MACs with AS-specific keys ⇒ paths cannot be "invented"  
+
+.width90[![HF MACs chaining](../img/macs.svg)]
+
+---
+
+class: expanded
+
+# Packet forwarding
+
+.floatright.width60[![forwarding path packet](../img/path.png)]
+
+* path in packet header,  
+  no routing tables
+* every border router processes only its own *hop field*
+* checks to ensure path authenticity
+
+---
+
+class: circlist, expanded1
+
+.floatright.width35[![game changers](../img/gamechangers2.png)]
+
+# Secure by design
+
+1. provable security:  
+   protocol + code
+1. heterogeneous trust model:  
+   ISDs
+1. path-aware networking:  
+   client chooses path
+1. new routing + forwarding architecture:  
+   beaconing; packet-carried forwarding state
+1. built-in DDoS defence mechanisms:  
+   hidden paths; source authentication; bandwidth reservation
+
+---
+
+# Incremental deployment
+
+* SCION-IP gateway (SIG) enables legacy hosts to transparently use SCION
+* SCION over IP enables "mixed" networks
+
+.centerblock.width95[![SIG deployment](../img/sig.png)]
+
+---
+
+# Deployment status
+
+Research (SCIONLab):
+ * ISPs: Swisscom, SWITCH, KDDI, GEANT, DFN
+ * Korea: KISTI (KREONET), KU, KAIST, ETRI
+ * Deployed 50 ASes worldwide
+ * Global interest, e.g., ESA
+
+Commercial (Anapaya):
+ * ISPs: Deutsche Telekom, Swisscom, SWITCH, Init7
+ * Bank deployment: 4 major Swiss banks, some in production use
+ * Swiss government has SCION in production use
+
+---
+
+# SCIONLab: Global research network
+
+.width100[![SCIONlab infrastructure topology](../img/scionlab-topology-2019-07.png)]
+
+.center[50 infrastructure ASes + more than a hundred user ASes]
+
+---
+
+# SCION commercial development
+
+* Anapaya Systems founded in 2017 as ETH Zurich spinoff
+* current customers: banks, Swiss government, ISPs
+* tight collaboration with ETH
+
+.center[
+.width40[![Anapaya logo](../img/anapaya-logo.png)]
+
+https://www.anapaya.net
+]
+
+---
+
+# Conclusion: SCION is a disruptive technology that we can use today
+
+* many network attacks impossible by design
+  * communication guarantees in spite of DDoS attacks
+  * route hijacks by outside actors impossible
+* new security properties: geofencing, path verification, source authentication
+* improved efficiency
+  * multipath ⇒ increased bandwidth
+  * fast failover
+  * potentially cheaper & more energy-efficient HW
+* international research: CH, DE, NL, US, KR, SG…
+
+---
+
+class: expanded1
+
+# Say hi!
+
+.floatright.width20.pushup[![QR code for this presentation's URL](https://chart.apis.google.com/chart?cht=qr&chs=500x500&choe=UTF-8&chld=H&chl={{site.url}}{{site.baseurl}}{{page.url}})]
+
+* https://netsec.ethz.ch  
+Network Security Group at ETH
+* https://www.scion-architecture.net  
+book, papers, videos, tutorials
+* https://www.scionlab.org  
+* SCIONLab
+* https://github.com/scionproto/scion  
+source code
