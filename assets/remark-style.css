@@ -198,3 +198,32 @@ table.numeric-table td {
     font-size: 3em;
     color: #859900;
 }
+
+.pure-table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    empty-cells: show;
+    /* border: 1px solid #ccc; */
+    border: 0;
+}
+.pure-table thead {
+    background-color: #e0e0e0;
+    color: #000;
+    text-align: left;
+    vertical-align: bottom;
+}
+.pure-table td, .pure-table th {
+    /* border-left: 1px solid #cbcbcb; */
+    /* border-left-width: 1px; */
+    /* border-width: 0 0 0 1px; */
+    font-size: inherit;
+    margin: 0;
+    overflow: visible;
+    padding: .2em .6em;
+}
+.pure-table tr td {
+    background-color: #f2f2f2;
+}
+.pure-table tr:nth-child(even) td {
+    background-color: #e6e6e6;
+}
