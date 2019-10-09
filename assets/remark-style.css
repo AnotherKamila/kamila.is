@@ -83,6 +83,7 @@ h6 {
 .width40  {width:  40%; display: inline-block; }
 .width35  {width:  35%; display: inline-block; }
 .width30  {width:  30%; display: inline-block; }
+.width25  {width:  25%; display: inline-block; }
 .width20  {width:  20%; display: inline-block; }
 .width100 img,
 .width95  img,
@@ -97,6 +98,7 @@ h6 {
 .width40  img,
 .width35  img,
 .width30  img,
+.width25  img,
 .width20  img {
     display: inline-block;
     width: 100%;

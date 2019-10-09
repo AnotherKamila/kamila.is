@@ -43,7 +43,7 @@ Cloudflare, Google, Amazon, Reddit...
 BGP route leak from the summer  
 only one of many examples
 
-another one: about 2 months ago a lot of European traffic went through China
+another one: in June a lot of European traffic went through China
 ]
 
 ---
@@ -83,39 +83,24 @@ In the future:
 
 ---
 
+.floatright.width35[![router](../img/router.jpeg)]  
+
 # How does the Internet work today?
 
-.floatright.width30[![router](../img/router.jpeg)]
+you write destination IP address on packet and send it off
 
-* you write destination IP address on packet and send it off
-  * no control over **how** it gets there
-  * no possibility of using multiple paths
-* **BGP** (border gateway protocol) used to tell the *routers* how to reach the destination
-  * tables with prefix → next hop
-  * BGP announces: "this prefix goes to me"  
-    *… and everybody believes it*
+.floatleft.width30[![old PC](../img/old_pc.jpg)]
 
----
+* no control over **how** it gets there
+* no possibility of using multiple paths
 
-# The YouTube/Pakistan incident
+???
 
-* an ISP in Pakistan wanted to block YouTube **inside Pakistan**
-  * BGP announcement: "YouTube is here"
-* configuration error caused the announcement to go to the rest of the world  
-  _… and everybody believed it!_
-
---
-
-.center.red[**YouTube is _not_ in Pakistan**]
-
---
-
-.center[but today's Internet trusts everyone with everything]
-.center.light[and workarounds (RPKI, BGPsec) are insufficient]
+there was bgp stuff here, and the pakistan thing, but maybe I won't even mention it?
 
 ---
 
-class: middle, center
+class: bottom, center
 
 **SCION** is designed for  
 **.hl[route control]**,  
@@ -123,69 +108,27 @@ class: middle, center
 **.hl[explicit trust information]**  
 for end-to-end communication
 
----
+&nbsp;
 
-class: no-margins, tall
-
-# SCION
-
-_.hl[Scalability]_  
-&nbsp;  
-&nbsp;  
-
-_.hl[Control]_  
-&nbsp;  
-&nbsp;  
-
-_.hl[Isolation]_  
-&nbsp;  
-&nbsp;  
-
-_.hl[on Next-generation Networks]_  
-&nbsp;  
-&nbsp;  
-&nbsp;  
+.floatleft.width60[![end host knows the map](../img/host_knows_map.jpg)]
 
 ---
 
-count: false
-class: no-margins, tall
-
-# SCION
-
-_.hl[Scalability]_  
- * packet-carried forwarding state
- * hierarchical design
-
-_.hl[Control]_  
- * end-host selects path
- * ISPs decide available paths
-
-_.hl[Isolation]_  
- * Isolation Domains (failures stay within one)
- * built-in DoS protection
-
-.hl[_on Next-generation Networks]_  
- * new control plane & data plane (replaces IP + BGP)  
-    * endhost-controlled multipath for free :-)  
- * provable security: protocol & code
-
----
-
-class: expanded
+class: expanded1
 
 # Isolation Domains (ISDs)
 
-.floatright.width65[![ISDs](../img/isds.png)]
+.floatright.width60[![ISDs](../img/isds.png)]
 
 * e.g. ISD ≈ country
-* PKI per ISD
+* trust is per ISD
+  * routing, certificates, DNS, etc.
 * routing within ISD independent
-
-* managed by **core ASes**: PKI, inter-ISD control plane
-* non-core ASes: only intra-ISD (simple)
+  * malicious actors outside of your ISD cannot do anything
 
 ---
+
+exclude: true
 
 class: expanded1
 
@@ -205,12 +148,32 @@ class: expanded1
 
 ---
 
+exclude: true
+
 # Path discovery
 
 * AS chooses how to extend / what to forward ⇒ enables routing policies
 * available *path segments* registered to *path servers*
 * end hosts request from path servers
 * segments combined into end-to-end paths:
+
+---
+
+# Path awareness
+
+* you choose the path, write it on the packet
+* routers just follow the instructions ⇒ more efficient
+  * efficient cryptographic checks to ensure that you are allowed to use this path
+* multipath Just Works™
+
+.center[
+.displayinlineblock.width25[![segments example 2](../img/segments2.png)]
+.displayinlineblock.width25[![segments example 2](../img/segments3.png)]
+.displayinlineblock.width25[![segments example 1](../img/segments1.png)]
+]
+
+???
+allowed to use this path: for DDoS defence and policy compliance and traffic engineering
 
 .center[
 .displayinlineblock.width30[![segments example 1](../img/segments1.png)]
@@ -219,6 +182,8 @@ class: expanded1
 ]
 
 ---
+
+exclude: true
 
 # Path discovery
 
@@ -232,6 +197,7 @@ every PCB contains *hop fields* for path construction:
 
 ---
 
+exclude: true
 class: expanded
 
 # Packet forwarding
@@ -245,6 +211,7 @@ class: expanded
 
 ---
 
+exclude: true
 class: circlist, expanded1
 
 .floatright.width35[![game changers](../img/gamechangers2.png)]
@@ -264,6 +231,7 @@ class: circlist, expanded1
 
 ---
 
+exclude: true
 # Incremental deployment
 
 * SCION-IP gateway (SIG) enables legacy hosts to transparently use SCION
@@ -273,33 +241,36 @@ class: circlist, expanded1
 
 ---
 
+exclude: true
 # Deployment status
 
-Research (SCIONLab):
- * ISPs: Swisscom, SWITCH, KDDI, GEANT, DFN
- * Korea: KISTI (KREONET), KU, KAIST, ETRI
- * Deployed 50 ASes worldwide
- * Global interest, e.g., ESA
-
-Commercial (Anapaya):
- * ISPs: Deutsche Telekom, Swisscom, SWITCH, Init7
- * Bank deployment: 4 major Swiss banks, some in production use
- * Swiss government has SCION in production use
+* incremental deployment possible
+  * backward compatibility with IP
+  * possibility to reuse infrastructure
+* research (SCIONLab):
+  * ISPs: Swisscom, SWITCH, KDDI, GEANT, DFN
+  * Deployed 50 ASes worldwide
+  * Global interest, e.g., ESA
+* commercial (Anapaya):
+  * ISPs: Deutsche Telekom, Swisscom, SWITCH, Init7
+  * Bank deployment: 4 major Swiss banks, some in production use
+  * Swiss government has SCION in production use
 
 ---
 
-# SCIONLab: Global research network
+# SCIONLab research network
 
 .width100[![SCIONlab infrastructure topology](../img/scionlab-topology-2019-07.png)]
 
-.center[50 infrastructure ASes + more than a hundred user ASes]
+.center[50 points of presence + more than a hundred user ASes]
+.center[world-wide collaboration: universities, ISPs, others]
 
 ---
 
 # SCION commercial development
 
 * Anapaya Systems founded in 2017 as ETH Zurich spinoff
-* current customers: banks, Swiss government, ISPs
+* current customers: multiple banks, ISPs, and more
 * tight collaboration with ETH
 
 .center[
@@ -307,20 +278,6 @@ Commercial (Anapaya):
 
 https://www.anapaya.net
 ]
-
----
-
-# Conclusion: SCION is a disruptive technology that we can use today
-
-* many network attacks impossible by design
-  * communication guarantees in spite of DDoS attacks
-  * route hijacks by outside actors impossible
-* new security properties: geofencing, path verification, source authentication
-* improved efficiency
-  * multipath ⇒ increased bandwidth
-  * fast failover
-  * potentially cheaper & more energy-efficient HW
-* international research: CH, DE, NL, US, KR, SG…
 
 ---
 
@@ -338,3 +295,18 @@ book, papers, videos, tutorials
 * SCIONLab
 * https://github.com/scionproto/scion  
 source code
+
+---
+
+# SCION: future Internet that you can use today
+
+* security:  
+  path control, explicit trust, isolation domains
+* availability + performance:  
+  path control by end host, multipath
+
+&nbsp;
+
+--
+
+.center.hl.large[**Now it's your turn!**]
