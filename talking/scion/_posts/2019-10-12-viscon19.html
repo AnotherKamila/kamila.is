@@ -299,28 +299,30 @@ source code
 
 # SCION: future Internet that you can use today
 
-.centerblock.pure-table[
+.centerblock.pure-table.small[
 |                                  | IP+BGP        | SCION         |
 | -------------------------------- |:-------------:|:-------------:|
-| path control + geofencing        | ✗             | ✓             |
-| explicit trust                   | ✗             | ✓             |
-| high scalability of network      | ✗             | ✓             |
-| high availability, fast failover | ✗             | ✓             |
+| path control + geofencing        | throw and pray | you select path             |
+| trust model                      | all or nothing | explicit trust |
+| scalability of network           | routing tables full | ✓             |
+| availability / failover behaviour | slow convergence | no convergence             |
 | path selection + multipath       | ✗             | ✓             |
+| used by applications        | ✓             | ✗             |
 ]
 
 ---
 
 # SCION: future Internet that you can use today
 
-.centerblock.pure-table[
+.centerblock.pure-table.small[
 |                                  | IP+BGP        | SCION         |
 | -------------------------------- |:-------------:|:-------------:|
-| path control + geofencing        | ✗             | ✓             |
-| explicit trust                   | ✗             | ✓             |
-| high scalability of network      | ✗             | ✓             |
-| high availability, fast failover | ✗             | ✓             |
-| .hl[path selection + multipath]  | ✗             | **✓**         |
+| path control + geofencing        | throw and pray | you select path             |
+| trust model                      | all or nothing | explicit trust |
+| scalability of network           | routing tables full | ✓             |
+| availability / failover behaviour | slow convergence | no convergence             |
+| .hl[path selection + multipath]  | ✗             | ✓         |
+| .hl[used by applications]       | ✓             | ✗             |
 ]
 
 .center.hl.large[**Now it's your turn!**]
