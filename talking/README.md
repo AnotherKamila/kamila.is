@@ -1,9 +1,4 @@
-Slides for some of the talks I gave in various places.
-
-* **[FreeBSD](freebsd)**
-  * [FreeBSD for Linux Refugees](to-linux-refugees)
-* **Security**
-  * [Paper Overview: A Comprehensive Formal Security Analysis of OAuth 2.0](oauth)
+Slides for some of the talks I gave in various places. Viewable at [kamila.is/talking](https://kamila.is/talking).
 
 ## License
 
