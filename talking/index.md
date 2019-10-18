@@ -9,8 +9,6 @@ layout: default
 
 Slides for some of the talks I gave in various places.
 
-Also lives on GitHub: [anotherkamila/talks](https://github.com/anotherkamila/talks).
-
 * **SCION**
   {% for post in site.categories.talking %}
   {% if post.categories contains 'scion' %}
