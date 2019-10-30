@@ -1,5 +1,4 @@
 ---
-my_base: kalerab {{page.url}}
 ---
 <!DOCTYPE html>
 <html>
@@ -10,9 +9,6 @@ my_base: kalerab {{page.url}}
     <!-- <link rel="stylesheet" href="asciinema-player.css" /> -->
   </head>
   <body>
-    {% capture my_base %}
-      kalerab
-    {% endcapture %}
     <textarea id="source">{{content}}</textarea>
 
     <script src="{{site.baseurl}}/assets/remark-{{page.date | date: '%Y'}}.min.js" type="text/javascript"></script>

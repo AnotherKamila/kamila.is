@@ -1,0 +1,27 @@
+/* inconsolata-regular - latin */
+@font-face {
+  font-family: 'Inconsolata';
+  font-style: normal;
+  font-weight: 400;
+  src: url('inconsolata-v18-latin-regular.eot'); /* IE9 Compat Modes */
+  src: local('Inconsolata Regular'), local('Inconsolata-Regular'),
+       url('inconsolata-v18-latin-regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('inconsolata-v18-latin-regular.woff2') format('woff2'), /* Super Modern Browsers */
+       url('inconsolata-v18-latin-regular.woff') format('woff'), /* Modern Browsers */
+       url('inconsolata-v18-latin-regular.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('inconsolata-v18-latin-regular.svg#Inconsolata') format('svg'); /* Legacy iOS */
+}
+
+/* inconsolata-700 - latin */
+@font-face {
+  font-family: 'Inconsolata';
+  font-style: normal;
+  font-weight: 700;
+  src: url('inconsolata-v18-latin-700.eot'); /* IE9 Compat Modes */
+  src: local('Inconsolata Bold'), local('Inconsolata-Bold'),
+       url('inconsolata-v18-latin-700.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+       url('inconsolata-v18-latin-700.woff2') format('woff2'), /* Super Modern Browsers */
+       url('inconsolata-v18-latin-700.woff') format('woff'), /* Modern Browsers */
+       url('inconsolata-v18-latin-700.ttf') format('truetype'), /* Safari, Android, iOS */
+       url('inconsolata-v18-latin-700.svg#Inconsolata') format('svg'); /* Legacy iOS */
+}
