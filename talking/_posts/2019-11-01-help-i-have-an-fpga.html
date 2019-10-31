@@ -1,0 +1,403 @@
+---
+title: "Help! They bought me an FPGA and now I have to make it do something!"
+---
+class: center, middle, contrast, no-slide-number
+count: false
+
+# Help!
+## They bought me an FPGA and now I have to make it do something!
+
+Kamila Součková  
+{{page.date | date: "%Y/%m/%d"}}
+
+---
+exclude: true
+class: contrast, expanded, middle, narrow
+
+1. **Intro**  
+   Why? How?
+3. **Design & Implementation**  
+   What?
+4. **Results**  
+   Throughput and packet loss
+5. **What have we learned?**  
+   Implications for packet forwarding & SCION
+
+---
+exclude: true
+class: center, middle, contrast, no-slide-number
+count: false
+# Intro
+Why? How?
+
+---
+
+layout: true
+class: bg-top
+background-image: url(/media/banner-2000px-cut.jpg)
+
+# .white[Why?]
+
+<div style="margin: -0.6em 0 5.3em 0;">
+.centerblock.width60[![SCION](/media/badge-white.png)]
+</div>
+
+---
+
+To go beyond research at universities, it must work in HW:  
+throughput, cost, energy efficiency
+
+⇒ make sure that it can be done; improve protocol design before it's too late
+
+???
+
+We have a network protocol, and it appears to have survived initial contact with reality (which is cool, and I might make a BOF about it later).
+
+---
+
+layout: false
+
+# What?
+
+methods for high-speed packet forwarding:
+
+.centerblock.width80[![Methods for high-speed packet forwarding](/media/high-speed-packet-forwarding.svg)]
+
+???
+
+We have a software implementation, but that one can do less than 1Gbps. It's in userspace, so there's lots of opportunities for improving while staying in software, but... In order to be taken seriously e.g. by ISPs, we need to go up at least 3 orders of magnitude.
+
+Tricks like eBPF or DPDK can get us about one order of magnitude, possibly two, but beyond that a CPU won't really work.
+
+---
+
+count: false
+
+# What?
+
+methods for high-speed packet forwarding:
+
+.centerblock.width80[![Methods for high-speed packet forwarding](/media/high-speed-packet-forwarding-SCION.svg)]
+
+---
+
+count: false
+
+# What?
+
+methods for high-speed packet forwarding:
+
+.centerblock.width80[![Methods for high-speed packet forwarding](/media/high-speed-packet-forwarding-FPGA.svg)]
+
+--
+
+.floatleft.width50[![netfpga](/media/netfpga.png)]
+
+.floatleft.width40.margin0[
+NetFPGA SUME:  
+4x 10GbE  
+Virtex 7 FPGA  
+P4
+]
+
+---
+layout: true
+
+.floatright.width50[![FPGA diagram](/media/fpga-diagram.png)]
+# How do FPGAs work?
+
+- software: sequence of arbitrary instructions
+- FPGA: **fixed** circuit; data moves  
+  ⇒ "think in space, not in time"
+
+---
+
+pipelining:
+
+.centerblock.width60[![pipelining 3 stages](/media/pipeline-3.svg)]
+
+---
+count: false
+
+pipelining:
+
+.centerblock.width60[![pipelining 4 stages](/media/pipeline-4.svg)]
+
+---
+layout: false
+class: expanded1
+
+.floatright.width50[![FPGA diagram](/media/fpga-diagram.png)]
+# How do FPGAs work?
+
+the hardest thing about FPGA design:
+
+.floatleft.width40[![pipeline timing broken](/media/pipeline-timingfucked.svg)]
+
+signal propagation speed  
+is finite
+
+<div style="clear:both;"></div>
+
+- _timing constraint violation_ ⇒ the circuit won't work
+- delays accumulate
+
+---
+
+# How do you program FPGAs?
+
+1. *Logic description*: "source code"  
+   .light[write some VHDL / Verilog / higher-level language]
+2. *Netlist generation*: connect all the modules  
+   .light[put together my code and Ethernet PHY]
+3. *Synthesis*: Take step 2 and "compile" it into gates  
+   .light[kinda sorta like assembly]
+4. *Implementation*: place & route the gate-level logic  
+   .light[final design; now you can check timing]
+5. *Generating the bitfile*: create a binary for the FPGA  
+   .light[encodes the cell configuration]
+6. *Configuring the FPGA*: "flashing" the bitfile  
+   .light[the FPGA's bootloader will pick it up]
+
+---
+
+class: center, middle, contrast, no-slide-number
+count: false
+
+# Making an FPGA router
+### (for a somewhat weird network protocol)
+
+_tricks, challenges, lessons learned_
+
+---
+
+class: expanded1, bg-top-right
+background-image: url(/media/bugs.png)
+# Challenges
+
+besides the SCION-specific ones, some general ones:
+* P4-NetFPGA compiler and scripts full of bugs
+  * expensive workarounds needed
+    * which unearth more bugs…
+* timing (of course) and area (wut?!)
+* it's a lot of work!
+
+???
+
+---
+# High-level synthesis
+
+FPGA design is very time-consuming, requires expertise, and changes cost a lot of effort
+
+⇒ P4: new language for programming packet forwarding planes
+* **high-level** ⇒ less effort to write and maintain
+* **target-independent** ⇒ same code runs on many platforms
+* **looks like software** ⇒ less need for domain expertise
+
+???
+target independent --  in theory :D
+
+---
+
+# Reduce, Reuse, Recycle
+
+pretend to be a NIC:  
+expose network interfaces to the host,  
+pass packets through to SW when they can't be handled
+
+.centerblock.width70[![control plane with DMA-based interfaces](/media/scion-controlplane.svg)]
+
+⇒ use .hl[unmodified] SW router for unhandled packets
+
+???
+⇒ error handling Solved(TM)
+⇒ iteratively move functionality into HW
+
+---
+# TODO shorten the following!
+
+---
+
+# Implementing the parser
+
+SCION header:
+
+.floatleft.margin0[
+![header stack](/media/header-stack.svg)
+]
+
+.floatright.margin0.red[
+NetFPGA compiler breaks in many weird and wonderful ways on anything with variable lengths
+]
+
+--
+
+.floatright.margin0.red[
+Therefore...
+]
+
+--
+
+???
+my experience with NetFPGA, this would be different with a different compiler
+spent way too much time trying to find workarounds and encountering bugs in the workarounds
+(including an off-by-one in the compiler :D)
+
+---
+layout: true
+
+# Implementing the parser
+
+**Create a lot of separate sub-parsers: one for skipping 1 HF, one for skipping 2, etc.**  
+Select the correct sub-parser at runtime, but the jump size is fixed at compile time.
+
+---
+count: false
+
+Fix: Two stages of max length 8:
+
+---
+count: false
+.width100[![sqrt1](/media/sqrt1.svg)]
+---
+count: false
+.width100[![sqrt2](/media/sqrt2.svg)]
+---
+count: false
+.width100[![sqrt3](/media/sqrt3.svg)]
+---
+count: false
+.width100[![sqrt4](/media/sqrt4.svg)]
+--
+.bottomtick[]
+
+???
+
+TODO moral to the story:
+2-stage thing is a deeper circuit, but has better timing results because FPGA is less full and thus the place&route can do a better job
+
+---
+layout: false
+class: expanded1
+exclude: true
+
+# Portability
+
+* P4 should be target-independent, but…
+  * different externs
+  * different compiler limitations (ahem)
+* pieces of the solution:
+  * preprocessor `#define`s decouple platform from features; code depends only on features
+    * `#ifdef TARGET_SUPPORTS_PACKET_MOD` rather than `#ifdef NETFPGA`
+  * our repo structure minimises work needed to add new platform
+
+---
+layout: false
+class: tall
+
+# Area and timing constraints
+
+.centerblock.width80[![Design of the router](/media/scion-breakdown.svg)]
+
+inherent complexity + workarounds for bugs ⇒ NetFPGA almost full (!)
+* at 200 MHz, timing violated
+* complicated by P4 ⇒ HDL translation
+
+???
+TODO would be cute to add a "bug" to the picture in places
+
+---
+
+class: center, middle, contrast, no-slide-number
+count: false
+# What have we learned?
+Implications for packet forwarding & SCION
+---
+
+class: expanded1
+
+# High-speed packet processing
+
+* P4 suitable even for complex protocols
+  * line rate by default!
+  * but: targets have notable limitations
+  * not as target-independent as we had hoped
+* P4-NetFPGA not suitable for complex things :-/
+  * barely a PoC; very scarce documentation
+  * hopefully we'll have more mature targets & toolchains soon
+* FPGA-based implementations:  
+  not that many limitations, but timing can be a problem
+
+???
+plus new compiler
+
+---
+
+class: expanded1
+
+# Meeting timing
+
+* find critical path (how depends on toolchain)
+* careful with data dependencies:  
+  delays accumulate
+  * CAM tables are somewhat expensive
+  * rewrite code like this:
+
+<div style="clear: both;"></div>
+<div style="position: relative; margin: -1em auto; width: 90%;">
+.floatleft[
+```sh
+if [long computation 1]
+then [long computation 2]
+```
+]
+.floatright[
+```sh
+[long computation 1];
+[long computation 2];
+[combine the results]    
+```
+]
+    <div style="position: absolute; top: 1.4em; left: 52.5%;">⇒</div>
+</div>
+<div style="clear: both; margin-bottom: -1em;"></div>
+
+---
+# Improving the SCION protocol
+
+* <strike>avoid state on routers, require few table lookups</strike> ✓
+* define maximum sizes: path length, HF size
+* avoid variable lengths
+    * alignment is good ✓
+    * HF "continue" flag should be removed
+* make things explicit
+    * include host address length in header
+* consider re-thinking MAC chaining
+    * further research into the tradeoffs is needed
+
+---
+
+# If I had a time machine...
+
+- complete PoC first, production maybe later  
+  (effort in the wrong places ⇒ I started hating the thing before I even polished the PoC)
+- **do** use P4: it is a surprisingly good abstraction
+- I'd get paid for it :D
+
+???
+- I would not aim at "production" before I have a prototype that guarantees that the basic functionality can actually work, because by the time I got to the end of the thing I was so burned out and full of hate that I didn't even polish the PoC :D
+  - if I could know it in advance, I would not put my degree and pride in the hands of a horribly broken toolchain (but I'm not sure I could have known)
+- I would still stick with P4 / HLS (esp. if I could have a better toolchain), because my network protocol is complex and P4 is a surprisingly useful abstraction that saved me a lot of effort and nerves
+
+---
+# EOF
+
+.centerblock.width70[![throughput graph](/media/throughput-115B-nokey.jpg)]
+
+.floatleft[
+Email: **me&#064;&#107;&#097;&#109;&#105;&#108;&#097;&#046;&#105;&#115;**  
+Twitter: **@anotherkamila**  
+Matrix: **@kamila:unchat.cat**  
+]
+
+.floatright.width20[![](https://chart.apis.google.com/chart?cht=qr&chs=500x500&choe=UTF-8&chld=H&chl={{site.url}}{{site.baseurl}}{{page.url}})]
