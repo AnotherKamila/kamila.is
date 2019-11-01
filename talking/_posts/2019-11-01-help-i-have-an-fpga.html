@@ -143,21 +143,21 @@ is finite
 - delays accumulate
 
 ---
+class: expanded
 
-# How do you program FPGAs?
+# How do you program an FPGA?
 
-1. *Logic description*: "source code"  
-   .light[write some VHDL / Verilog / higher-level language]
-2. *Netlist generation*: connect all the modules  
-   .light[put together my code and Ethernet PHY]
-3. *Synthesis*: Take step 2 and "compile" it into gates  
-   .light[kinda sorta like assembly]
-4. *Implementation*: place & route the gate-level logic  
-   .light[final design; now you can check timing]
-5. *Generating the bitfile*: create a binary for the FPGA  
-   .light[encodes the cell configuration]
-6. *Configuring the FPGA*: "flashing" the bitfile  
-   .light[the FPGA's bootloader will pick it up]
+&nbsp;
+
+1. Logic description .light[ // "source code"]
+2. Netlist generation .light[ // connect all the modules]
+3. Synthesis .light[ // "compile" into gates]
+4. Implementation .light[ // place & route the stuff on the FPGA]
+5. Generating the bitfile .light[ // create a binary for the FPGA]
+6. Configuring the FPGA .light[ // "flash" the bitfile]
+
+???
+the FPGA's bootloader will pick it up
 
 ---
 
@@ -175,7 +175,8 @@ class: expanded1, bg-top-right
 background-image: url(/media/bugs.png)
 # Challenges
 
-besides the SCION-specific ones, some general ones:
+some SCION-specific ones,  
+some general ones:
 * P4-NetFPGA compiler and scripts full of bugs
   * expensive workarounds needed
     * which unearth more bugs…
@@ -214,9 +215,6 @@ pass packets through to SW when they can't be handled
 ⇒ iteratively move functionality into HW
 
 ---
-# TODO shorten the following!
-
----
 
 # Implementing the parser
 
@@ -226,17 +224,12 @@ SCION header:
 ![header stack](/media/header-stack.svg)
 ]
 
-.floatright.margin0.red[
-NetFPGA compiler breaks in many weird and wonderful ways on anything with variable lengths
-]
-
 --
 
-.floatright.margin0.red[
-Therefore...
+.floatright.margin0.width60.red[
+NetFPGA compiler breaks in many weird and wonderful ways  
+on anything with variable lengths
 ]
-
---
 
 ???
 my experience with NetFPGA, this would be different with a different compiler
@@ -248,13 +241,13 @@ layout: true
 
 # Implementing the parser
 
-**Create a lot of separate sub-parsers: one for skipping 1 HF, one for skipping 2, etc.**  
+⇒ **Create a lot of separate sub-parsers: one for skipping 1 field, one for skipping 2, etc.**  
 Select the correct sub-parser at runtime, but the jump size is fixed at compile time.
 
 ---
-count: false
 
-Fix: Two stages of max length 8:
+Problem: "Reasonably long paths" are at least 64 fields.  
+⇒ Requires a lot of FPGA area + RAM to build it.
 
 ---
 count: false
@@ -297,15 +290,45 @@ class: tall
 
 # Area and timing constraints
 
-.centerblock.width80[![Design of the router](/media/scion-breakdown.svg)]
+.centerblock.width70[![Design of the router](/media/scion-breakdown.svg)]
 
-inherent complexity + workarounds for bugs ⇒ NetFPGA almost full (!)
-* at 200 MHz, timing violated
-* complicated by P4 ⇒ HDL translation
+inherent complexity + workarounds for bugs ⇒ NetFPGA almost full (!) ⇒ at 200 MHz timing violated
 
 ???
+fixing timing complicated by P4 ⇒ HDL translation
+
 TODO would be cute to add a "bug" to the picture in places
 
+---
+
+class: expanded1
+
+# Meeting timing
+
+* find critical path
+* careful with data dependencies:  
+delays accumulate
+* CAM tables are somewhat expensive
+* rewrite code like this:
+
+<div style="clear: both;"></div>
+<div style="position: relative; margin: -1em auto; width: 90%;">
+.floatleft[
+```sh
+if [long computation 1]
+then [long computation 2]
+```
+]
+.floatright[
+```sh
+[long computation 1];
+[long computation 2];
+[combine the results]    
+```
+]
+<div style="position: absolute; top: 1.4em; left: 52.5%;">⇒</div>
+</div>
+<div style="clear: both; margin-bottom: -1em;"></div>
 ---
 
 class: center, middle, contrast, no-slide-number
@@ -326,41 +349,11 @@ class: expanded1
   * barely a PoC; very scarce documentation
   * hopefully we'll have more mature targets & toolchains soon
 * FPGA-based implementations:  
-  not that many limitations, but timing can be a problem
+  not that limited, though timing can be a problem
 
 ???
 plus new compiler
 
----
-
-class: expanded1
-
-# Meeting timing
-
-* find critical path (how depends on toolchain)
-* careful with data dependencies:  
-  delays accumulate
-  * CAM tables are somewhat expensive
-  * rewrite code like this:
-
-<div style="clear: both;"></div>
-<div style="position: relative; margin: -1em auto; width: 90%;">
-.floatleft[
-```sh
-if [long computation 1]
-then [long computation 2]
-```
-]
-.floatright[
-```sh
-[long computation 1];
-[long computation 2];
-[combine the results]    
-```
-]
-    <div style="position: absolute; top: 1.4em; left: 52.5%;">⇒</div>
-</div>
-<div style="clear: both; margin-bottom: -1em;"></div>
 
 ---
 # Improving the SCION protocol
@@ -369,19 +362,25 @@ then [long computation 2]
 * define maximum sizes: path length, HF size
 * avoid variable lengths
     * alignment is good ✓
-    * HF "continue" flag should be removed
+    * explicit lengths instead of "continue" flags
 * make things explicit
-    * include host address length in header
-* consider re-thinking MAC chaining
-    * further research into the tradeoffs is needed
+    * the header now has an addr type enum but no length ⇒ fix that
+* re-think how to achieve our security properties:  
+needing "usually" 1 AES core and "occasionally" 2 is silly, because you always pay for 2
 
 ---
 
+class: expanded1
+
 # If I had a time machine...
 
-- complete PoC first, production maybe later  
+&nbsp;
+
+- I'd complete PoC first, production maybe later  
   (effort in the wrong places ⇒ I started hating the thing before I even polished the PoC)
-- **do** use P4: it is a surprisingly good abstraction
+- I **would** use P4:
+  - a surprisingly good abstraction
+  - line rate by default
 - I'd get paid for it :D
 
 ???
@@ -390,14 +389,10 @@ then [long computation 2]
 - I would still stick with P4 / HLS (esp. if I could have a better toolchain), because my network protocol is complex and P4 is a surprisingly useful abstraction that saved me a lot of effort and nerves
 
 ---
+
+.floatright.width15[![](https://chart.apis.google.com/chart?cht=qr&chs=500x500&choe=UTF-8&chld=H&chl={{site.url}}{{site.baseurl}}{{page.url}})]
+
 # EOF
 
-.centerblock.width70[![throughput graph](/media/throughput-115B-nokey.jpg)]
+.centerblock.width100[![throughput graph](/media/throughput-115B-nokey.jpg)]
 
-.floatleft[
-Email: **me&#064;&#107;&#097;&#109;&#105;&#108;&#097;&#046;&#105;&#115;**  
-Twitter: **@anotherkamila**  
-Matrix: **@kamila:unchat.cat**  
-]
-
-.floatright.width20[![](https://chart.apis.google.com/chart?cht=qr&chs=500x500&choe=UTF-8&chld=H&chl={{site.url}}{{site.baseurl}}{{page.url}})]
