@@ -1,5 +1,5 @@
 ---
-title: "Kamila is working at ETH Zurich (sometimes)**
+title: "Kamila is working at ETH Zurich (sometimes)"
 canonical_url: /working
 ---
 
