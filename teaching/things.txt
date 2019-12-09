@@ -6,8 +6,8 @@ Things I might be able to teach
   * ZFS
   * PF
 * SRE stuff:
-  * SRE crash course (monitoring, automation, incident management)
-  * monitoring: what, why, how (Prometheus)
+  * SRE crash course (concepts, monitoring, automation, incident management)
+  * monitoring: what, why, how (+ Prometheus)
   * system design workshop
 * software engineering stuff:
   * something about software design
