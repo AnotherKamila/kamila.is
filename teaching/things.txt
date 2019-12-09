@@ -1,0 +1,16 @@
+Things I might be able to teach
+===============================
+
+* FreeBSD stuff:
+  * system administration
+  * ZFS
+  * PF
+* SRE stuff:
+  * SRE crash course (monitoring, automation, incident management)
+  * monitoring: what, why, how (Prometheus)
+  * system design workshop
+* software engineering stuff:
+  * something about software design
+  * level up in Python
+  * how do operating systems really work?
+  * how to write a (FreeBSD) kernel module
