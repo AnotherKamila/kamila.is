@@ -1,7 +1,7 @@
 name: Kamila Součková
 photo: /me/me.jpg
-tagline: I identify problems in systems before they eat your product, your kids and your family dog.
-email: kamila@ksp.sk
+tagline: I identify problems in systems before they eat your time, your product, and your family dog.
+email: me@kamila.is
 phone: +44 7937 974 542
 website: https://kamila.is
 location: Zurich, Switzerland
@@ -11,16 +11,18 @@ sections:
   - education
   - skills
   - awards
-  - free_time
+  # - free_time
 
 data:
   experience:
     title: Work & Volunteer Experience
     items:
-      - 2018: |
-          - Head of Site Reliability Engineering for [Data Center Light](http://datacenterlight.ch) at [ungleich](http://www.ungleich.ch/)
-      - summer 2015: Site Reliability Engineering intern at Google Switzerland
-      - summer 2014: Site Reliability Engineering intern at Google Switzerland
+      - 2019: |
+          Research Engineer, SRE at Network Security Group, ETH Zurich  
+          design and operations of the [SCIONLab](https://scionlab.org) global research network
+      - 2018: Head of Site Reliability Engineering for [Data Center Light](http://datacenterlight.ch) at [ungleich](http://www.ungleich.ch/)
+      - summer 2015: Site Reliability Engineering intern at Google Switzerland (Borg SRE)
+      - summer 2014: Site Reliability Engineering intern at Google Switzerland (Payments SRE)
       - 2014–2017: |
           - contributed to the [Student Development Team](https://github.com/fmfi-svt) at my university (development and server administration)
           - designed and developed the backend of an in-house solution for an RFID-based access control system ([https://github.com/fmfi-svt-deadlock](https://github.com/fmfi-svt-deadlock))
@@ -34,9 +36,9 @@ data:
   education:
     title: Education
     items:
-      - 2016–present: |
-          Department of Computer Science, ETH Zurich, Switzerland: graduation with with MSc. expected in 2019  
-          Thesis topic: Implementing the SCION next-generation Internet protocol with Software-Defined Networking: hardware-software co-design, work across the whole network stack
+      - 2016–2019: |
+          Department of Computer Science, ETH Zurich, Switzerland: MSc Computer Science, focus Information Security  
+          Thesis topic: FPGA-based line-rate packet forwarding for the SCION future Internet architecture – hardware-software co-design, work across the whole network stack, SDN (with P4); achieved 40Gbps throughput
       - 2013–2016: |
           Department of Computer Science, Faculty of Mathematics, Physics and Informatics, Comenius University in Bratislava, Slovakia: BSc.
 
@@ -44,7 +46,7 @@ data:
     title: Skills
     text: |
         - quick at absorbing information and learning new things
-        - enjoy system design with emphasis on reliability, scalability and correctness
+        - system design with emphasis on reliability, scalability and correctness
         - security-conscious
         - algorithmic skills
         - languages: English (fluent), Slovak (native speaker), Czech (fluent), German (basic)
