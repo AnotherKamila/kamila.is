@@ -8,14 +8,17 @@ Things I might be able to teach
 * FreeBSD stuff:
   * ZFS
   * PF
+* networking
+  * how exactly does routing work?
 * software engineering stuff:
   * something about software design
   * level up in Python
   * systems programming:
     * how do operating systems really work?
     * how to write a (FreeBSD) kernel module
+* Software Defined Networking / programmable switches with P4: learn the P4 language + real-world deployment
 * basics
   * Linux/BSD system administration
   * programming (Python, C, C++, ask me about other languages)
     * web applications workshop (front-end and back-end; ask me about languages/frameworks)
-  * software engineering practices: version control, testing, documentation
+  * software engineering practices: version control, testing, CI/CD, documentation
