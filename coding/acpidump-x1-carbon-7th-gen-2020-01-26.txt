@@ -1,0 +1,467 @@
+/*
+  RSD PTR: OEM=LENOVO, ACPI_Rev=2.0x (2)
+	XSDT=0x000000006fd0c188, length=36, cksum=84
+ */
+/*
+  XSDT: Length=276, Revision=1, Checksum=182,
+	OEMID=LENOVO, OEM Table ID=TP-N2H, OEM Revision=0x1260,
+	Creator ID=PTEC, Creator Revision=0x2
+	Entries={ 0x000000006dc63000, 0x000000006dcb8000, 0x000000006dcb7000, 0x000000006dc7f000, 0x000000006dc68000, 0x000000006dc67000, 0x000000006dc66000, 0x000000006fb24000, 0x000000006dc64000, 0x000000006dc62000, 0x000000006dc61000, 0x000000006dc60000, 0x000000006dc5f000, 0x000000006dc34000, 0x000000006dc33000, 0x000000006dc31000, 0x000000006dc30000, 0x000000006dc2d000, 0x000000006dc2c000, 0x000000006dc2b000, 0x000000006dc29000, 0x000000006dc28000, 0x000000006dc27000, 0x000000006dc26000, 0x000000006da49000, 0x000000006c240000, 0x000000006dc2f000, 0x000000006c23f000, 0x000000006c23e000, 0x000000006fb01000 }
+ */
+/*
+  FACP: Length=276, Revision=6, Checksum=189,
+	OEMID=LENOVO, OEM Table ID=TP-N2H, OEM Revision=0x1260,
+	Creator ID=PTEC, Creator Revision=0x2
+ 	FACS=0x6fb07000, DSDT=0x6dc36000
+	INT_MODEL=PIC
+	Preferred_PM_Profile=Mobile (2)
+	SCI_INT=9
+	SMI_CMD=0xb2, ACPI_ENABLE=0xf0, ACPI_DISABLE=0xf1, S4BIOS_REQ=0xf2
+	PSTATE_CNT=0x0
+	PM1a_EVT_BLK=0x1800-0x1803
+	PM1a_CNT_BLK=0x1804-0x1805
+	PM2_CNT_BLK=0x1850-0x1850
+	PM_TMR_BLK=0x1808-0x180b
+	GPE0_BLK=0x1860-0x187f
+	P_LVL2_LAT=101 us, P_LVL3_LAT=1001 us
+	FLUSH_SIZE=0, FLUSH_STRIDE=0
+	DUTY_OFFSET=1, DUTY_WIDTH=3
+	DAY_ALRM=13, MON_ALRM=0, CENTURY=50
+	IAPC_BOOT_ARCH={LEGACY_DEVICES,NO_ASPM}
+	Flags={WBINVD,C1_SUPPORTED,SLEEP_BUTTON,S4_RTC_WAKE,DOCKING_SUPPORTED,RESET_REGISTER,PCI_EXPRESS_WAKE,PLATFORM_CLOCK}
+	RESET_REG=0xcf9:0[8] (IO), RESET_VALUE=0x6
+ */
+/*
+  FACS:	Length=64, HwSig=0x00003de5, Firm_Wake_Vec=0x00000000
+	Global_Lock=
+	Flags=
+	Version=2
+ */
+/*
+  DSDT: Length=166583, Revision=2, Checksum=136,
+	OEMID=LENOVO, OEM Table ID=CFL, OEM Revision=0x20170001,
+	Creator ID=INTL, Creator Revision=0x20160422
+ */
+/*
+  SSDT: Length=6950, Revision=2, Checksum=11,
+	OEMID=LENOVO, OEM Table ID=CpuSsdt, OEM Revision=0x3000,
+	Creator ID=INTL, Creator Revision=0x20160527
+ */
+/*
+  SSDT: Length=1389, Revision=2, Checksum=146,
+	OEMID=LENOVO, OEM Table ID=CtdpB, OEM Revision=0x1000,
+	Creator ID=INTL, Creator Revision=0x20160527
+ */
+/*
+  SSDT: Length=16083, Revision=2, Checksum=103,
+	OEMID=LENOVO, OEM Table ID=DptfTabl, OEM Revision=0x1000,
+	Creator ID=INTL, Creator Revision=0x20160527
+ */
+/*
+  SSDT: Length=13066, Revision=2, Checksum=207,
+	OEMID=LENOVO, OEM Table ID=SaSsdt, OEM Revision=0x3000,
+	Creator ID=INTL, Creator Revision=0x20160527
+ */
+/*
+  SSDT: Length=1554, Revision=2, Checksum=244,
+	OEMID=LENOVO, OEM Table ID=Tpm2Tabl, OEM Revision=0x1000,
+	Creator ID=INTL, Creator Revision=0x20160527
+ */
+/*
+  TPM2: Length=52, Revision=4, Checksum=83,
+	OEMID=LENOVO, OEM Table ID=TP-N2H, OEM Revision=0x1260,
+	Creator ID=PTEC, Creator Revision=0x2
+		ControlArea=0
+		StartMethod=6
+ */
+/*
+  UEFI: Length=66, Revision=1, Checksum=77,
+	OEMID=LENOVO, OEM Table ID=TP-N2H, OEM Revision=0x1260,
+	Creator ID=PTEC, Creator Revision=0x2
+ */
+/*
+  SSDT: Length=1328, Revision=2, Checksum=132,
+	OEMID=LENOVO, OEM Table ID=PerfTune, OEM Revision=0x1000,
+	Creator ID=INTL, Creator Revision=0x20160527
+ */
+/*
+  HPET: Length=56, Revision=1, Checksum=19,
+	OEMID=LENOVO, OEM Table ID=TP-N2H, OEM Revision=0x1260,
+	Creator ID=PTEC, Creator Revision=0x2
+	HPET Number=0
+	ADDR=0x00000000fed00000:0[64] (Memory)	HW Rev=0x1
+	Comparators=2
+	Counter Size=1
+	Legacy IRQ routing capable={TRUE}
+	PCI Vendor ID=0x8086
+	Minimal Tick=128
+	Flags=0x00
+ */
+/*
+  APIC: Length=300, Revision=3, Checksum=214,
+	OEMID=LENOVO, OEM Table ID=TP-N2H, OEM Revision=0x1260,
+	Creator ID=PTEC, Creator Revision=0x2
+	Local APIC ADDR=0xfee00000
+	Flags={PC-AT}
+
+	Type=Local APIC
+	ACPI CPU=1
+	Flags={ENABLED}
+	APIC ID=0
+
+	Type=Local APIC
+	ACPI CPU=2
+	Flags={ENABLED}
+	APIC ID=2
+
+	Type=Local APIC
+	ACPI CPU=3
+	Flags={ENABLED}
+	APIC ID=4
+
+	Type=Local APIC
+	ACPI CPU=4
+	Flags={ENABLED}
+	APIC ID=6
+
+	Type=Local APIC
+	ACPI CPU=5
+	Flags={ENABLED}
+	APIC ID=1
+
+	Type=Local APIC
+	ACPI CPU=6
+	Flags={ENABLED}
+	APIC ID=3
+
+	Type=Local APIC
+	ACPI CPU=7
+	Flags={ENABLED}
+	APIC ID=5
+
+	Type=Local APIC
+	ACPI CPU=8
+	Flags={ENABLED}
+	APIC ID=7
+
+	Type=Local APIC
+	ACPI CPU=9
+	Flags={DISABLED}
+	APIC ID=255
+
+	Type=Local APIC
+	ACPI CPU=10
+	Flags={DISABLED}
+	APIC ID=255
+
+	Type=Local APIC
+	ACPI CPU=11
+	Flags={DISABLED}
+	APIC ID=255
+
+	Type=Local APIC
+	ACPI CPU=12
+	Flags={DISABLED}
+	APIC ID=255
+
+	Type=Local APIC
+	ACPI CPU=13
+	Flags={DISABLED}
+	APIC ID=255
+
+	Type=Local APIC
+	ACPI CPU=14
+	Flags={DISABLED}
+	APIC ID=255
+
+	Type=Local APIC
+	ACPI CPU=15
+	Flags={DISABLED}
+	APIC ID=255
+
+	Type=Local APIC
+	ACPI CPU=16
+	Flags={DISABLED}
+	APIC ID=255
+
+	Type=IO APIC
+	APIC ID=2
+	INT BASE=0
+	ADDR=0x00000000fec00000
+
+	Type=INT Override
+	BUS=0
+	IRQ=0
+	INTR=2
+	Flags={Polarity=conforming, Trigger=conforming}
+
+	Type=INT Override
+	BUS=0
+	IRQ=9
+	INTR=9
+	Flags={Polarity=active-hi, Trigger=level}
+
+	Type=Local APIC NMI
+	ACPI CPU=1
+	LINT Pin=1
+	Flags={Polarity=active-hi, Trigger=edge}
+
+	Type=Local APIC NMI
+	ACPI CPU=2
+	LINT Pin=1
+	Flags={Polarity=active-hi, Trigger=edge}
+
+	Type=Local APIC NMI
+	ACPI CPU=3
+	LINT Pin=1
+	Flags={Polarity=active-hi, Trigger=edge}
+
+	Type=Local APIC NMI
+	ACPI CPU=4
+	LINT Pin=1
+	Flags={Polarity=active-hi, Trigger=edge}
+
+	Type=Local APIC NMI
+	ACPI CPU=5
+	LINT Pin=1
+	Flags={Polarity=active-hi, Trigger=edge}
+
+	Type=Local APIC NMI
+	ACPI CPU=6
+	LINT Pin=1
+	Flags={Polarity=active-hi, Trigger=edge}
+
+	Type=Local APIC NMI
+	ACPI CPU=7
+	LINT Pin=1
+	Flags={Polarity=active-hi, Trigger=edge}
+
+	Type=Local APIC NMI
+	ACPI CPU=8
+	LINT Pin=1
+	Flags={Polarity=active-hi, Trigger=edge}
+
+	Type=Local APIC NMI
+	ACPI CPU=9
+	LINT Pin=1
+	Flags={Polarity=active-hi, Trigger=edge}
+
+	Type=Local APIC NMI
+	ACPI CPU=10
+	LINT Pin=1
+	Flags={Polarity=active-hi, Trigger=edge}
+
+	Type=Local APIC NMI
+	ACPI CPU=11
+	LINT Pin=1
+	Flags={Polarity=active-hi, Trigger=edge}
+
+	Type=Local APIC NMI
+	ACPI CPU=12
+	LINT Pin=1
+	Flags={Polarity=active-hi, Trigger=edge}
+
+	Type=Local APIC NMI
+	ACPI CPU=13
+	LINT Pin=1
+	Flags={Polarity=active-hi, Trigger=edge}
+
+	Type=Local APIC NMI
+	ACPI CPU=14
+	LINT Pin=1
+	Flags={Polarity=active-hi, Trigger=edge}
+
+	Type=Local APIC NMI
+	ACPI CPU=15
+	LINT Pin=1
+	Flags={Polarity=active-hi, Trigger=edge}
+
+	Type=Local APIC NMI
+	ACPI CPU=16
+	LINT Pin=1
+	Flags={Polarity=active-hi, Trigger=edge}
+ */
+/*
+  MCFG: Length=60, Revision=1, Checksum=235,
+	OEMID=LENOVO, OEM Table ID=TP-N2H, OEM Revision=0x1260,
+	Creator ID=PTEC, Creator Revision=0x2
+
+	Base Address=0x00000000f0000000
+	Segment Group=0x0000
+	Start Bus=0
+	End Bus=127
+ */
+/*
+  ECDT: Length=83, Revision=1, Checksum=193,
+	OEMID=LENOVO, OEM Table ID=TP-N2H, OEM Revision=0x1260,
+	Creator ID=PTEC, Creator Revision=0x2
+	EC_CONTROL=0x66:0[8] (IO)
+	EC_DATA=0x62:0[8] (IO)
+	UID=0, GPE_BIT=0x16
+	EC_ID=\_SB.PCI0.LPCB.EC
+ */
+/*
+  SSDT: Length=7851, Revision=2, Checksum=130,
+	OEMID=LENOVO, OEM Table ID=WHL_Tbt_, OEM Revision=0x1000,
+	Creator ID=INTL, Creator Revision=0x20160527
+ */
+/*
+  SSDT: Length=36, Revision=2, Checksum=116,
+	OEMID=LENOVO, OEM Table ID=PID1Ssdt, OEM Revision=0x10,
+	Creator ID=INTL, Creator Revision=0x20160527
+ */
+/*
+  SSDT: Length=5312, Revision=2, Checksum=92,
+	OEMID=LENOVO, OEM Table ID=ProjSsdt, OEM Revision=0x10,
+	Creator ID=INTL, Creator Revision=0x20160527
+ */
+/*
+  BOOT: Length=40, Revision=1, Checksum=16,
+	OEMID=LENOVO, OEM Table ID=TP-N2H, OEM Revision=0x1260,
+	Creator ID=PTEC, Creator Revision=0x2
+ */
+/*
+  SSDT: Length=3830, Revision=2, Checksum=43,
+	OEMID=LENOVO, OEM Table ID=UsbCTabl, OEM Revision=0x1000,
+	Creator ID=INTL, Creator Revision=0x20160527
+ */
+/*
+  LPIT: Length=148, Revision=1, Checksum=227,
+	OEMID=LENOVO, OEM Table ID=TP-N2H, OEM Revision=0x1260,
+	Creator ID=PTEC, Creator Revision=0x2
+
+	Type=ACPI_LPIT_TYPE_NATIVE_CSTATE
+	Length=56
+	UniqueId=0x0000
+	Flags=
+	EntryTrigger=0x0000000000000060 (?)	Residency=30000
+	Latency=3000
+	ResidencyCounter=0x0000000000000632 (?)	CounterFrequency=TSC
+
+	Type=ACPI_LPIT_TYPE_NATIVE_CSTATE
+	Length=56
+	UniqueId=0x0001
+	Flags=
+	EntryTrigger=0x0000000000000060 (?)	Residency=30000
+	Latency=3000
+	ResidencyCounter=0xfe00193c:0[32] (Memory)	CounterFrequency=9580
+ */
+/*
+  WSMT: Length=40, Revision=1, Checksum=57,
+	OEMID=LENOVO, OEM Table ID=TP-N2H, OEM Revision=0x1260,
+	Creator ID=PTEC, Creator Revision=0x2
+ */
+/*
+  SSDT: Length=6531, Revision=2, Checksum=86,
+	OEMID=LENOVO, OEM Table ID=TbtTypeC, OEM Revision=0x0,
+	Creator ID=INTL, Creator Revision=0x20160527
+ */
+/*
+  DBGP: Length=52, Revision=1, Checksum=64,
+	OEMID=LENOVO, OEM Table ID=TP-N2H, OEM Revision=0x1260,
+	Creator ID=PTEC, Creator Revision=0x2
+ */
+/*
+  DBG2: Length=84, Revision=0, Checksum=217,
+	OEMID=LENOVO, OEM Table ID=TP-N2H, OEM Revision=0x1260,
+	Creator ID=PTEC, Creator Revision=0x2
+ */
+/*
+  MSDM: Length=85, Revision=3, Checksum=101,
+	OEMID=LENOVO, OEM Table ID=TP-N2H, OEM Revision=0x1260,
+	Creator ID=PTEC, Creator Revision=0x2
+ */
+/*
+  BATB: Length=74, Revision=2, Checksum=228,
+	OEMID=LENOVO, OEM Table ID=TP-N2H, OEM Revision=0x1260,
+	Creator ID=PTEC, Creator Revision=0x2
+ */
+/*
+  NHLT: Length=6218, Revision=0, Checksum=56,
+	OEMID=LENOVO, OEM Table ID=TP-N2H, OEM Revision=0x1260,
+	Creator ID=PTEC, Creator Revision=0x2
+ */
+/*
+  DMAR: Length=168, Revision=1, Checksum=143,
+	OEMID=LENOVO, OEM Table ID=TP-N2H, OEM Revision=0x1260,
+	Creator ID=PTEC, Creator Revision=0x2
+	Host Address Width=39
+	Flags={INTR_REMAP}
+
+	Type=DRHD
+	Length=24
+	Flags=
+	Segment=0
+	Address=0x00000000fed90000
+	Device Scope:
+		Type=PCI Endpoint Device
+		Length=8
+		EnumerationId=0
+		StartBusNumber=0
+		Path={2:0}
+
+	Type=DRHD
+	Length=32
+	Flags={INCLUDE_ALL}
+	Segment=0
+	Address=0x00000000fed91000
+	Device Scope:
+		Type=IOAPIC
+		Length=8
+		EnumerationId=2
+		StartBusNumber=0
+		Path={30:7}
+
+		Type=HPET
+		Length=8
+		EnumerationId=0
+		StartBusNumber=0
+		Path={30:6}
+
+	Type=RMRR
+	Length=32
+	Segment=0
+	BaseAddress=0x000000006fa7e000
+	LimitAddress=0x000000006fa9dfff
+	Device Scope:
+		Type=PCI Endpoint Device
+		Length=8
+		EnumerationId=0
+		StartBusNumber=0
+		Path={20:0}
+
+	Type=RMRR
+	Length=32
+	Segment=0
+	BaseAddress=0x0000000079000000
+	LimitAddress=0x000000007d7fffff
+	Device Scope:
+		Type=PCI Endpoint Device
+		Length=8
+		EnumerationId=0
+		StartBusNumber=0
+		Path={2:0}
+ */
+/*
+  FPDT: Length=68, Revision=1, Checksum=132,
+	OEMID=LENOVO, OEM Table ID=TP-N2H, OEM Revision=0x1260,
+	Creator ID=PTEC, Creator Revision=0x2
+ */
+/*
+  BGRT: Length=56, Revision=1, Checksum=248,
+	OEMID=LENOVO, OEM Table ID=TP-N2H, OEM Revision=0x1260,
+	Creator ID=PTEC, Creator Revision=0x2
+ */
+/*
+  UEFI: Length=318, Revision=1, Checksum=74,
+	OEMID=LENOVO, OEM Table ID=TP-N2H, OEM Revision=0x1260,
+	Creator ID=PTEC, Creator Revision=0x2
+ */
+Firmware Error (ACPI): Could not resolve symbol [^^GFX0.DRDY], AE_NOT_FOUND (20200110/dswload-496)
+Firmware Error (ACPI): Could not resolve symbol [^^SAT0.PRIM], AE_NOT_FOUND (20200110/dswload-496)
+Firmware Error (ACPI): Could not resolve symbol [^^SAT0.SCND], AE_NOT_FOUND (20200110/dswload-496)
+Firmware Error (ACPI): Could not resolve symbol [^^SAT0.SCND.MSTR], AE_NOT_FOUND (20200110/dswload-496)
+Firmware Error (ACPI): Could not resolve symbol [^^SAT0.PRIM.GTME], AE_NOT_FOUND (20200110/dswload-496)
+Firmware Error (ACPI): Could not resolve symbol [^^SAT0.SCND.GTME], AE_NOT_FOUND (20200110/dswload-496)
+Firmware Error (ACPI): Failure creating named object [\_SB.PCI0.RP01.PXSX._DSM], AE_ALREADY_EXISTS (20200110/dswload-496)
+Could not parse ACPI tables, AE_ALREADY_EXISTS
