@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css?family=Alegreya:400,400i,700');
+
+body {
+    font-family: 'Alegreya', serif;
+    text-align: center;
+}
+
+.content {
+    margin: 2em auto;
+}
