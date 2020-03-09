@@ -1,0 +1,79 @@
+<html>
+    <head>
+        <title>hi</title>
+        <script type="text/javascript" src="ical.min.js"></script>
+        <script src="https://unpkg.com/js-year-calendar@latest/dist/js-year-calendar.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://unpkg.com/js-year-calendar@latest/dist/js-year-calendar.min.css" />
+        <style>
+        </style>
+    </head>
+    <body>
+        <div id="cal"></div>
+        <div id="cal-widget"></div>
+
+        <script type="text/javascript">
+         var my_cal = 'https://kamila.0co2.cloud/remote.php/dav/public-calendars/AR8L2kayWkL5zsot?export';
+         var cors_proxy = 'https://cors-anywhere.herokuapp.com/';
+         var my_elem = document.getElementById('cal');
+
+         function print_cal(data) {
+             jcal = ICAL.parse(data);
+             console.log(jcal);
+
+             var widget_events = [];
+
+             var last_modified = new ICAL.Time({year: 0});
+
+             var my_list = document.createElement('ol');
+             my_elem.appendChild(my_list);
+
+             var vcalendar = new ICAL.Component(jcal);
+             var vevents = vcalendar.getAllSubcomponents('vevent');
+             vevents.forEach(vevent => {
+                 var event = new ICAL.Event(vevent);
+
+                 var lastm = event.component.getFirstProperty('last-modified').getFirstValue();
+                 if (lastm > last_modified) last_modified = lastm;
+
+                 window.event = event; // TODO remove -- for debugging
+
+                 var my_item = document.createElement('li');
+                 my_item.innerText = event.summary + ' ' + event.startDate.toString() + ' - ' + event.endDate.adjust(-1).toString();
+                 my_list.appendChild(my_item);
+
+                 widget_events.push({
+                     name: event.summary,
+                     startDate: event.startDate.toJSDate(),
+                     /* endDate: event.endDate.adjust(-1).toJSDate(), // half-open in source */
+                     endDate: event.endDate.toJSDate(),
+                 });
+             });
+
+             var lastm_el = document.createTextNode('Last modified: ' + last_modified.toString());
+             my_elem.appendChild(lastm_el);
+
+             console.log(widget_events);
+             var widget  = new Calendar('#cal-widget', {
+                 dataSource: widget_events,
+                 enableRangeSelection: true,
+                 style: 'background',
+                 weekStart: '1',
+             });
+         }
+
+         function load() {
+             fetch(cors_proxy+my_cal)
+                 .then((response) => {
+                     console.log('Calendar fetch returned:', response.status);
+                     /* console.log(response); */
+                     return response.text();
+                 })
+                 .then((data) => {
+                     print_cal(data);
+                 });
+         }
+
+         load();
+        </script>
+    </body>
+</html>
