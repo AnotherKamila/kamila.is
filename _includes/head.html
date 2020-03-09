@@ -3,6 +3,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    {% if page.redirect_to %}
+    <meta http-equiv="refresh" content="0; url={{page.redirect_to}}" />
+    {% endif %}
+
     <title>{{ page.tab_title | default: page.title | default: site.title | escape }}</title>
     <meta name="application-name" property="og:title" content="{{ page.tab_title | default: page.title | default: site.title | escape }}" />
 
