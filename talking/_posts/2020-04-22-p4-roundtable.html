@@ -216,6 +216,10 @@ extern void my_aes128(
   * must be pipelined
   * can only be called once (declare multiple if needed)
 
+--
+
+.floatright.moral[Mix and match: embed native in P4]
+
 ???
 
 and beware of compiler bugs
@@ -248,7 +252,6 @@ spent way too much time trying to find workarounds and encountering bugs in the 
 (including an off-by-one in the compiler :D)
 
 ---
-
 # Implementing the parser
 
 .floatright.width30[![P4+NetFPGA structure](/media/p4-netfpga-structure-mod.png)]
@@ -270,44 +273,57 @@ parser ExModDeparser(packet_mod p, in headers_t h) {
 }
 ```
 
+--
+
+.floatright.moral[Mix and match: P4 is embedded in a larger design]
+
 ???
 
 Xilinx extension, **not** standard P4 — but standard P4 can use `varbit`
 
 ---
-layout: true
-
 # Implementing the parser
 
-Loop to skip over unused fields: encountered a compiler bug...  
-⇒ **Create a lot of separate sub-parsers: one for skipping 1 field, one for skipping 2, etc.**  
+Idea: **Skip over unused fields, read my field**
+
+--
+
+"while not at my field" loop: wouldn't pipeline well  
+(need constant time ⇒ unrolls into a very deep circuit)
+
+--
+
+Therefore…
+
+.floatleft.width40[![separate sub-parsers](/media/subparsers-1.png)]
+
+--
+
+.floatright.moral[Parallel is often better than serial.]
+
+--
+
+&nbsp;
+
+.floatright.width40.margin0.red[But: For length up to e.g. 64, requires a **lot** of FPGA area]
 
 ???
 
 Select the correct sub-parser at runtime, but the jump size is fixed at compile time.
 
 ---
+# Implementing the parser
 
-Problem: "Reasonably long paths" are at least 64 fields.  
-⇒ Requires a lot of FPGA area + RAM to build it.
+Idea: **Skip over unused fields, read my field**  
+.hl[**in two stages:**]
 
----
-count: false
-.width100[![sqrt1](/media/sqrt1.svg)]
----
-count: false
-.width100[![sqrt2](/media/sqrt2.svg)]
----
-count: false
-.width100[![sqrt3](/media/sqrt3.svg)]
----
-count: false
-.width100[![sqrt4](/media/sqrt4.svg)]
----
-count: false
-.width100[![sqrt4](/media/sqrt4.svg)]
+.floatleft.width40[![separate sub-parsers](/media/subparsers-2.png)]
+.floatright.width40[2x latency for .height1em[![sqrt(area)](/media/sqrt-area.png)]]
+--
 
-.moral[2-stage approach has **better** timing, because less area ⇒ better routing]
+&nbsp;
+
+.floatright.width40.moral[Depth vs width tradeoffs are worth thinking about.]
 
 ???
 
@@ -336,12 +352,12 @@ class: expanded1
 # Meeting timing
 
 * find critical path
-* careful with data dependencies: delays accumulate
+* think about data dependencies
   * small modules with "tight" interfaces (e.g. correct use of `in`/`out`/`inout`) ⇒ more localised data dependencies ⇒ better timing
-  * rewrite code like this:
+  * wider is (usually) better than deeper, e.g.:
 
 <div style="clear: both;"></div>
-<div style="position: relative; margin: -1em auto; width: 100%;">
+<div style="position: relative; margin: -1em auto; width: 95%;">
 .floatleft[
 ```sh
 if [long computation 1]
@@ -359,41 +375,42 @@ then [long computation 2]
 </div>
 <div style="clear: both; margin-bottom: -1em;"></div>
 
+--
+
+.floatright.width60.moral[Keep in mind: signal moves through the circuit and has to arrive in time]
+
 ???
 
 restructuring my code gave me a 20% improvement on the critical path, in addition to better code
 
 ---
-
 class: center, middle, contrast, no-slide-number
 count: false
-# What have we learned?
-Implications for packet forwarding & SCION
----
+# Results
 
+What have we learned?
+
+---
 class: expanded1
 
 # High-speed packet processing
 
 * P4 suitable even for complex protocols
-  * line rate by default!
-  * but: targets have notable limitations
-  * not as target-independent as we had hoped
-* P4-NetFPGA not suitable for complex things :-/
-  * barely a PoC; very scarce documentation
-  * hopefully we'll have more mature targets & toolchains soon
-* FPGA-based implementations:  
-  not that limited, though timing can be a problem
+  * good abstraction
+  * line rate by default
+  * but: different targets have different limitations and tradeoffs
+* P4-NetFPGA: is a PoC
+  * looking forward to more targets & toolchains in the P4 ecosystem
+* P4 on FPGAs:
+  high flexibility, but some low-level FPGA-specific knowledge required
 
 ???
 plus new compiler
 
-
 ---
-# Improving the SCION protocol
+# Network protocol design
 
 * <strike>avoid state on routers, require few table lookups</strike> ✓
-* define maximum sizes: path length, HF size
 * avoid variable lengths
     * alignment is good ✓
     * explicit lengths instead of "continue" flags
@@ -402,9 +419,12 @@ plus new compiler
 * re-think how to achieve our security properties:  
 needing "usually" 1 AES core and "occasionally" 2 is silly, because you always pay for 2
 
----
+???
+I would still stick with P4 / HLS (esp. if I could have a better toolchain), because my network protocol is complex and P4 is a surprisingly useful abstraction that saved me a lot of effort and nerves
 
+---
 class: expanded1
+exclude: true
 
 # If I had a time machine...
 
@@ -421,6 +441,11 @@ class: expanded1
 - I would not aim at "production" before I have a prototype that guarantees that the basic functionality can actually work, because by the time I got to the end of the thing I was so burned out and full of hate that I didn't even polish the PoC :D
   - if I could know it in advance, I would not put my degree and pride in the hands of a horribly broken toolchain (but I'm not sure I could have known)
 - I would still stick with P4 / HLS (esp. if I could have a better toolchain), because my network protocol is complex and P4 is a surprisingly useful abstraction that saved me a lot of effort and nerves
+
+---
+class: fullslide
+
+<video class="fullslide" id="video-demo" src="/media/scion-netfpga-demo.mp4" controls></video>
 
 ---
 

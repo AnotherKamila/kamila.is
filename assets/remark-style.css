@@ -238,3 +238,19 @@ table.numeric-table td {
     padding: 0 0.2em;
     font-size: 0.8em;
 }
+
+.height1em img {
+    height: 1.1em;
+    position: relative;
+    top: 0.1em;
+    width: auto;
+}
+
+.fullslide {
+    padding: 0;
+}
+
+.fullslide video {
+    width: 100%;
+    height: auto;
+}
