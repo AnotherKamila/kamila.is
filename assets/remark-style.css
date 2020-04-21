@@ -230,3 +230,11 @@ table.numeric-table td {
 .pure-table tr:nth-child(even) td {
     background-color: #e6e6e6;
 }
+
+.moral {
+    display: inline-block;
+    color: #fff;
+    background: #268bd2;
+    padding: 0 0.2em;
+    font-size: 0.8em;
+}
