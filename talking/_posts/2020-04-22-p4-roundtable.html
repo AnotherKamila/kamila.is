@@ -1,5 +1,6 @@
 ---
 title: Efficient P4+FPGA-based Forwarding for SCION, a Path-Aware Internet Architecture
+aspectratio: '16:9'
 ---
 class: center, middle, contrast, no-slide-number
 count: false
@@ -14,11 +15,8 @@ excluded: true
 class: contrast, expanded, middle, narrow
 
 1. **Intro**  
-   Why? How?
 2. **Challenges**  
-   and interesting solutions
-3. **Results**  
-   What have we learned?
+3. **Lessons learned**  
 
 ---
 excluded: true
@@ -41,20 +39,22 @@ background-image: url(/media/banner-2000px-cut.jpg)
 
 ---
 
-&nbsp;
-
 .center[https://scion-architecture.net · https://scionlab.org]
 
 ???
 
-The SCION future Internet architecture is a completely new approach to solving some of thecurrent Internet’s problems. Its viability has already been demonstrated -- we have a global research network [TODO scionlab image] and multiple commercial deployments.
+The SCION future Internet architecture is a completely new approach to solving some of thecurrent Internet’s problems. Its viability has already been demonstrated -- we have a global research network and multiple commercial deployments.
+
+---
+
+TODO explain path in header
 
 ---
 
 To go beyond research, it must work in HW:  
 throughput, cost, energy efficiency
 
-⇒ make sure that it can be done; improve protocol design before it's too late
+⇒ make sure that it can be done; improve protocol design
 
 ???
 
@@ -96,9 +96,13 @@ methods for high-speed packet forwarding:
 
 .centerblock.width80[![Methods for high-speed packet forwarding](/media/high-speed-packet-forwarding-FPGA.svg)]
 
---
+---
+
+# P4 + NetFPGA
 
 .floatleft.width50[![netfpga](/media/netfpga.png)]
+
+.floatright.width40[![P4+NetFPGA structure](/media/p4-netfpga-structure.png)]
 
 .floatleft.width40.margin0[
 NetFPGA SUME:  
@@ -107,7 +111,10 @@ Virtex 7 FPGA
 **P4** (PoC)
 ]
 
+
+
 ---
+exclude: true
 
 # P4 + NetFPGA
 
@@ -130,10 +137,10 @@ P4 should be target-independent, but some degree of "porting" is still needed be
 layout: true
 
 .floatright.width50[![FPGA diagram](/media/fpga-diagram-abc.png)]
-# How do FPGAs work?
+# Hardware vs Software
 
 - software: sequence of arbitrary instructions
-- FPGA: **fixed** circuit; data moves  
+- hardware: **fixed** circuit; data moves  
   ⇒ "think in space, not in time"
 
 ---
@@ -154,9 +161,9 @@ layout: false
 class: expanded1
 
 .floatright.width50[![FPGA diagram](/media/fpga-diagram-abc.png)]
-# How do FPGAs work?
+# Hardware vs Software
 
-the hardest thing about FPGA design:
+the hardest thing about hardware design:
 
 .floatleft.width40[![pipeline timing broken](/media/pipeline-timingfucked.svg)]
 
@@ -183,7 +190,7 @@ _tricks, challenges, lessons learned_
 Expose network interfaces to the host,  
 pass packets through to SW when they can't be handled
 
-.centerblock.width70[![control plane with DMA-based interfaces](/media/scion-controlplane.svg)]
+.centerblock.width60[![control plane with DMA-based interfaces](/media/scion-controlplane.svg)]
 
 ⇒ use .hl[unmodified] SW router for unhandled packets
 
@@ -199,8 +206,8 @@ pass packets through to SW when they can't be handled
 
 # Adding AES
 
-SCION uses packet-carried forwarding state  
-⇒ cryptographic check of the state on every hop
+TODO rephrase:
+SCION requires a cryptographic check of path validity
 
 .floatright.width30[![P4+NetFPGA structure](/media/p4-netfpga-structure-extern.png)]
 
@@ -252,9 +259,9 @@ spent way too much time trying to find workarounds and encountering bugs in the 
 (including an off-by-one in the compiler :D)
 
 ---
-# Implementing the parser
-
 .floatright.width30[![P4+NetFPGA structure](/media/p4-netfpga-structure-mod.png)]
+
+# Implementing the parser
 
 Fix: instead of saving all fields, use `packet_mod` Xilinx extension:
 
@@ -288,14 +295,14 @@ Idea: **Skip over unused fields, read my field**
 
 --
 
-"while not at my field" loop: wouldn't pipeline well  
+A loop wouldn't pipeline well  
 (need constant time ⇒ unrolls into a very deep circuit)
 
 --
 
 Therefore…
 
-.floatleft.width40[![separate sub-parsers](/media/subparsers-1.png)]
+.floatleft.width30[![separate sub-parsers](/media/subparsers-1.png)]
 
 --
 
@@ -305,7 +312,7 @@ Therefore…
 
 &nbsp;
 
-.floatright.width40.margin0.red[But: For length up to e.g. 64, requires a **lot** of FPGA area]
+.floatright.width30.margin0.red[But: For length up to e.g. 64, requires a **lot** of FPGA area]
 
 ???
 
@@ -314,10 +321,9 @@ Select the correct sub-parser at runtime, but the jump size is fixed at compile 
 ---
 # Implementing the parser
 
-Idea: **Skip over unused fields, read my field**  
-.hl[**in two stages:**]
+Idea: **Skip over unused fields, read my field .hl[in two stages]:**
 
-.floatleft.width40[![separate sub-parsers](/media/subparsers-2.png)]
+.floatleft.width30[![separate sub-parsers](/media/subparsers-2.png)]
 .floatright.width40[2x latency for .height1em[![sqrt(area)](/media/sqrt-area.png)]]
 --
 
@@ -326,6 +332,8 @@ Idea: **Skip over unused fields, read my field**
 .floatright.width40.moral[Depth vs width tradeoffs are worth thinking about.]
 
 ???
+
+TODO 0..7, not 1..8
 
 TODO moral to the story:
 2-stage thing is a deeper circuit, but has better timing results because FPGA is less full and thus the place&route can do a better job
@@ -336,7 +344,7 @@ class: tall
 
 # Area and timing constraints
 
-.centerblock.width70[![Design of the router](/media/scion-breakdown.svg)]
+.centerblock.width60[![Design of the router](/media/scion-breakdown.svg)]
 
 inherent complexity + workarounds for bugs ⇒ NetFPGA almost full (!) ⇒ at 200 MHz timing violated
 
@@ -351,9 +359,11 @@ class: expanded1
 
 # Meeting timing
 
-* find critical path
+* find the _critical path_
 * think about data dependencies
-  * small modules with "tight" interfaces (e.g. correct use of `in`/`out`/`inout`) ⇒ more localised data dependencies ⇒ better timing
+  * small, simple modules
+  * "tight" interfaces: correct use of `in`/`out`, not `inout`; no extraneous parameters
+  * minimise use of non-local data
   * wider is (usually) better than deeper, e.g.:
 
 <div style="clear: both;"></div>
@@ -381,46 +391,48 @@ then [long computation 2]
 
 ???
 
+if you are using 1 field of a struct, don't pass in the whole struct
 restructuring my code gave me a 20% improvement on the critical path, in addition to better code
+
+---
+class: fullslide
+
+<video class="fullslide" id="video-demo" src="/media/scion-netfpga-demo.mp4#t=4" controls></video>
 
 ---
 class: center, middle, contrast, no-slide-number
 count: false
-# Results
-
-What have we learned?
+# Lessons learned
 
 ---
 class: expanded1
 
 # High-speed packet processing
 
-* P4 suitable even for complex protocols
-  * good abstraction
-  * line rate by default
-  * but: different targets have different limitations and tradeoffs
+* P4:
+  * suitable even for complex protocols
+  * useful abstraction: high-level, yet runs fast on hardware
+  * pipelining and parallelism handled by compiler
+  * but: different targets have different tradeoffs and limitations
 * P4-NetFPGA: is a PoC
   * looking forward to more targets & toolchains in the P4 ecosystem
 * P4 on FPGAs:
-  high flexibility, but some low-level FPGA-specific knowledge required
+  some low-level FPGA-specific knowledge required, but high flexibility
 
 ???
+pipelining and parallelism handled automatically
+P4 is clearly designed to compile to HW / pipeline and parallelise well, yet high-level enough to be useful (you don't have to do it yourself)
+
+
 plus new compiler
 
 ---
 # Network protocol design
 
-* <strike>avoid state on routers, require few table lookups</strike> ✓
-* avoid variable lengths
-    * alignment is good ✓
-    * explicit lengths instead of "continue" flags
-* make things explicit
-    * the header now has an addr type enum but no length ⇒ fix that
-* re-think how to achieve our security properties:  
-needing "usually" 1 AES core and "occasionally" 2 is silly, because you always pay for 2
-
-???
-I would still stick with P4 / HLS (esp. if I could have a better toolchain), because my network protocol is complex and P4 is a surprisingly useful abstraction that saved me a lot of effort and nerves
+* avoid variable length fields (really)
+* should be parseable without interpretation
+  * e.g. value of a tag implicitly defining length of a field is bad
+* explicit lengths, not "continue" flags
 
 ---
 class: expanded1
@@ -430,12 +442,11 @@ exclude: true
 
 &nbsp;
 
-- I'd complete PoC first, production maybe later  
-  (effort in the wrong places ⇒ I started hating the thing before I even polished the PoC)
+- I 
 - I **would** use P4:
   - a surprisingly good abstraction
-  - line rate by default
-- I'd get paid for it :D
+  - line rate achieved
+- I would get paid for it :-)
 
 ???
 - I would not aim at "production" before I have a prototype that guarantees that the basic functionality can actually work, because by the time I got to the end of the thing I was so burned out and full of hate that I didn't even polish the PoC :D
@@ -443,15 +454,8 @@ exclude: true
 - I would still stick with P4 / HLS (esp. if I could have a better toolchain), because my network protocol is complex and P4 is a surprisingly useful abstraction that saved me a lot of effort and nerves
 
 ---
-class: fullslide
 
-<video class="fullslide" id="video-demo" src="/media/scion-netfpga-demo.mp4" controls></video>
-
----
+TODO template slide
 
 .floatright.width15[![](https://chart.apis.google.com/chart?cht=qr&chs=500x500&choe=UTF-8&chld=H&chl={{site.url}}{{site.baseurl}}{{page.url}})]
-
-# EOF
-
-.centerblock.width100[![throughput graph](/media/throughput-115B-nokey.jpg)]
 
