@@ -2,7 +2,7 @@ name: Kamila Součková
 photo: /me/me.jpg
 tagline: I identify problems in systems before they eat your time, your product, and your family dog.
 email: me@kamila.is
-phone: +44 7937 974 542
+# phone: +44 7937 974 542
 website: https://kamila.is
 location: Zurich, Switzerland
 
@@ -17,9 +17,9 @@ data:
   experience:
     title: Work & Volunteer Experience
     items:
-      - 2019: |
-          Research Engineer, SRE at Network Security Group, ETH Zurich  
-          design and operations of the [SCIONLab](https://scionlab.org) global research network
+      - 2019-present: |
+          Research Engineer, Site Reliability Engineer at Network Security Group, ETH Zurich  
+          design and operations of the [SCIONLab](https://scionlab.org) global research network; work on high-performance network applications
       - 2018: Head of Site Reliability Engineering for [Data Center Light](http://datacenterlight.ch) at [ungleich](http://www.ungleich.ch/)
       - summer 2015: Site Reliability Engineering intern at Google Switzerland (Borg SRE)
       - summer 2014: Site Reliability Engineering intern at Google Switzerland (Payments SRE)
