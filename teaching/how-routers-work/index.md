@@ -3,13 +3,15 @@ title: How do Routers Work, Really?
 excerpt: An accessible overview of how exactly a router works, with code examples.
 ---
 
-**Work in progress**: I still need to clean this up & add the complete source code. The snippets here are conceptually correct, but some minor details need to be updated too. ETA for a more or less done version 2019-01-10 or earlier.
+**Work in progress**: I still need to clean this up & add the complete source code. ETA for a more or less done version is Soon(TM).  
+**Last updated**: 2020/09/10 because how the eff did this end up on the front page of Hacker News? :D  
+**Suggestions welcome**: [complain](https://github.com/AnotherKamila/kamila.is/issues/new?labels=teaching&title=[teaching/how-routers-work]+Title) if something is unclear or wrong!
 
 This is the inside view of how exactly a router operates. You only need to know this if you are poking inside a router implementation. If that is the case, my condolences.
 
-At the end of this exposition, I will give you the complete source code to a functional router (written in P4 (the new & shiny software-defined networking thing)). My aim is that you will understand every line of that.
+At the end of this exposition, I will give you the complete source code to a functional router (written in [P4](https://p4.org/), the new & shiny software-defined networking thing). My aim is that you will understand every line of that.
 
-I accompany my explanations below with some P4 code. I think it is useful to read it even if you've never seen P4, because it shows a bit more detail than the text and I believe that it is sufficiently pseudocode-ish. Here is all you need to know to read it:<sup>[1](#fn1)</sup>
+I accompany my explanations below with some P4 code. I think it is useful to read it even if you've never seen P4, because it shows a bit more detail than the text and I believe that it is sufficiently pseudocode-ish. Here is a summary of what you need to know to read it:
 * everything happens per packet
 * `hdr` are the packet's parsed headers
 * `standard_metadata` is how you tell the switch to do things with the packet (like send it on a specific port)
@@ -20,23 +22,23 @@ I accompany my explanations below with some P4 code. I think it is useful to rea
 * Figuring out what should be done with packets is done by _the control plane/in the slow path/on the CPU/by the controller_ or similar phrases. I will refer to all of this as "the control plane".
 * Actually forwarding the packets  is done by _the data plane/in the fast path/in the hardware/in the switch_ and such. I will refer to this as "the data plane".
 
-Software-defined networking makes these distinctions not always entirely obvious, but I will mention cases like that.
+Software-defined networking somewhat blurs these distinctions. I will mention cases like that.
 
 # 1. High-level Overview
 
-A _switch_ (or an L2 switch :-) ) is an L2-only thing. It knows about L2 stuff such as MAC addresses and ports. It does **not** know about anything like IP addresses. It has a **MAC table**: it maps MAC addresses to ports.
+A _switch_ (or an L2 switch :-) ) is an L2-only<sup>[1](#fn1)</sup> thing. It knows about L2 stuff such as MAC addresses and ports<sup>[2](#fn2)</sup>. It does **not** know about anything like IP addresses. It has a **MAC table**: it maps MAC addresses to ports.
 
-A _router_ (or an L3 switch by some people's vocabulary) operates on L3 only. It knows about L3 stuff such as IP addresses and interfaces and hosts. It does **not** know about L2 stuff such as MAC addresses or ports.<sup>[2](#fn2)</sup> In fact, the routing parts of the router would not have to be changed at all if you decided to use something other than ethernet on L2. It has a **routing table** (details later): a table of subnets/prefixes and how to reach them.
+A _router_ (or an L3 switch by some people's vocabulary) operates on L3 only. It knows about L3 stuff such as IP addresses and interfaces and hosts. It does **not** know about L2 stuff such as MAC addresses or ports.<sup>[3](#fn3)</sup> In fact, the routing parts of the router would not have to be changed at all if you decided to use something other than ethernet on L2. It has a **routing table** (details later): a table of subnets/prefixes and how to reach them.
 
 What you normally call a router (that box sitting over there) is actually a router (for handling L3) and one or more switches (for handling L2), and some glue in between. They may in fact be separate chips in hardware.
 
-You need glue to put together the L2 and the L3. This "L2.5" glue is ARP (or NDP for IPv6). It usually lives in the router, but it is glue, not routing, and it can be thought of separately.
+You need glue to put together the L2 and the L3. This "L2.5" glue is ARP (or NDP for IPv6). It usually lives in the router, but it is glue, not routing, and you can think about it separately.
 
 ## The Data Plane: Life of a Packet
 
 When a packet arrives and needs to be sent further, these things have to happen to it:
 
-1. It needs to be _routed_: the **router**, based on L3 information, decides where it needs to go ,in L3 speak -- it will decide which _host_ to send it to, but not how. This corresponds to the _routing table_ (or FIB).
+1. It needs to be _routed_: the **router**, based on L3 information, decides where it needs to go, in L3 speak -- it will decide which _host_ to send it to, but not how. This corresponds to the _[routing table](https://en.wikipedia.org/wiki/Routing_table)_.
 2. It needs to be passed down to L2: this is where the L2.5 ARP/NDP **glue** translates the L3-speak IP address to L2-speak MAC address. This is the _ARP table_.
 3. It needs to be _forwarded_ on the correct port: the **switch** puts the packet on the correct port. This is the _MAC table_.
 
@@ -46,7 +48,7 @@ When a packet arrives and needs to be sent further, these things have to happen 
 
 ### 1. "It needs to be routed": L3/router
 
-The packet has a destination IP address. This is matched in the _routing table_, using a longest-prefix match (LPM), i.e. it matches prefixes. It may either be for a host the router is directly connected to (on some interface), or it may need to be sent further, through a _gateway_ (through some interface). Therefore: **The routing table maps a _prefix_ to either _a next hop through a gateway and an interface_, or _a direct connection through an interface_**.
+The packet has a destination IP address. This is matched in the _routing table_, using a longest-prefix match (LPM), i.e. it matches IP address prefixes. It may either be for a host the router is directly connected to (on some interface), or it may need to be sent further, through a _gateway_ (through some interface). Therefore: **The routing table maps a _prefix_ to either _a next hop through a gateway and an interface_, or _a direct connection through an interface_**.
 
 ```
 routing_table : Prefix -> NextHop (GatewayIP, Interface) | Direct Interface
@@ -96,7 +98,7 @@ arp_table : (IPv4Address, Interface) -> MACAddress
 
 Note: `Interface` conceptually belongs there, but `IPv4Address` should be unique. We need to store the interface in the control plane anyway, because we want to pre-emptively re-send ARP requests when an entry is about to expire, but in the data plane it is not strictly necessary.
 
-An interesting question arises here: What do we do if there is no match, i.e. when we don't know the MAC address for the IP? First, we send an ARP request. Then, most routers drop the packet (relying on either retransmissions or "nobody will miss it"). Storing the packet until the ARP reply comes back (or until it expires) also works.
+An interesting question arises here: What do we do if there is no match, i.e. when we don't know the MAC address for the IP? First, we send an ARP request. Then, most routers drop the packet (relying on either retransmissions or "nobody will miss it"). Storing the packet until the ARP reply comes back (or until it expires) would also work, but usually isn't done.
 Sending ARP requests is normally done in the control plane, because the ARP requests need to be throttled and expired and such.
 
 P4 code:
@@ -107,8 +109,9 @@ action set_dst_mac(mac_addr_t dst_addr) {
 
 table ipv4_arp {
     key = {
-        meta.ipv4_next_hop: exact;  // next_hop is the host we found in the routing step; we want to send to that
-        meta.out_interface: exact;  // conceptually this belongs here, but actually next_hop should be unique
+        meta.ipv4_next_hop: exact;     // next_hop is the host we found in the routing step; we want to send to that
+        // meta.out_interface: exact;  // conceptually this belongs here, but actually next_hop should be unique, so
+                                       // we can leave it out
     }
     actions = {
         set_dst_mac;                // set_dst_mac(mac)
@@ -123,7 +126,7 @@ IPv6 uses NDP instead of ARP, which is different but the same ;-)
 
 ### 3. "It needs to be forwarded": L2/switch
 
-This is L2 / the switch. It works on each interface separately (it could be multiple chips in hardware (TODO is it?)). It gets a packet with some destination MAC address, and it decides on which port it should put it. It uses a _MAC table_ to do it:
+This is L2 / the switch. It works on each interface separately (it could be multiple chips in hardware). It gets a packet with some destination MAC address, and it decides on which port it should put it. It uses a _MAC table_ to do it:
 
 ```
 mac_table : MACAddress -> Port
@@ -135,7 +138,7 @@ P4 code:
 // note: we're operating on metadata.out_interface
 
 action set_out_port(port_t ports) {
-    standard_metadata.egress_spec = port;
+    standard_metadata.egress_spec = ports;
 }
 
 action broadcast() {
@@ -191,7 +194,7 @@ Filled out by the control plane, depending on the context:
    In this case, the routing table is static and is filled out by the firmware according to the settings.
 * In a small company router, there might be a direct network such as 10.0.0.0/24, a remote office in 10.0.1.0/24 via a VPN server, and a default route from the ISP.
    The default route and the direct route would also be filled out from the settings (by its OS), and the route to the remote office would be added by the VPN software.
-* In an ISP's router, there might be a few routes for connections to other ISPs and no default route. In this case, the control plane would keep an extended version of the table (the routing information base, or RIB) with extra info such as costs or multiple paths, and it would compute the routing table from that. The RIB would be filled using some control-plane protocol such as BGP.
+* In an ISP's router, there might be a few routes for connections to other ISPs and no default route. In this case, the control plane would keep an extended version of the routing table (the routing information base, or RIB) with extra info such as costs or multiple paths, and it would compute the routing table from that. The RIB would be filled using some control-plane protocol such as BGP.
 * In a software-defined networking exercise, it would be filled by the controller script that reads the network topology from the simulator and does something reasonable with it :-)
 
 ### L2.5 / ARP table
@@ -210,10 +213,11 @@ In detail, what we want to do is: If we see a packet with a source MAC address t
 
 ```
 action mac_learn() {
-    // send pkt.ethernet.src_addr and standard_metadata.ingress_port to the controller
-    // so that it adds it to the dmac table
-    // (tables must be modified in the control plane in P4)
-    // the control plane must also add it to smac with a NoAction
+    // Send pkt.ethernet.src_addr and standard_metadata.ingress_port to the controller,
+    // so that it adds it to the dmac table.
+    // (P4/hardware limitation: we cannot do it directly because tables can usually
+    // only be modified by the control plane. In principle we could.)
+    // The control plane must also add it to smac with a NoAction.
 }
 
 // Used to know if we have seen this source MAC before and learn it if not.
@@ -251,6 +255,8 @@ Want to know more than this overview? Read _TCP/IP Illustrated, Vol. 1 & 2_! I p
 
 -------------------------------------------------------------------------------------------------
 
-<a name="fn1">1</a>: Or that is what I think -- [complain](https://github.com/AnotherKamila/kamila.is/issues/new?labels=teaching&title=[teaching/how-routers-work]+Title) if I am wrong!
+<a name="fn1">1</a>: By "port" I mean the physical connector where cables go, not a TCP/UDP port such as "80". If this is a surprise, refer to [footnote 2](#fn2) :-)
 
-<a name="fn2">2</a>: If you come from e.g. FreeBSD, you might be screaming that the routing table sometimes knows about MAC addresses. This is a shortcut to speed things up by avoiding the extra lookup, but conceptually it should not exist. if you happen to be implementing a router that does not care about performance, you don't have to do that (and I have not).
+<a name="fn2">2</a>: See <https://en.wikipedia.org/wiki/OSI_model#Layer_architecture> if the word "L2" does not make sense.
+
+<a name="fn3">3</a>: If you come from e.g. FreeBSD, you might be screaming that the routing table sometimes knows about MAC addresses. This is a shortcut that speeds things up by avoiding the extra lookup, but conceptually it should not exist. If you happen to be implementing a router that does not care about performance, you don't have to do that (and I did not).
