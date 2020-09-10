@@ -22,7 +22,7 @@ I accompany my explanations below with some P4 code. I think it is useful to rea
 * Figuring out what should be done with packets is done by _the control plane/in the slow path/on the CPU/by the controller_ or similar phrases. I will refer to all of this as "the control plane".
 * Actually forwarding the packets  is done by _the data plane/in the fast path/in the hardware/in the switch_ and such. I will refer to this as "the data plane".
 
-Software-defined networking somewhat blurs these distinctions. I will mention cases like that.
+[Cyph0n on HN did a good job explaining this distinction.](https://news.ycombinator.com/item?id=24436585)
 
 # 1. High-level Overview
 
@@ -247,7 +247,7 @@ apply {
 
 # Gimme the code!
 
-TODO full code
+TODO link to repo -- I promise to clean it up any decade now :D
 
 # Next steps
 
