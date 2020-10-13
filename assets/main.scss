@@ -176,3 +176,16 @@ pre.highlight {
 video {
     width: 100%;
 }
+
+
+@media print {
+    /* fix mdl stupidity */
+    html, body, .mdl-layout__container {
+        height: auto !important;
+        min-height: auto !important;
+    }
+
+    .content {
+        margin: 0 !important;
+    }
+}

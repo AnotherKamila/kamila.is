@@ -1,8 +1,16 @@
+#
+# TODO:
+#
+# - change design to 2-column to save space
+# - write up more details for work experience -> fill the first page with just that, 2nd page is the other shit
+# - point at talks on my website (and clean that up)
+#
+
 name: Kamila Součková
 photo: /me/me.jpg
-tagline: I identify problems in systems before they eat your time, your product, and your family dog.
+tagline: I identify problems in systems before they eat your time, your product, and your dog.
 email: me@kamila.is
-# phone: +44 7937 974 542
+# phone: --
 website: https://kamila.is
 location: Zurich, Switzerland
 
@@ -15,43 +23,40 @@ sections:
 
 data:
   experience:
-    title: Work & Volunteer Experience
+    title: Work Experience
     items:
       - 2019-present: |
           Research Engineer, Site Reliability Engineer at [Network Security Group](https://netsec.ethz.ch/), ETH Zurich  
           design and operations of the [SCIONLab](https://scionlab.org) global research network; work on high-performance network applications
-      - 2018: Head of Site Reliability Engineering for [Data Center Light](http://datacenterlight.ch) at [ungleich](http://www.ungleich.ch/)
+      - 2018: Head of Site Reliability Engineering for [Data Center Light](https://datacenterlight.ch) at [ungleich](https://www.ungleich.ch/)
       - summer 2015: Site Reliability Engineering intern at Google Switzerland (Borg SRE)
       - summer 2014: Site Reliability Engineering intern at Google Switzerland (Payments SRE)
       - 2014–2017: |
           - contributed to the [Student Development Team](https://github.com/fmfi-svt) at my university (development and server administration)
-          - designed and developed the backend of an in-house solution for an RFID-based access control system ([Project Deadlock](https://github.com/fmfi-svt-deadlock))
-          - learned more about how operating systems work by making one from scratch ([chaOS](https://github.com/AnotherKamila/chaOS))
-          - server administrator for [Trojsten](http://trojsten.sk/) – Linux and FreeBSD servers with diverse uses
-          - helped with organizing competitions and educational activities for students, giving various talks
-      - 2012–2013: software engineer at MicroStep - MIS ([www.microstep-mis.sk](http://www.microstep-mis.sk/))
-      - 2009–2012: web developer (front-end) at Lighting Beetle ([www.lbstudio.sk](https://www.lbstudio.sk/))
-      - 2010, 2011: contributed to several open-source projects as a participant of [Google Code-In](https://code.google.com/opensource/gci/)
+          - designed and developed the backend of an in-house solution for an RFID-based access control system - [Project Deadlock](https://github.com/fmfi-svt-deadlock)
+          - server administrator for [Trojsten](https://trojsten.sk/) – Linux and FreeBSD servers with diverse uses
+      - 2012–2013: software engineer at [MicroStep - MIS](http://www.microstep-mis.sk/)
+      - 2009–2012: web developer (front-end) at [Lighting Beetle](https://www.lbstudio.sk/)
 
   education:
     title: Education
     items:
       - 2016–2019: |
-          Department of Computer Science, ETH Zurich, Switzerland: MSc Computer Science, focus Information Security  
-          Thesis topic: FPGA-based line-rate packet forwarding for the SCION future Internet architecture – hardware-software co-design, work across the whole network stack, SDN (with P4); achieved 40Gbps throughput
+          ETH Zurich, Switzerland: MSc Computer Science, focus Information Security  
+          Thesis topic: FPGA-based line-rate packet forwarding for the SCION future Internet architecture – hardware/software co-design, work across the whole network stack, SDN (with P4); achieved 40Gbps throughput
       - 2013–2016: |
-          Department of Computer Science, Faculty of Mathematics, Physics and Informatics, Comenius University in Bratislava, Slovakia: BSc.
+          Faculty of Mathematics, Physics and Informatics, Comenius University, Slovakia: BSc Computer Science  
+          Notable project: learned more about how operating systems work by making one from scratch - [chaOS](https://github.com/AnotherKamila/chaOS)
+
 
   skills:
     title: Skills
     text: |
         - quick at absorbing information and learning new things
-        - system design with emphasis on reliability, scalability and correctness
-        - security-conscious
+        - system design with emphasis on reliability, security, scalability and correctness
         - algorithmic skills
         - languages: English (fluent), Slovak (native speaker), Czech (fluent), German (basic)
-        - experience giving lectures about science (mainly computer science, physics and astronomy) at various institutions
-        - presentation skills
+        - experience giving talks about a multitude of topics in science and technology at various venues
         - an ever-increasing list of programming languages, database environments, operating systems and other technologies
         - [I know regular expressions!](https://xkcd.com/208/)
     # items:
@@ -71,16 +76,16 @@ data:
       - International: |
           - [International Young Physicists’ Tournament](http://www.iypt.org): silver medal in 2013, 2011, 2010; bronze medal in 2012
           - [Internet Problem Solving Contest](http://ipsc.ksp.sk): 26<sup>th</sup> among high-school teams in 2012; 17<sup>th</sup> among 1-member high-school teams in 2011
-          - [Google Code-In](https://code.google.com/opensource/gci/2010-11): completed 3 tasks in 2011 and 2010
+        # - [Google Code-In](https://code.google.com/opensource/gci/2010-11): completed 3 tasks in 2011 and 2010
       - National: |
           - [Correspondence Seminar in Programming](https://www.ksp.sk), category T (elite): 1<sup>st</sup> in 2012, 2013
           - [Young Physicists’ Tournament](http://www.tmfsr.sk), State round: 1<sup>st</sup> / gold medal in 2010, 2011, 2012
-          - Olympiad in English Language, State round, category 2B: 1<sup>st</sup> / gold medal in 2012
+        # - Olympiad in English Language, State round, category 2B: 1<sup>st</sup> / gold medal in 2012
   free_time:
     title: Free Time Activities
     text: |
+        - giving talks on a multitude of science & tech topics
+        - organizing competitions and educational activities for students
         - flying small aircraft
-        - music, esp. playing flute
-        - art and handicrafts, graphics and design
-        - archery, hiking, puzzle hunts (e.g. [TMOU](https://en.wikipedia.org/wiki/TMOU))
+        - music, art & design, archery, hiking, puzzle hunts (e.g. [TMOU](https://en.wikipedia.org/wiki/TMOU))
         - physics, astronomy, mathematics
