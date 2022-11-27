@@ -4,3 +4,5 @@ networking: fas fa-network-wired
 wireless: fas fa-wifi
 configuration: fas fa-terminal
 code: fas fa-code
+
+altbuild: fas fa-sync
