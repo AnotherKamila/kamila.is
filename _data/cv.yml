@@ -10,6 +10,7 @@ name: Kamila Součková
 photo: /me/me.jpg
 tagline: I identify problems in systems before they eat your time, your product, and your dog.
 email: me@kamila.is
+opensource: https://github.com/anotherkamila/
 # phone: --
 website: https://kamila.is
 location: Zurich, Switzerland
@@ -32,7 +33,7 @@ data:
       - summer 2015: Site Reliability Engineering intern at Google Switzerland (Borg SRE)
       - summer 2014: Site Reliability Engineering intern at Google Switzerland (Payments SRE)
       - 2014–2017: |
-          - contributed to the [Student Development Team](https://github.com/fmfi-svt) at my university (development and server administration)
+          - contributed to the [Student Development Team](https://github.com/fmfi-svt) at my university - full-stack web development; ops
           - designed and developed the backend of an in-house solution for an RFID-based access control system - [Project Deadlock](https://github.com/fmfi-svt-deadlock)
           - server administrator for [Trojsten](https://trojsten.sk/) – Linux and FreeBSD servers with diverse uses
       - 2012–2013: software engineer at [MicroStep - MIS](http://www.microstep-mis.sk/)
