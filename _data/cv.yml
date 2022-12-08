@@ -7,7 +7,7 @@
 #
 
 name: Kamila Součková
-# photo: /me/me.jpg
+photo: /me/me.jpg
 tagline: I identify problems in systems before they eat your time, your product, and your dog.
 email: me@kamila.is
 opensource: https://github.com/anotherkamila
@@ -27,20 +27,20 @@ data:
     title: Work Experience
     items:
       - 2021-present: |
-          DevOps Engineer at [Wincent](https://www.wincent.co/)  
-          system & application health monitoring; big data pipeline design & implementation; performance monitoring including writing eBPF code to export custom kernel metrics
+          DevOps Engineer at [Wincent](https://www.wincent.co/):  
+          system & application monitoring; big data pipeline design & implementation; performance monitoring including using [eBPF](https://ebpf.io/) to export custom kernel metrics
       - 2019-2021: |
-          Research Engineer, Site Reliability Engineer at [Network Security Group](https://netsec.ethz.ch/), ETH Zurich  
+          Research Engineer, Site Reliability Engineer at [Network Security Group](https://netsec.ethz.ch/), ETH Zurich:  
           design and operations of the [SCIONLab](https://scionlab.org) global research network; work on high-performance network applications
       - 2018: |
-          Head of Site Reliability Engineering for [Data Center Light](https://datacenterlight.ch) at [ungleich](https://www.ungleich.ch/)  
+          Lead Site Reliability Engineer for [Data Center Light](https://datacenterlight.ch) at [ungleich](https://www.ungleich.ch/):  
           VM cluster design and operation ([Ceph](https://ceph.io/) distributed filesystem, [OpenNebula](https://opennebula.io/) virtualization manager, [Prometheus](https://prometheus.io/) monitoring)
       - 2014, 2015: Site Reliability Engineering intern at Google Switzerland (summer 2014 Payments SRE, summer 2015 Borg SRE)
       - 2014–2017: |
-          - contributed to the [Student Development Team](https://github.com/fmfi-svt) at my university - full-stack web development; ops
-          - designed and developed the backend of an in-house solution for an RFID-based access control system - [Project Deadlock](https://github.com/fmfi-svt-deadlock)
+          - contributed to the [Student Development Team](https://github.com/fmfi-svt) at my university -- full-stack web development; ops
+          - designed and developed the backend of an in-house solution for an RFID-based access control system -- [Project Deadlock](https://github.com/fmfi-svt-deadlock)
           - server administrator for [Trojsten](https://trojsten.sk/) – Linux and FreeBSD servers with diverse uses
-      - 2012–2013: software engineer at [MicroStep - MIS](http://www.microstep-mis.sk/)
+      - 2012–2013: software engineer at [MicroStep - MIS](http://www.microstep-mis.sk/) -- meteorological data visualisation
       - 2009–2012: web developer (front-end) at [Lighting Beetle](https://www.lbstudio.sk/)
 
   education:
@@ -57,13 +57,13 @@ data:
   skills:
     title: Skills
     text: |
-        - not intimidated by unfamiliar complex systems, enjoys learning to understand them
-        - system design with emphasis on reliability, security, scalability and correctness
-        - languages: English (fluent), Slovak (native speaker), Czech (fluent), German (basic)
-        - experience giving talks about a multitude of topics in science and technology at various venues, e.g. [FOSDEM 2020](https://archive.fosdem.org/2020/schedule/event/scion/)
+        - not intimidated by unfamiliar complex systems, enjoys diving into them
+        - system design with emphasis on reliability, security, scalability, maintainability and correctness
+        - languages: English (fluent), Slovak (native speaker), Czech (fluent), German (intermediate)
+        - experience giving talks about a multitude of topics in science and technology at various venues, notably [FOSDEM 2020](https://archive.fosdem.org/2020/schedule/event/scion/)
         - an ever-increasing list of programming languages, database environments, operating systems and other technologies
-        - many open-source contributions (code, outreach, education) -- notably presence in the FreeBSD community, wrote a device driver
-    # - [I know regular expressions!](https://xkcd.com/208/)
+        - many open-source contributions (code, outreach, education), notably presence in the [FreeBSD](https://www.freebsd.org/) community: outreach, talks, workshops, contributed [a device driver](https://reviews.freebsd.org/D23370)
+        - [I know regular expressions!](https://xkcd.com/208/)
     # items:
     #   - Technologies: |
     #       - Python *experienced – using at work and at competitions; language of choice for most personal projects*
@@ -77,15 +77,19 @@ data:
 
   awards:
     title: Select Awards and Achievements
-    items:
-      - International: |
-          - [International Young Physicists’ Tournament](http://www.iypt.org): silver medal in 2013, 2011, 2010; bronze medal in 2012
-          - [Internet Problem Solving Contest](http://ipsc.ksp.sk): 26<sup>th</sup> among high-school teams in 2012; 17<sup>th</sup> among 1-member high-school teams in 2011
-        # - [Google Code-In](https://code.google.com/opensource/gci/2010-11): completed 3 tasks in 2011 and 2010
-      - National: |
-          - [Correspondence Seminar in Programming](https://www.ksp.sk), category T (elite): 1<sup>st</sup> in 2012, 2013
-          - [Young Physicists’ Tournament](http://www.tmfsr.sk), State round: 1<sup>st</sup> / gold medal in 2010, 2011, 2012
-        # - Olympiad in English Language, State round, category 2B: 1<sup>st</sup> / gold medal in 2012
+    text: |
+      - [International Young Physicists’ Tournament](http://www.iypt.org): silver medal in 2013, 2011, 2010; bronze medal in 2012
+      - [Internet Problem Solving Contest](http://ipsc.ksp.sk): 26<sup>th</sup> among high-school teams in 2012; 17<sup>th</sup> among 1-member high-school teams in 2011
+      - [Correspondence Seminar in Programming](https://www.ksp.sk), category T (elite): 1<sup>st</sup> in 2012, 2013
+    # items:
+    #  - International: |
+    #      - [International Young Physicists’ Tournament](http://www.iypt.org): silver medal in 2013, 2011, 2010; bronze medal in 2012
+    #      - [Internet Problem Solving Contest](http://ipsc.ksp.sk): 26<sup>th</sup> among high-school teams in 2012; 17<sup>th</sup> among 1-member high-school teams in 2011
+    #    # - [Google Code-In](https://code.google.com/opensource/gci/2010-11): completed 3 tasks in 2011 and 2010
+    #  - National: |
+    #      - [Correspondence Seminar in Programming](https://www.ksp.sk), category T (elite): 1<sup>st</sup> in 2012, 2013
+    #      - [Young Physicists’ Tournament](http://www.tmfsr.sk), State round: 1<sup>st</sup> / gold medal in 2010, 2011, 2012
+    #    # - Olympiad in English Language, State round, category 2B: 1<sup>st</sup> / gold medal in 2012
   free_time:
     title: Free Time Activities
     text: |

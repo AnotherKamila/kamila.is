@@ -23,19 +23,34 @@
      .cv-section-title:after { position: absolute; top: 3.4rem; z-index: -1; content: ''; display: block; width: 100%; border-top: 1px solid; }
      {% endunless %}
 
+    .text-muted { opacity: 0.8; }
+    .cv ul { margin: 0; }
+
      /* remove mailto: and similar links in the basic info section */
      .cv-basic-info-item a[href]:after { content: none !important; }
+
+     @media print {
+         /* murder all the links in the print thing */
+         .cv a[href]:after { content: none !important; }
+         .text-muted, .other-version-link, .cv-basic-info-item { font-size: 0.9em; }
+         #experience { min-height: 9in; } /* page-break-before/after does not work in chrome... :-/ */
+     }
 
     </style>
 
     {% if config.download_links %}
-        <span style="float: right"><i class="fa fa-download"></i>
+        <span class='other-version-link' style="float: right"><i class="fa fa-download"></i>
             {% for item in config.download_links %}&nbsp;&nbsp;<a title="Download as {{item[0]}}" href="{{item[1]}}">{{item[0]}}</a>{% endfor %}
+        </span>
+    {% endif %}
+    {% if config.online_link %}
+        <span class='other-version-link' style="float: right">
+            Online version:&nbsp;&nbsp;<a title="Go to website" href="{{config.online_link}}">{{config.online_link | replace: 'https://', ''}}</a>
         </span>
     {% endif %}
 
     <header>
-        <!--<img class="cv-photo" src="{{cv.photo}}" alt="my photo" />-->
+        <img class="cv-photo" src="{{cv.photo}}" alt="my photo" />
         <h1 class="cv-name">{{cv.name}}</h1>
         <span class="text-muted">{{cv.tagline}}</span>
     </header>
