@@ -12,7 +12,7 @@ grid_tablet: 8
   <figcaption class="figure-caption text-right">Flying a <a href="http://www.airplane-pictures.net/type.php?p=739">Vivat motor glider</a> over Trnava, Slovakia, with a huge smile.</figcaption>
 </figure>
 
-I am a computer science student at [ETH Zurich](https://www.ethz.ch/) (specializing in information security and distributed systems). I also aspire to be a lot of other things, such as:
+I am a nerdy nerd, currently working as a [site reliability engineer](https://en.wikipedia.org/wiki/Site_reliability_engineering) at [the Wikimedia Foundation](https://wikimediafoundation.org/) (yes, if Wikipedia breaks, it's probably my problem). I also aspire to be a lot of other things, such as:
 
 - **a scientist** in how I think, because the world is wonderfully interesting, and things deserve a rational approach
 - **a small aircraft pilot**, because when in the sky, all the troubles of daily life are left far below
