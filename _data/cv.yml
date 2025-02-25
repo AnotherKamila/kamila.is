@@ -26,7 +26,10 @@ data:
   experience:
     title: Work Experience
     items:
-      - 2021-present: |
+      - 2023-present: |
+          Senior Site Reliability Engineer, Service Operations at [Wikimedia Foundation](https://wikimediafoundation.org/):  
+          running over 100 services behind Wikipedia and other Wikimedia projects, including the application layer of Wikipedia
+      - 2021-2023: |
           DevOps Engineer at [Wincent](https://www.wincent.co/):  
           system & application monitoring; big data pipeline design & implementation; performance monitoring including using [eBPF](https://ebpf.io/) to export custom kernel metrics
       - 2019-2021: |
