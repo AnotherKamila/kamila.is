@@ -177,6 +177,13 @@ video {
     width: 100%;
 }
 
+.blockquote {
+    &:before,
+    &:after {
+        content: "";
+    }
+    font-size: 1em;
+}
 
 @media print {
     /* fix mdl stupidity */
